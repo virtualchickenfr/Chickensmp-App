@@ -32,9 +32,6 @@
       "themeColor": "#141414",
       "backgroundColor": "#141414",
       "favicon": "./assets/icon.png"
-    },
-    "experiments": {
-      "baseUrl": "/Chickensmp-App"
     }
   }
 }
