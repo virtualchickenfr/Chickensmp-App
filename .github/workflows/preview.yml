@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   preview:
     runs-on: ubuntu-latest
@@ -48,8 +51,11 @@ jobs:
           await b.close();
           JS
           mkdir -p ../shots && node shot.mjs
-      - uses: actions/upload-artifact@v4
+      - name: Push screenshots to preview-shots branch
         if: always()
-        with:
-          name: preview-shots
-          path: shots/
+        run: |
+          cd shots
+          git init -q -b preview-shots
+          git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Preview ${{ github.sha }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" preview-shots
