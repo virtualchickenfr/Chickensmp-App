@@ -92,7 +92,7 @@ function LiquidBackground() {
   const { width, height } = useWindowDimensions();
   const s = Math.max(width, 360) * 1.1;
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+    <View style={[StyleSheet.absoluteFill, { overflow: 'hidden' }]} pointerEvents="none">
       <View style={[StyleSheet.absoluteFill, { backgroundColor: C.bg }]} />
       <Blob src={BLOBS.blue} size={s} x={-s * 0.45} y={-s * 0.35} dur={9000} delay={0} opacity={0.55} />
       <Blob src={BLOBS.purple} size={s * 0.9} x={width - s * 0.5} y={height * 0.18} dur={11000} delay={800} opacity={0.4} />
@@ -146,9 +146,9 @@ function CopyBtn({ value, small, kind = 'primary', label }) {
   return <Btn small={small} kind={done ? 'done' : kind} icon={done ? 'checkmark' : 'copy-outline'} label={done ? t('copied') : (label || t('copy'))} onPress={press} />;
 }
 
-function Eyebrow({ children, dot }) {
+function Eyebrow({ children, dot, center }) {
   return (
-    <View style={styles.eyebrow}>
+    <View style={[styles.eyebrow, center && { alignSelf: 'center' }]}>
       {dot ? <View style={styles.eyebrowDot} /> : null}
       <Text style={styles.eyebrowText}>{children}</Text>
     </View>
@@ -158,7 +158,7 @@ function Eyebrow({ children, dot }) {
 function PageHead({ eyebrow, title, intro }) {
   return (
     <View style={{ alignItems: 'center', marginBottom: 20, marginTop: 6 }}>
-      {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+      {eyebrow ? <Eyebrow center>{eyebrow}</Eyebrow> : null}
       <Text style={styles.pageTitle}>{title}</Text>
       {intro ? <Text style={styles.pageIntro}>{intro}</Text> : null}
     </View>
@@ -175,13 +175,20 @@ function Pixel({ name, color, size = 6 }) {
   const pal = { a: shade(color, -70), b: color, c: name === 'crown' ? C.red : name === 'star' ? '#fff' : shade(color, 60), d: shade(color, -30) };
   return (
     <View>
-      {rows.map((row, y) => (
-        <View key={y} style={{ flexDirection: 'row' }}>
-          {row.split('').map((ch, x) => (
-            <View key={x} style={{ width: size, height: size, backgroundColor: ch === '.' ? 'transparent' : pal[ch] }} />
-          ))}
-        </View>
-      ))}
+      {rows.map((row, y) => {
+        const runs = [];
+        for (const ch of row) {
+          const last = runs[runs.length - 1];
+          if (last && last.ch === ch) last.n += 1; else runs.push({ ch, n: 1 });
+        }
+        return (
+          <View key={y} style={{ flexDirection: 'row', height: size, marginTop: y ? -0.5 : 0 }}>
+            {runs.map((r, i) => (
+              <View key={i} style={{ width: r.n * size + (r.ch === '.' ? 0 : 0.5), marginRight: r.ch === '.' ? 0 : -0.5, height: size + 0.5, backgroundColor: r.ch === '.' ? 'transparent' : pal[r.ch] }} />
+            ))}
+          </View>
+        );
+      })}
     </View>
   );
 }
@@ -603,7 +610,7 @@ function Shell() {
 
   return (
     <Ctx.Provider value={ctx}>
-      <View style={{ flex: 1, backgroundColor: C.bg }}>
+      <View style={{ flex: 1, backgroundColor: C.bg, overflow: 'hidden' }}>
         <StatusBar style="light" />
         <LiquidBackground />
         <View style={{ paddingTop: insets.top }}>
