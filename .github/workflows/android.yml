@@ -1,0 +1,64 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Create Expo project and add app code
+        run: |
+          npx --yes create-expo-app@latest build --template blank --yes
+          cp -r App.js app.json src assets build/
+          cd build
+          node -e "const f='app.json';const j=require('./'+f);j.expo.android.versionCode=Number(process.env.RUN);j.expo.version='1.0.'+process.env.RUN;require('fs').writeFileSync(f,JSON.stringify(j,null,2))"
+          npx expo install expo-clipboard expo-status-bar expo-font @expo/vector-icons @expo-google-fonts/poppins @react-native-async-storage/async-storage react-native-safe-area-context
+        env:
+          RUN: ${{ github.run_number }}
+
+      - name: Generate Android project
+        working-directory: build
+        run: |
+          npx expo prebuild --platform android --no-install
+          cp ../keystore/debug.keystore android/app/debug.keystore
+
+      - name: Build release APK
+        working-directory: build/android
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
+
+      - name: Rename APK
+        run: cp build/android/app/build/outputs/apk/release/app-release.apk ChickenSMP.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ChickenSMP-apk
+          path: ChickenSMP.apk
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: ChickenSMP App 1.0.${{ github.run_number }}
+          make_latest: true
+          files: ChickenSMP.apk
+          body: |
+            Android-App für ChickenSMP. Lade **ChickenSMP.apk** aufs Handy und installiere sie.
+            Direkter Link zur neuesten Version: https://github.com/${{ github.repository }}/releases/latest/download/ChickenSMP.apk

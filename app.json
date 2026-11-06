@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "ChickenSMP",
+    "slug": "chickensmp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#141414",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#141414"
+    },
+    "android": {
+      "package": "net.chickensmp.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#141414"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "net.chickensmp.app",
+      "supportsTablet": false
+    }
+  }
+}

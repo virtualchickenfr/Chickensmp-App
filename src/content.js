@@ -1,0 +1,152 @@
+export const IP = 'chickensmp.net';
+export const BEDROCK_PORT = '25573';
+export const VERSION = '1.21+';
+export const DISCORD = 'https://discord.gg/AfTVp4f88';
+export const DISCORD_INVITE_API = 'https://discord.com/api/v9/invites/AfTVp4f88?with_counts=true';
+export const STATUS_API = 'https://api.mcsrvstat.us/3/' + IP;
+export const WEBSITE = 'https://store.chickensmp.net';
+
+export const C = {
+  bg: '#141414',
+  surface: '#1e1e1e',
+  surface2: '#282828',
+  border: 'rgba(255,255,255,0.08)',
+  text: '#ffffff',
+  muted: '#9a9a9a',
+  soft: '#d0d0d0',
+  blue: '#3b7bff',
+  sky: '#4fb6ff',
+  gold: '#f5b82e',
+  green: '#3ddc84',
+  purple: '#a855f7',
+  pink: '#ff7ac6',
+  red: '#ff5a6a',
+  discord: '#5865f2',
+  orange: '#ff8c32',
+};
+
+const EN = {
+  tabHome: 'Home', tabJoin: 'Join', tabStore: 'Store', tabCommunity: 'Community',
+  seasonLive: 'Season 2 is live', welcome: 'Welcome to',
+  tagline: 'A survival server to play together. Build with friends, trade, explore and make the world your own.',
+  copyIp: 'Copy IP', ipCopied: 'IP copied!', copied: 'Copied!', copy: 'Copy',
+  online: 'Online', version: 'Version', crossplay: 'Crossplay', offline: 'Offline',
+  serverOnline: 'Server online', serverOffline: 'Server offline', checking: 'Checking…',
+  seasonTitle: 'The new season is live', seasonSub: 'Fresh world, new crates and quests – join now.',
+  cardJoin: 'How to join', cardJoinSub: 'Java and Bedrock, step by step',
+  cardRules: 'Rules', cardRulesSub: 'Read before you play',
+  cardStore: 'Store', cardStoreSub: 'Ranks and crate keys',
+  cardDiscord: 'Discord', cardDiscordSub: 'Tap to join',
+  joinTitle: 'How to join', joinIntro: 'ChickenSMP runs on Java and Bedrock (1.21+). Pick your version.',
+  address: 'Server address', port: 'Port',
+  j1: 'Open Minecraft Java Edition.', j2: 'Click Multiplayer, then Add Server.', j3: 'Enter chickensmp.net as the server address.', j4: 'Select ChickenSMP, join and start playing.',
+  b1: 'Open Minecraft Bedrock Edition.', b2: 'Go to Play → Servers → Add Server.', b3: 'Address chickensmp.net, port 25573.', b4: 'Save, select ChickenSMP and join.',
+  helpTitle: "Can't connect?", helpText: 'Open a ticket on our Discord and the team will help you.', joinDiscord: 'Join Discord',
+  storeTitle: 'Store', storeIntro: 'Stand out in chat and help keep ChickenSMP running. Ranks and keys are bought via a ticket on Discord.',
+  catRanks: 'Ranks', catKeys: 'Crate keys', catExtras: 'Extras',
+  ranksDesc: 'Buy once, keep forever. Every rank includes all perks of the ranks below it.',
+  keysDesc: 'Open crates at spawn for items, armor and rare rewards.',
+  extrasDesc: 'Special ranks for boosters and content creators.',
+  once: 'one-time', askPrice: 'Price in ticket', free: 'Free', buy: 'Buy in ticket', claim: 'Request in ticket', popular: 'Popular', perks: 'Perks',
+  howTitle: 'How buying works', h1: 'Join our Discord', h2: 'Open a ticket in #tickets', h3: 'Tell us the rank or key and your in-game name', h4: 'Our team handles the rest',
+  discordTitle: 'Discord server', discordText: 'Find teammates, get support and hear about events first.', members: 'members', onlineNow: 'online',
+  rulesTitle: 'Rules', rulesIntro: 'By playing on ChickenSMP or joining our Discord, you agree to these rules.',
+  rulesNote: "Staff can act against behavior that harms the community, even if it isn't listed. Punishments range from a warning to a permanent ban. Appeals via ticket on Discord.",
+  teamTitle: 'Team', website: 'Website', disclaimer: 'Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.',
+  pPlus: 'A great start to support ChickenSMP.', pCore: 'More perks and a stronger look on the server.', pSup: 'The top rank with the most prestige.',
+  pBoost: 'Boost our Discord and get all Plus perks.', pMedia: 'For creators making videos or streams about ChickenSMP.', pKey: 'One key for the matching crate at spawn.',
+  kPrefix: '[+] prefix', kTab: 'Tab priority', kHomes5: '5 homes', kRtp: 'No RTP cooldown', kShards: 'Shards everywhere',
+  kAllPlus: 'All Plus perks', kCorePrefix: 'Core prefix', kHomes7: '7 homes', kTags3: '3 random tags', kCraft: '/craft /anvil /smithing & more',
+  kAllCore: 'All Plus & Core perks', kQueue: 'Priority queue', kHomes10: '10 homes', kTags7: '7 random tags', kKit: 'Supreme kit', kGlow: '/glow /ecsee',
+  kBoostPrefix: 'Booster prefix', kAllSup: 'All Supreme perks', kMediaPrefix: 'Media prefix', kMediaReq: 'Request via ticket with your channel',
+  kCrate: 'For the matching crate at spawn', kTicketPrice: 'Current prices in your ticket',
+  r1: 'Respect', r1p: 'Treat players and staff with respect. No toxicity or bullying.',
+  r2: 'No spam', r2p: 'No flooding, repeated messages or excessive caps.',
+  r3: 'No discrimination', r3p: 'Racism, sexism and hate speech are strictly prohibited.',
+  r4: 'Keep it clean', r4p: 'No NSFW content or inappropriate 18+ topics.',
+  r5: 'No advertising', r5p: "Don't advertise other servers or communities without permission.",
+  r6: 'No impersonation', r6p: "Don't pretend to be players, staff or creators.",
+  r7: 'No threats', r7p: 'DDoS threats, doxxing and blackmail mean an instant ban.',
+  r8: 'No punishment evasion', r8p: "Don't bypass mutes or bans, e.g. with alt accounts.",
+  m0: 'Runs ChickenSMP.', m1: 'Founder of ChickenSMP.', m2: 'Builds and maintains the server tech.', m3: 'Keeps the server fair and helps players.', founder: 'Founder',
+};
+
+const DE = {
+  tabHome: 'Start', tabJoin: 'Joinen', tabStore: 'Shop', tabCommunity: 'Community',
+  seasonLive: 'Season 2 läuft', welcome: 'Willkommen auf',
+  tagline: 'Ein Survival-Server zum gemeinsamen Spielen. Bau mit Freunden, handle, erkunde und mach die Welt zu deiner.',
+  copyIp: 'IP kopieren', ipCopied: 'IP kopiert!', copied: 'Kopiert!', copy: 'Kopieren',
+  online: 'Online', version: 'Version', crossplay: 'Crossplay', offline: 'Offline',
+  serverOnline: 'Server online', serverOffline: 'Server offline', checking: 'Wird geprüft…',
+  seasonTitle: 'Die neue Season ist live', seasonSub: 'Frische Welt, neue Crates und Quests – jetzt joinen.',
+  cardJoin: 'So joinst du', cardJoinSub: 'Java und Bedrock, Schritt für Schritt',
+  cardRules: 'Regeln', cardRulesSub: 'Vor dem Spielen lesen',
+  cardStore: 'Shop', cardStoreSub: 'Ränge und Crate-Keys',
+  cardDiscord: 'Discord', cardDiscordSub: 'Tippen zum Beitreten',
+  joinTitle: 'So joinst du', joinIntro: 'ChickenSMP läuft auf Java und Bedrock (1.21+). Wähl deine Version.',
+  address: 'Serveradresse', port: 'Port',
+  j1: 'Öffne Minecraft Java Edition.', j2: 'Klick auf Mehrspieler und dann Server hinzufügen.', j3: 'Gib chickensmp.net als Serveradresse ein.', j4: 'ChickenSMP auswählen, beitreten und loslegen.',
+  b1: 'Öffne Minecraft Bedrock Edition.', b2: 'Geh zu Spielen → Server → Server hinzufügen.', b3: 'Adresse chickensmp.net, Port 25573.', b4: 'Speichern, ChickenSMP auswählen und beitreten.',
+  helpTitle: 'Verbindung klappt nicht?', helpText: 'Öffne ein Ticket auf unserem Discord, das Team hilft dir.', joinDiscord: 'Discord beitreten',
+  storeTitle: 'Shop', storeIntro: 'Fall im Chat auf und hilf, ChickenSMP am Laufen zu halten. Ränge und Keys kaufst du per Ticket auf Discord.',
+  catRanks: 'Ränge', catKeys: 'Crate-Keys', catExtras: 'Extras',
+  ranksDesc: 'Einmal kaufen, für immer behalten. Jeder Rang enthält alle Vorteile der Ränge darunter.',
+  keysDesc: 'Öffne Crates am Spawn für Items, Rüstung und seltene Belohnungen.',
+  extrasDesc: 'Besondere Ränge für Booster und Content Creator.',
+  once: 'einmalig', askPrice: 'Preis im Ticket', free: 'Gratis', buy: 'Im Ticket kaufen', claim: 'Im Ticket anfragen', popular: 'Beliebt', perks: 'Vorteile',
+  howTitle: 'So kaufst du', h1: 'Tritt unserem Discord bei', h2: 'Öffne ein Ticket in #tickets', h3: 'Nenne Rang oder Key und deinen Ingame-Namen', h4: 'Unser Team erledigt den Rest',
+  discordTitle: 'Discord-Server', discordText: 'Finde Mitspieler, hol dir Support und erfahre als Erstes von Events.', members: 'Mitglieder', onlineNow: 'online',
+  rulesTitle: 'Regeln', rulesIntro: 'Wer auf ChickenSMP spielt oder unserem Discord beitritt, akzeptiert diese Regeln.',
+  rulesNote: 'Das Team kann auch bei nicht aufgeführtem Fehlverhalten eingreifen. Strafen reichen von Verwarnung bis Permabann. Einspruch per Ticket auf Discord.',
+  teamTitle: 'Team', website: 'Website', disclaimer: 'Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt oder mit ihnen verbunden.',
+  pPlus: 'Ein guter Einstieg, um ChickenSMP zu unterstützen.', pCore: 'Mehr Vorteile und ein stärkerer Look auf dem Server.', pSup: 'Der höchste Rang mit dem meisten Prestige.',
+  pBoost: 'Booste unseren Discord und erhalte alle Plus-Vorteile.', pMedia: 'Für Creator, die Videos oder Streams über ChickenSMP machen.', pKey: 'Ein Key für die passende Crate am Spawn.',
+  kPrefix: '[+] Prefix', kTab: 'Tab-Priorität', kHomes5: '5 Homes', kRtp: 'Kein RTP-Cooldown', kShards: 'Shards überall',
+  kAllPlus: 'Alle Plus-Vorteile', kCorePrefix: 'Core-Prefix', kHomes7: '7 Homes', kTags3: '3 zufällige Tags', kCraft: '/craft /anvil /smithing & mehr',
+  kAllCore: 'Alle Plus- & Core-Vorteile', kQueue: 'Priority Queue', kHomes10: '10 Homes', kTags7: '7 zufällige Tags', kKit: 'Supreme-Kit', kGlow: '/glow /ecsee',
+  kBoostPrefix: 'Booster-Prefix', kAllSup: 'Alle Supreme-Vorteile', kMediaPrefix: 'Media-Prefix', kMediaReq: 'Anfrage per Ticket mit deinem Kanal',
+  kCrate: 'Für die passende Crate am Spawn', kTicketPrice: 'Aktuelle Preise im Ticket',
+  r1: 'Respekt', r1p: 'Behandle Spieler und Team respektvoll. Keine Toxicity oder Mobbing.',
+  r2: 'Kein Spam', r2p: 'Kein Fluten, keine wiederholten Nachrichten oder Caps-Lock.',
+  r3: 'Keine Diskriminierung', r3p: 'Rassismus, Sexismus und Hassrede sind streng verboten.',
+  r4: 'Sauber bleiben', r4p: 'Keine NSFW-Inhalte oder unangemessenen 18+-Themen.',
+  r5: 'Keine Werbung', r5p: 'Keine Werbung für andere Server oder Communities ohne Erlaubnis.',
+  r6: 'Kein Nachahmen', r6p: 'Gib dich nicht als Spieler, Team oder Creator aus.',
+  r7: 'Keine Drohungen', r7p: 'DDoS-Drohungen, Doxxing und Erpressung führen zum sofortigen Bann.',
+  r8: 'Strafen nicht umgehen', r8p: 'Umgehe keine Mutes oder Banns, z. B. mit Zweitaccounts.',
+  m0: 'Leitet ChickenSMP.', m1: 'Gründer von ChickenSMP.', m2: 'Baut und pflegt die Server-Technik.', m3: 'Sorgt für Fairness und hilft Spielern.', founder: 'Gründer',
+};
+
+export const STRINGS = { en: EN, de: DE };
+
+export const RANKS = [
+  { name: 'Plus', tag: '[PLUS]', color: C.green, price: '€2.99', per: 'once', desc: 'pPlus', perks: ['kPrefix', 'kTab', 'kHomes5', 'kRtp', 'kShards'], art: 'crown' },
+  { name: 'Core', tag: '[CORE]', color: C.sky, price: '€4.99', per: 'once', desc: 'pCore', popular: true, perks: ['kAllPlus', 'kCorePrefix', 'kHomes7', 'kTags3', 'kCraft'], art: 'crown' },
+  { name: 'Supreme', tag: '[SUPREME]', color: C.gold, price: '€9.99', per: 'once', desc: 'pSup', perks: ['kAllCore', 'kQueue', 'kHomes10', 'kTags7', 'kKit', 'kGlow'], art: 'crown' },
+];
+
+export const KEYS = [
+  ['Basic Key', '#b8b8b8'], ['Plus Key', C.green], ['Core Key', C.sky],
+  ['Supreme Key', C.gold], ['Crimson Key', '#e0364a'], ['Cherry Key', '#ff8fc8'],
+].map(([name, color]) => ({ name, color, price: null, desc: 'pKey', perks: ['kCrate', 'kTicketPrice'], art: 'key' }));
+
+export const EXTRAS = [
+  { name: 'Booster', tag: '[BOOSTER]', color: C.pink, price: 'free', desc: 'pBoost', perks: ['kAllPlus', 'kBoostPrefix'], art: 'gem', claim: true },
+  { name: 'Media', tag: '[MEDIA]', color: C.red, price: 'free', desc: 'pMedia', perks: ['kAllSup', 'kMediaPrefix', 'kMediaReq'], art: 'star', claim: true },
+];
+
+export const RULES = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8'];
+
+export const TEAM = [
+  { name: 'Fuzed_d', role: 'Owner', roleKey: null, text: 'm0', color: C.red },
+  { name: 'VirtualChickenFR', role: 'Founder', roleKey: 'founder', text: 'm1', color: C.purple },
+  { name: 'Carbon2834', role: 'Developer', roleKey: null, text: 'm2', color: C.sky },
+  { name: 'ItzPinguTime', role: 'Admin', roleKey: null, text: 'm3', color: C.gold },
+];
+
+export const PIXELS = {
+  crown: ['............', '.a...a...a..', '.ab..ab..ab.', '.abb.abb.abb', '.abbbbbbbbbb', '.abbcbbcbbcb', '.abbbbbbbbbb', '.addddddddd.', '............'],
+  key: ['............', '..aaaa......', '.abbbba.....', 'ab....ba....', 'ab....bbbbba', 'ab....ba.b.b', '.abbbba..b..', '..aaaa......', '............'],
+  star: ['.....a.....', '....aba....', '....aba....', 'aaaabbbaaaa', '.abbbcbbba.', '..abbbbba..', '..abbabba..', '.abba.abba.', '.aa.....aa.'],
+  gem: ['...aaaa...', '..abbbba..', '.abccccba.', 'abbbbbbbba', '.abbbbbba.', '..abbbba..', '...abba...', '....aa....'],
+};
