@@ -1,0 +1,2 @@
+{"name":"ChickenSMP","short_name":"ChickenSMP","start_url":"/Chickensmp-App/","scope":"/Chickensmp-App/","display":"standalone","orientation":"portrait","background_color":"#141414","theme_color":"#141414",
+ "icons":[{"src":"/Chickensmp-App/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"/Chickensmp-App/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}
