@@ -41,7 +41,7 @@ jobs:
           await p.goto('http://localhost:4000');
           await p.waitForTimeout(4000);
           await p.screenshot({ path: '../shots/1-home.png', fullPage: true });
-          for (const [n, label] of [['2-join', 'Join'], ['3-store', 'Store'], ['4-community', 'Community']]) {
+          for (const [n, label] of [['2-join', 'Join'], ['3-store', 'Store'], ['4-community', 'Community'], ['5-profile', 'Profile']]) {
             await p.getByText(label, { exact: true }).last().click();
             await p.waitForTimeout(1500);
             await p.screenshot({ path: `../shots/${n}.png`, fullPage: true });
