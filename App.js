@@ -770,7 +770,7 @@ const styles = StyleSheet.create({
   memberText: { color: C.soft, fontFamily: F.r, fontSize: 12.5, textAlign: 'center', marginTop: 8, lineHeight: 18 },
 
   tabWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 14 },
-  tabBar: { padding: 4, borderRadius: 26, backgroundColor: 'rgba(30,30,30,0.82)' },
+  tabBar: { padding: 4, borderRadius: 26, backgroundColor: 'rgba(28,28,30,0.93)' },
   tabBlob: {
     position: 'absolute', top: 0, bottom: 0, left: 0, borderRadius: 22, backgroundColor: 'rgba(59,123,255,0.9)',
     shadowColor: C.blue, shadowOpacity: 0.8, shadowRadius: 16, shadowOffset: { width: 0, height: 4 }, elevation: 6,
