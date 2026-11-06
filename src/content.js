@@ -139,7 +139,6 @@ export const RULES = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8'];
 
 export const TEAM = [
   { name: 'Fuzed_d', role: 'Owner', roleKey: null, text: 'm0', color: C.red },
-  { name: 'VirtualChickenFR', role: 'Founder', roleKey: 'founder', text: 'm1', color: C.purple },
   { name: 'Carbon2834', role: 'Developer', roleKey: null, text: 'm2', color: C.sky },
   { name: 'ItzPinguTime', role: 'Admin', roleKey: null, text: 'm3', color: C.gold },
 ];
