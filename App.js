@@ -16,6 +16,7 @@ import {
   STATUS_API, STRINGS, TEAM, VERSION, WEBSITE,
 } from './src/content';
 import ProfileScreen from './src/Profile';
+import Updater from './src/Updater';
 
 const F = {
   r: 'Poppins_400Regular', m: 'Poppins_500Medium', s: 'Poppins_600SemiBold', b: 'Poppins_700Bold', x: 'Poppins_800ExtraBold',
@@ -632,6 +633,7 @@ function Shell() {
           </Animated.View>
         </ScrollView>
         <TabBar tab={tab} setTab={go} />
+        <Updater t={t} Btn={Btn} />
         {toastMsg ? (
           <Animated.View
             pointerEvents="none"

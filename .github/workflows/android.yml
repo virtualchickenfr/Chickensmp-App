@@ -30,7 +30,7 @@ jobs:
           cp -r App.js app.json src assets build/
           cd build
           node -e "const f='app.json';const j=require('./'+f);j.expo.android.versionCode=Number(process.env.RUN);j.expo.version='1.0.'+process.env.RUN;require('fs').writeFileSync(f,JSON.stringify(j,null,2))"
-          npx expo install expo-clipboard expo-status-bar expo-font @expo/vector-icons @expo-google-fonts/poppins @react-native-async-storage/async-storage react-native-safe-area-context
+          npx expo install expo-constants expo-clipboard expo-status-bar expo-font @expo/vector-icons @expo-google-fonts/poppins @react-native-async-storage/async-storage react-native-safe-area-context
         env:
           RUN: ${{ github.run_number }}
 

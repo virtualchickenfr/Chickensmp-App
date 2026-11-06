@@ -26,6 +26,7 @@ export const C = {
 };
 
 const EN = {
+  updTitle: 'Update available', updText: 'Version {v} of the ChickenSMP app is ready.', updHow: 'Tap Update, open the download ({mb} MB) and confirm Install. Your login stays.', updNow: 'Update now', updLater: 'Later',
   tabProfile: 'Profile', profileTitle: 'Your profile', profileIntro: 'Log in with your Minecraft account to see your stats.',
   l1: 'Join chickensmp.net in Minecraft.', l2: 'Type /app in the chat.', l3: 'Enter the code shown here.',
   login: 'Log in', logout: 'Log out', loggedIn: 'Logged in!', loggedOut: 'Logged out', codeShort: 'The code has 8 characters.',
@@ -80,6 +81,7 @@ const EN = {
 };
 
 const DE = {
+  updTitle: 'Update verfügbar', updText: 'Version {v} der ChickenSMP-App ist da.', updHow: 'Tippe auf Aktualisieren, öffne den Download ({mb} MB) und bestätige Installieren. Deine Anmeldung bleibt.', updNow: 'Jetzt aktualisieren', updLater: 'Später',
   tabProfile: 'Profil', profileTitle: 'Dein Profil', profileIntro: 'Melde dich mit deinem Minecraft-Account an und sieh deine Stats.',
   l1: 'Join chickensmp.net in Minecraft.', l2: 'Tippe /app in den Chat.', l3: 'Gib den angezeigten Code hier ein.',
   login: 'Anmelden', logout: 'Abmelden', loggedIn: 'Angemeldet!', loggedOut: 'Abgemeldet', codeShort: 'Der Code hat 8 Zeichen.',
