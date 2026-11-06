@@ -1,0 +1,18 @@
+name: ChickenSMPApp
+version: ${project.version}
+main: net.chickensmp.app.ChickenSMPApp
+api-version: '1.21'
+description: Connects ChickenSMP to the ChickenSMP app (login codes and player stats).
+softdepend: [Vault]
+commands:
+  app:
+    description: Get a code to log in to the ChickenSMP app
+    usage: /app
+    aliases: [applink]
+  chickenapp:
+    description: Admin commands for the ChickenSMP app connection
+    usage: /chickenapp <sync|status>
+    permission: chickensmp.app.admin
+permissions:
+  chickensmp.app.admin:
+    default: op

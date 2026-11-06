@@ -1,0 +1,6 @@
+# ChickenSMP app connection
+api-url: "https://store.chickensmp.net/api/mc"
+# Created automatically on first start. Do not share it.
+secret: ""
+# How often stats of online players are sent (minutes)
+sync-minutes: 5

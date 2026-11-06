@@ -26,6 +26,14 @@ export const C = {
 };
 
 const EN = {
+  tabProfile: 'Profile', profileTitle: 'Your profile', profileIntro: 'Log in with your Minecraft account to see your stats.',
+  l1: 'Join chickensmp.net in Minecraft.', l2: 'Type /app in the chat.', l3: 'Enter the code shown here.',
+  login: 'Log in', logout: 'Log out', loggedIn: 'Logged in!', loggedOut: 'Logged out', codeShort: 'The code has 8 characters.',
+  codeInvalid: 'Code is wrong or expired. Type /app again.', noConnection: 'No connection. Try again.',
+  loginHint: 'Codes are valid for 10 minutes. We only store your Minecraft name and stats.', loginHelp: 'Problems logging in? Ask on Discord',
+  stPlaytime: 'Playtime', stKills: 'Kills', stMobKills: 'Mob kills', stMobs: 'Mobs', stDeaths: 'Deaths', stDistance: 'Walked', stJumps: 'Jumps', stJoins: 'Joins', stBalance: 'Money',
+  onlineNowCap: 'ONLINE NOW', lastSeen: 'Last seen', justNow: 'just now', memberSince: 'Playing since',
+  noStatsYet: 'No stats yet – they appear after your next session on the server.', leaderboard: 'Leaderboard', boardEmpty: 'No data yet.',
   tabHome: 'Home', tabJoin: 'Join', tabStore: 'Store', tabCommunity: 'Community',
   seasonLive: 'Season 2 is live', welcome: 'Welcome to',
   tagline: 'A survival server to play together. Build with friends, trade, explore and make the world your own.',
@@ -72,6 +80,14 @@ const EN = {
 };
 
 const DE = {
+  tabProfile: 'Profil', profileTitle: 'Dein Profil', profileIntro: 'Melde dich mit deinem Minecraft-Account an und sieh deine Stats.',
+  l1: 'Join chickensmp.net in Minecraft.', l2: 'Tippe /app in den Chat.', l3: 'Gib den angezeigten Code hier ein.',
+  login: 'Anmelden', logout: 'Abmelden', loggedIn: 'Angemeldet!', loggedOut: 'Abgemeldet', codeShort: 'Der Code hat 8 Zeichen.',
+  codeInvalid: 'Code falsch oder abgelaufen. Tippe /app nochmal.', noConnection: 'Keine Verbindung. Versuch es nochmal.',
+  loginHint: 'Codes gelten 10 Minuten. Wir speichern nur deinen Minecraft-Namen und deine Stats.', loginHelp: 'Probleme beim Anmelden? Frag auf Discord',
+  stPlaytime: 'Spielzeit', stKills: 'Kills', stMobKills: 'Mob-Kills', stMobs: 'Mobs', stDeaths: 'Tode', stDistance: 'Gelaufen', stJumps: 'Sprünge', stJoins: 'Joins', stBalance: 'Geld',
+  onlineNowCap: 'GERADE ONLINE', lastSeen: 'Zuletzt', justNow: 'gerade eben', memberSince: 'Dabei seit',
+  noStatsYet: 'Noch keine Stats – sie erscheinen nach deiner nächsten Runde auf dem Server.', leaderboard: 'Bestenliste', boardEmpty: 'Noch keine Daten.',
   tabHome: 'Start', tabJoin: 'Joinen', tabStore: 'Shop', tabCommunity: 'Community',
   seasonLive: 'Season 2 läuft', welcome: 'Willkommen auf',
   tagline: 'Ein Survival-Server zum gemeinsamen Spielen. Bau mit Freunden, handle, erkunde und mach die Welt zu deiner.',

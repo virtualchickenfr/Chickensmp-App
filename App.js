@@ -15,6 +15,7 @@ import {
   BEDROCK_PORT, C, DISCORD, DISCORD_INVITE_API, EXTRAS, IP, KEYS, PIXELS, RANKS, RULES,
   STATUS_API, STRINGS, TEAM, VERSION, WEBSITE,
 } from './src/content';
+import ProfileScreen from './src/Profile';
 
 const F = {
   r: 'Poppins_400Regular', m: 'Poppins_500Medium', s: 'Poppins_600SemiBold', b: 'Poppins_700Bold', x: 'Poppins_800ExtraBold',
@@ -498,6 +499,7 @@ const TABS = [
   { id: 'join', icon: 'game-controller', label: 'tabJoin' },
   { id: 'store', icon: 'cart', label: 'tabStore' },
   { id: 'community', icon: 'people', label: 'tabCommunity' },
+  { id: 'profile', icon: 'person-circle', label: 'tabProfile' },
 ];
 
 function TabBar({ tab, setTab }) {
@@ -626,6 +628,7 @@ function Shell() {
             {tab === 'join' && <JoinScreen />}
             {tab === 'store' && <StoreScreen />}
             {tab === 'community' && <CommunityScreen />}
+            {tab === 'profile' && <ProfileScreen ui={{ t, lang, toast, Glass, Btn, Segmented, PageHead }} />}
           </Animated.View>
         </ScrollView>
         <TabBar tab={tab} setTab={go} />
@@ -776,7 +779,7 @@ const styles = StyleSheet.create({
     shadowColor: C.blue, shadowOpacity: 0.8, shadowRadius: 16, shadowOffset: { width: 0, height: 4 }, elevation: 6,
   },
   tabItem: { flex: 1, alignItems: 'center', paddingVertical: 9, gap: 2 },
-  tabLabel: { color: C.muted, fontFamily: F.b, fontSize: 11 },
+  tabLabel: { color: C.muted, fontFamily: F.b, fontSize: 10 },
 
   toast: {
     position: 'absolute', alignSelf: 'center', flexDirection: 'row', alignItems: 'center', gap: 8,
