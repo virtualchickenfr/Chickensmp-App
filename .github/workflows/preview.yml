@@ -1,0 +1,55 @@
+name: Web preview screenshots
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build web version
+        run: |
+          npx --yes create-expo-app@latest build --template blank --yes
+          cp -r App.js app.json src assets build/
+          cd build
+          npx expo install expo-clipboard expo-status-bar expo-font @expo/vector-icons @expo-google-fonts/poppins @react-native-async-storage/async-storage react-native-safe-area-context react-dom react-native-web @expo/metro-runtime
+          npx expo export --platform web --output-dir dist
+      - name: Screenshots
+        run: |
+          cd build
+          npm i --no-save playwright serve
+          npx playwright install --with-deps chromium
+          (npx serve -s dist -l 4000 >/dev/null 2>&1 &)
+          sleep 4
+          cat > shot.mjs <<'JS'
+          import { chromium, devices } from 'playwright';
+          const b = await chromium.launch();
+          const p = await b.newPage({ ...devices['Pixel 7'] });
+          const errs = [];
+          p.on('pageerror', e => errs.push(e.message));
+          p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+          await p.goto('http://localhost:4000');
+          await p.waitForTimeout(4000);
+          await p.screenshot({ path: '../shots/1-home.png', fullPage: true });
+          for (const [n, label] of [['2-join', 'Join'], ['3-store', 'Store'], ['4-community', 'Community']]) {
+            await p.getByText(label, { exact: true }).last().click();
+            await p.waitForTimeout(1500);
+            await p.screenshot({ path: `../shots/${n}.png`, fullPage: true });
+          }
+          const fs = await import('fs');
+          fs.writeFileSync('../shots/errors.txt', errs.join('\n') || 'no errors');
+          await b.close();
+          JS
+          mkdir -p ../shots && node shot.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: preview-shots
+          path: shots/
