@@ -424,7 +424,7 @@ function PackageCard({ it }) {
           {it.perks.map((p) => (
             <View key={p} style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
               <View style={[styles.perkDot, { backgroundColor: it.color }]} />
-              <Text style={styles.perkText}>{t(p)}</Text>
+              <Text style={styles.perkText}>{p.startsWith('pack5:') ? `${t('kPack5')} ${p.slice(6)}` : t(p)}</Text>
             </View>
           ))}
         </View>

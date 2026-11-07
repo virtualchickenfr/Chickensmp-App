@@ -26,6 +26,7 @@ export const C = {
 };
 
 const EN = {
+  kPack5: 'Pack of 5:', perKey: 'per key', kMedYT: 'YouTube: 500+ subscribers, 1 video per month about ChickenSMP', kMedTT: 'TikTok: 1,000+ followers, 2 videos per month', kMedTW: 'Twitch: 100+ followers, 2 streams per month on ChickenSMP', kMedIP: 'IP chickensmp.net in description or title', kMedAct: 'Rank is removed after 30 days without content',
   otaTitle: 'Updating…', otaText: 'Getting the newest version of the app. One moment.',
   onlineList: 'Online now', back: 'Back', yourRank: 'Your rank', rankPlayer: 'Player', prefix: 'Prefix', rankUpsell: 'Get a rank to stand out and unlock perks like more homes and /craft.', seeRanks: 'See ranks',
   badges: 'Badges', statsTitle: 'Stats', bd_first: 'First steps', bd_regular: 'Regular', bd_veteran: 'Veteran', bd_legend: 'Legend', bd_fighter: 'Fighter', bd_hunter: 'Mob hunter', bd_walker: 'Wanderer', bd_jumper: 'Bunny', bd_survivor: 'Untouchable', bd_supporter: 'Supporter',
@@ -74,11 +75,11 @@ const EN = {
   rulesNote: "Staff can act against behavior that harms the community, even if it isn't listed. Punishments range from a warning to a permanent ban. Appeals via ticket on Discord.",
   teamTitle: 'Team', website: 'Website', disclaimer: 'Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.',
   pPlus: 'A great start to support ChickenSMP.', pCore: 'More perks and a stronger look on the server.', pSup: 'The top rank with the most prestige.',
-  pBoost: 'Boost our Discord and get all Plus perks.', pMedia: 'For creators making videos or streams about ChickenSMP.', pKey: 'One key for the matching crate at spawn.',
+  pBoost: 'Boost our Discord and get all Plus perks.', pMedia: 'For creators with 500+ YouTube subscribers, 1,000+ TikTok or 100+ Twitch followers.', pKey: 'One key for the matching crate at spawn.',
   kPrefix: '[+] prefix', kTab: 'Tab priority', kHomes5: '5 homes', kRtp: 'No RTP cooldown', kShards: 'Shards everywhere',
   kAllPlus: 'All Plus perks', kCorePrefix: 'Core prefix', kHomes7: '7 homes', kTags3: '3 random tags', kCraft: '/craft /anvil /smithing & more',
   kAllCore: 'All Plus & Core perks', kQueue: 'Priority queue', kHomes10: '10 homes', kTags7: '7 random tags', kKit: 'Supreme kit', kGlow: '/glow /ecsee',
-  kBoostPrefix: 'Booster prefix', kAllSup: 'All Supreme perks', kMediaPrefix: 'Media prefix', kMediaReq: 'Request via ticket with your channel',
+  kBoostPrefix: 'Booster prefix', kAllSup: 'All Supreme perks', kMediaPrefix: 'Media prefix', kMediaReq: 'Apply via ticket with a link to your channel',
   kCrate: 'For the matching crate at spawn', kTicketPrice: 'Current prices in your ticket',
   r1: 'Respect', r1p: 'Treat players and staff with respect. No toxicity or bullying.',
   r2: 'No spam', r2p: 'No flooding, repeated messages or excessive caps.',
@@ -92,6 +93,7 @@ const EN = {
 };
 
 const DE = {
+  kPack5: '5er-Pack:', perKey: 'pro Key', kMedYT: 'YouTube: ab 500 Abos, 1 Video pro Monat über ChickenSMP', kMedTT: 'TikTok: ab 1.000 Followern, 2 Videos pro Monat', kMedTW: 'Twitch: ab 100 Followern, 2 Streams pro Monat auf ChickenSMP', kMedIP: 'IP chickensmp.net in Beschreibung oder Titel', kMedAct: 'Nach 30 Tagen ohne Content wird der Rang entfernt',
   otaTitle: 'Update läuft…', otaText: 'Die App holt sich die neueste Version. Einen Moment.',
   onlineList: 'Gerade online', back: 'Zurück', yourRank: 'Dein Rang', rankPlayer: 'Spieler', prefix: 'Prefix', rankUpsell: 'Hol dir einen Rang, um aufzufallen und Vorteile wie mehr Homes und /craft freizuschalten.', seeRanks: 'Ränge ansehen',
   badges: 'Abzeichen', statsTitle: 'Stats', bd_first: 'Erste Schritte', bd_regular: 'Stammgast', bd_veteran: 'Veteran', bd_legend: 'Legende', bd_fighter: 'Kämpfer', bd_hunter: 'Monsterjäger', bd_walker: 'Wanderer', bd_jumper: 'Springmaus', bd_survivor: 'Unbesiegt', bd_supporter: 'Unterstützer',
@@ -140,11 +142,11 @@ const DE = {
   rulesNote: 'Das Team kann auch bei nicht aufgeführtem Fehlverhalten eingreifen. Strafen reichen von Verwarnung bis Permabann. Einspruch per Ticket auf Discord.',
   teamTitle: 'Team', website: 'Website', disclaimer: 'Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt oder mit ihnen verbunden.',
   pPlus: 'Ein guter Einstieg, um ChickenSMP zu unterstützen.', pCore: 'Mehr Vorteile und ein stärkerer Look auf dem Server.', pSup: 'Der höchste Rang mit dem meisten Prestige.',
-  pBoost: 'Booste unseren Discord und erhalte alle Plus-Vorteile.', pMedia: 'Für Creator, die Videos oder Streams über ChickenSMP machen.', pKey: 'Ein Key für die passende Crate am Spawn.',
+  pBoost: 'Booste unseren Discord und erhalte alle Plus-Vorteile.', pMedia: 'Für Creator ab 500 YouTube-Abos, 1.000 TikTok- oder 100 Twitch-Followern.', pKey: 'Ein Key für die passende Crate am Spawn.',
   kPrefix: '[+] Prefix', kTab: 'Tab-Priorität', kHomes5: '5 Homes', kRtp: 'Kein RTP-Cooldown', kShards: 'Shards überall',
   kAllPlus: 'Alle Plus-Vorteile', kCorePrefix: 'Core-Prefix', kHomes7: '7 Homes', kTags3: '3 zufällige Tags', kCraft: '/craft /anvil /smithing & mehr',
   kAllCore: 'Alle Plus- & Core-Vorteile', kQueue: 'Priority Queue', kHomes10: '10 Homes', kTags7: '7 zufällige Tags', kKit: 'Supreme-Kit', kGlow: '/glow /ecsee',
-  kBoostPrefix: 'Booster-Prefix', kAllSup: 'Alle Supreme-Vorteile', kMediaPrefix: 'Media-Prefix', kMediaReq: 'Anfrage per Ticket mit deinem Kanal',
+  kBoostPrefix: 'Booster-Prefix', kAllSup: 'Alle Supreme-Vorteile', kMediaPrefix: 'Media-Prefix', kMediaReq: 'Bewerbung per Ticket mit Link zu deinem Kanal',
   kCrate: 'Für die passende Crate am Spawn', kTicketPrice: 'Aktuelle Preise im Ticket',
   r1: 'Respekt', r1p: 'Behandle Spieler und Team respektvoll. Keine Toxicity oder Mobbing.',
   r2: 'Kein Spam', r2p: 'Kein Fluten, keine wiederholten Nachrichten oder Caps-Lock.',
@@ -166,13 +168,13 @@ export const RANKS = [
 ];
 
 export const KEYS = [
-  ['Basic Key', '#b8b8b8'], ['Plus Key', C.green], ['Core Key', C.sky],
-  ['Supreme Key', C.gold], ['Crimson Key', '#e0364a'], ['Cherry Key', '#ff8fc8'],
-].map(([name, color]) => ({ name, color, price: null, desc: 'pKey', perks: ['kCrate', 'kTicketPrice'], art: 'key' }));
+  ['Basic Key', '#b8b8b8', '€0.49', '€1.99'], ['Plus Key', C.green, '€0.99', '€3.99'], ['Core Key', C.sky, '€1.49', '€5.99'],
+  ['Supreme Key', C.gold, '€2.49', '€9.99'], ['Crimson Key', '#e0364a', '€3.49', '€13.99'], ['Cherry Key', '#ff8fc8', '€4.99', '€19.99'],
+].map(([name, color, price, pack]) => ({ name, color, price, per: 'perKey', desc: 'pKey', perks: ['kCrate', `pack5:${pack}`], art: 'key' }));
 
 export const EXTRAS = [
   { name: 'Booster', tag: '[BOOSTER]', color: C.pink, price: 'free', desc: 'pBoost', perks: ['kAllPlus', 'kBoostPrefix'], art: 'gem', claim: true },
-  { name: 'Media', tag: '[MEDIA]', color: C.red, price: 'free', desc: 'pMedia', perks: ['kAllSup', 'kMediaPrefix', 'kMediaReq'], art: 'star', claim: true },
+  { name: 'Media', tag: '[MEDIA]', color: C.red, price: 'free', desc: 'pMedia', perks: ['kMedYT', 'kMedTT', 'kMedTW', 'kMedIP', 'kMedAct', 'kAllSup', 'kMediaPrefix', 'kMediaReq'], art: 'star', claim: true },
 ];
 
 export const RULES = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8'];
