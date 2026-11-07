@@ -19,5 +19,5 @@ export default async function handler(req, res) {
   const part = (name, obj) => `--${boundary}\r\nContent-Disposition: form-data; name="${name}"\r\nContent-Type: application/json; charset=utf-8\r\n\r\n${JSON.stringify(obj)}\r\n`;
   const body = part('manifest', m) + part('extensions', { assetRequestHeaders: {} }) + `--${boundary}--\r\n`;
   res.setHeader('content-type', `multipart/mixed; boundary=${boundary}`);
-  return res.status(200).send(body);
+  return res.status(200).end(Buffer.from(body, "utf8"));
 }
