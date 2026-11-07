@@ -19,6 +19,7 @@ import ProfileScreen from './src/Profile';
 import Updater from './src/Updater';
 import OtaUpdate from './src/OtaUpdate';
 import TicketScreen from './src/Tickets';
+import DailyReward from './src/Daily';
 import { API } from './src/Profile';
 
 const F = {
@@ -46,9 +47,9 @@ function useLiveData() {
       setStatus({ state: 'offline', players: null, max: null });
     }
     try {
-      const r = await fetch(DISCORD_INVITE_API);
+      const r = await fetch(`${API}?action=discord`);
       const d = await r.json();
-      setDiscord({ members: d.approximate_member_count ?? null, online: d.approximate_presence_count ?? null });
+      setDiscord({ members: d.members ?? null, online: d.online ?? null });
     } catch (e) { /* keep last */ }
   }, []);
   useEffect(() => {
@@ -243,7 +244,7 @@ function OnlineNow() {
 }
 
 function HomeScreen({ go }) {
-  const { t, live } = useApp();
+  const { t, live, toast } = useApp();
   const online = live.status.state === 'online' ? String(live.status.players) : live.status.state === 'offline' ? t('offline') : '–';
   const cards = [
     { title: t('cardJoin'), sub: t('cardJoinSub'), color: C.sky, icon: 'game-controller', onPress: () => go('join') },
@@ -273,6 +274,7 @@ function HomeScreen({ go }) {
         <View style={styles.seasonBar} />
       </Glass>
 
+      <DailyReward ui={{ t, toast, Glass, Btn }} go={go} />
       <OnlineNow />
 
       {cards.map((c) => (
@@ -664,6 +666,7 @@ function Shell() {
       <View style={{ flex: 1, backgroundColor: C.bg, overflow: 'hidden' }}>
         <StatusBar style="light" />
         <LiquidBackground />
+        <View style={styles.frame}>
         <View style={{ paddingTop: insets.top }}>
           <Header lang={lang} setLang={setLang} />
         </View>
@@ -682,6 +685,7 @@ function Shell() {
           </Animated.View>
         </ScrollView>
         <TabBar tab={tab} setTab={go} />
+        </View>
         <Updater t={t} Btn={Btn} />
         <OtaUpdate t={t} />
         {toastMsg ? (
@@ -710,6 +714,7 @@ export default function App() {
 
 /* ---------------- styles ---------------- */
 const styles = StyleSheet.create({
+  frame: { flex: 1, width: '100%', maxWidth: 560, alignSelf: 'center' },
   glass: {
     backgroundColor: GLASS, borderRadius: 22, borderWidth: 1, borderColor: EDGE, overflow: 'hidden',
   },

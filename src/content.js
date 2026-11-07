@@ -26,6 +26,7 @@ export const C = {
 };
 
 const EN = {
+  dlTitle: 'Daily reward', dlLoginFirst: 'Log in and collect free crate keys every day.', dlStreak: '{n} day streak – come back daily for better keys', dlDay: 'Day', dlClaim: 'Claim', dlGot: 'You got', dlCome: 'Next reward in', dlDeliver: 'Your keys are given to you in-game – on your next join if you are offline.',
   kPack5: 'Pack of 5:', perKey: 'per key', kMedYT: 'YouTube: 500+ subscribers, 1 video per month about ChickenSMP', kMedTT: 'TikTok: 1,000+ followers, 2 videos per month', kMedTW: 'Twitch: 100+ followers, 2 streams per month on ChickenSMP', kMedIP: 'IP chickensmp.net in description or title', kMedAct: 'Rank is removed after 30 days without content',
   otaTitle: 'Updating…', otaText: 'Getting the newest version of the app. One moment.',
   onlineList: 'Online now', back: 'Back', yourRank: 'Your rank', rankPlayer: 'Player', prefix: 'Prefix', rankUpsell: 'Get a rank to stand out and unlock perks like more homes and /craft.', seeRanks: 'See ranks',
@@ -93,6 +94,7 @@ const EN = {
 };
 
 const DE = {
+  dlTitle: 'Tägliche Belohnung', dlLoginFirst: 'Melde dich an und hol dir jeden Tag gratis Crate-Keys.', dlStreak: '{n} Tage Serie – komm täglich wieder für bessere Keys', dlDay: 'Tag', dlClaim: 'Abholen', dlGot: 'Du hast bekommen:', dlCome: 'Nächste Belohnung in', dlDeliver: 'Deine Keys bekommst du im Spiel – beim nächsten Join, falls du offline bist.',
   kPack5: '5er-Pack:', perKey: 'pro Key', kMedYT: 'YouTube: ab 500 Abos, 1 Video pro Monat über ChickenSMP', kMedTT: 'TikTok: ab 1.000 Followern, 2 Videos pro Monat', kMedTW: 'Twitch: ab 100 Followern, 2 Streams pro Monat auf ChickenSMP', kMedIP: 'IP chickensmp.net in Beschreibung oder Titel', kMedAct: 'Nach 30 Tagen ohne Content wird der Rang entfernt',
   otaTitle: 'Update läuft…', otaText: 'Die App holt sich die neueste Version. Einen Moment.',
   onlineList: 'Gerade online', back: 'Zurück', yourRank: 'Dein Rang', rankPlayer: 'Spieler', prefix: 'Prefix', rankUpsell: 'Hol dir einen Rang, um aufzufallen und Vorteile wie mehr Homes und /craft freizuschalten.', seeRanks: 'Ränge ansehen',

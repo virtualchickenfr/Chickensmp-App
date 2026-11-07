@@ -1,6 +1,8 @@
 // Called by the ChickenSMP server plugin (outbound only, shared secret).
 import { getJson, putJson, sha, readBody } from './_store.js';
 
+const lc = (u) => String(u).toLowerCase();
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 // Only the ChickenSMP game server may call this endpoint.
 const ALLOWED_IPS = (process.env.MC_SERVER_IPS || '208.115.203.109').split(',').map((x) => x.trim());
@@ -56,6 +58,34 @@ export default async function handler(req, res) {
     await Promise.all(players.map((p) => putJson(`players/${String(p.uuid).toLowerCase()}.json`, cleanPlayer(p))));
     if (Array.isArray(b.onlineNames)) await putJson('server/online.json', { names: b.onlineNames.slice(0, 200).map(String), updatedAt: Date.now() });
     return res.json({ ok: true, count: players.length });
+  }
+
+  // Rewards waiting for players who are online right now.
+  if (b.action === 'pending') {
+    const online = (Array.isArray(b.online) ? b.online : []).map(lc);
+    const idx = (await getJson('rewards/pending.json')) || { uuids: [] };
+    const want = idx.uuids.filter((u) => online.includes(u));
+    const out = [];
+    for (const u of want) {
+      const rw = await getJson(`rewards/${u}.json`);
+      if (rw) for (const i of rw.items) if (!i.delivered) out.push({ uuid: u, id: i.id, key: i.key, amount: i.amount, reason: i.reason });
+    }
+    return res.json({ ok: true, rewards: out });
+  }
+
+  if (b.action === 'ack') {
+    const ids = new Set((Array.isArray(b.ids) ? b.ids : []).map(String));
+    const uuids = [...new Set((Array.isArray(b.uuids) ? b.uuids : []).map(lc))];
+    const idx = (await getJson('rewards/pending.json')) || { uuids: [] };
+    for (const u of uuids) {
+      const rw = await getJson(`rewards/${u}.json`);
+      if (!rw) continue;
+      rw.items = rw.items.map((i) => (ids.has(i.id) ? { ...i, delivered: true, deliveredAt: Date.now() } : i));
+      await putJson(`rewards/${u}.json`, rw);
+      if (!rw.items.some((i) => !i.delivered)) idx.uuids = idx.uuids.filter((x) => x !== u);
+    }
+    await putJson('rewards/pending.json', idx);
+    return res.json({ ok: true });
   }
 
   return res.status(400).json({ error: 'action' });

@@ -67,6 +67,8 @@ public final class ChickenSMPApp extends JavaPlugin implements Listener {
 
         long period = Math.max(1, getConfig().getInt("sync-minutes", 5)) * 60L * 20L;
         Bukkit.getScheduler().runTaskTimer(this, this::syncOnline, 20L * 30, period);
+        // Daily-login rewards claimed in the app: check every minute for online players.
+        Bukkit.getScheduler().runTaskTimer(this, this::deliverRewards, 20L * 20, 20L * 60);
         // Send everyone who ever joined once, a little after startup, in small batches.
         Bukkit.getScheduler().runTaskLater(this, this::syncAllOffline, 20L * 60);
     }
@@ -132,6 +134,53 @@ public final class ChickenSMPApp extends JavaPlugin implements Listener {
             player.sendMessage(Component.empty());
         }));
         return true;
+    }
+
+    /* ---------- rewards ---------- */
+
+    @EventHandler
+    public void onJoin(org.bukkit.event.player.PlayerJoinEvent e) {
+        Bukkit.getScheduler().runTaskLater(this, this::deliverRewards, 20L * 5);
+    }
+
+    private void deliverRewards() {
+        if (Bukkit.getOnlinePlayers().isEmpty()) return;
+        JsonArray online = new JsonArray();
+        for (Player p : Bukkit.getOnlinePlayers()) online.add(p.getUniqueId().toString());
+        JsonObject body = new JsonObject();
+        body.addProperty("action", "pending");
+        body.add("online", online);
+        postForJson(body).thenAccept(res -> {
+            if (res == null || !res.has("rewards")) return;
+            JsonArray list = res.getAsJsonArray("rewards");
+            if (list.size() == 0) return;
+            Bukkit.getScheduler().runTask(this, () -> {
+                JsonArray ids = new JsonArray();
+                JsonArray uuids = new JsonArray();
+                for (var el : list) {
+                    JsonObject r = el.getAsJsonObject();
+                    Player p = Bukkit.getPlayer(UUID.fromString(r.get("uuid").getAsString()));
+                    if (p == null) continue;
+                    String key = r.get("key").getAsString().replaceAll("[^a-zA-Z0-9_-]", "");
+                    int amount = Math.max(1, Math.min(64, r.get("amount").getAsInt()));
+                    String cmd = getConfig().getString("reward-command", "keymanager give {player} {key} {amount}")
+                            .replace("{player}", p.getName()).replace("{key}", key).replace("{amount}", String.valueOf(amount));
+                    boolean ok = Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                    if (!ok) { getLogger().warning("Reward command failed: " + cmd); continue; }
+                    ids.add(r.get("id").getAsString());
+                    uuids.add(p.getUniqueId().toString());
+                    p.sendMessage(Component.text("🎁 ", NamedTextColor.GOLD)
+                            .append(Component.text("Daily reward from the app: ", NamedTextColor.GRAY))
+                            .append(Component.text(amount + "x " + key.substring(0, 1).toUpperCase() + key.substring(1) + " Key", NamedTextColor.GREEN, TextDecoration.BOLD)));
+                }
+                if (ids.size() == 0) return;
+                JsonObject ack = new JsonObject();
+                ack.addProperty("action", "ack");
+                ack.add("ids", ids);
+                ack.add("uuids", uuids);
+                post(ack);
+            });
+        });
     }
 
     /* ---------- stats ---------- */
@@ -296,6 +345,18 @@ public final class ChickenSMPApp extends JavaPlugin implements Listener {
     }
 
     /* ---------- http ---------- */
+
+    private CompletableFuture<JsonObject> postForJson(JsonObject body) {
+        body.addProperty("secret", secret);
+        HttpRequest req = HttpRequest.newBuilder(URI.create(apiUrl))
+                .timeout(Duration.ofSeconds(20))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(body)))
+                .build();
+        return http.sendAsync(req, HttpResponse.BodyHandlers.ofString())
+                .thenApply(r -> r.statusCode() == 200 ? gson.fromJson(r.body(), JsonObject.class) : null)
+                .exceptionally(t -> null);
+    }
 
     private CompletableFuture<Boolean> post(JsonObject body) {
         body.addProperty("secret", secret);

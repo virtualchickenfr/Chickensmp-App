@@ -3,6 +3,7 @@ import { ActivityIndicator, Image, Linking, Pressable, StyleSheet, Text, TextInp
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { C, DISCORD, EXTRAS, RANKS } from './content';
+import DailyReward from './Daily';
 
 export const API = 'https://store.chickensmp.net/api/app';
 const TOKEN_KEY = 'csmp-token';
@@ -168,6 +169,8 @@ export default function ProfileScreen({ ui }) {
             </View>
             {s ? <Text style={st.since}>{t('memberSince')} {fmtDate(s.firstPlayed, lang)}</Text> : null}
           </Glass>
+
+          <DailyReward ui={ui} go={go} compact />
 
           {s ? (() => {
             const info = rankInfo(s.rank);

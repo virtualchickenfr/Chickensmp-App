@@ -58,6 +58,24 @@ async function sendToDiscord(t, player) {
   }
 }
 
+// Daily login rewards: a 7-day streak, delivered in-game by the server plugin.
+export const DAILY = [
+  { key: 'basic', amount: 1 }, { key: 'basic', amount: 2 }, { key: 'plus', amount: 1 }, { key: 'plus', amount: 2 },
+  { key: 'core', amount: 1 }, { key: 'core', amount: 2 }, { key: 'supreme', amount: 1 },
+];
+const berlinDay = (ms) => new Date(ms).toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' });
+
+async function dailyState(uuid) {
+  const c = (await getJson(`daily/${uuid}.json`)) || { last: null, streak: 0, total: 0 };
+  const today = berlinDay(Date.now());
+  const yesterday = berlinDay(Date.now() - 86400000);
+  const claimedToday = c.last === today;
+  const alive = claimedToday || c.last === yesterday;
+  const streak = alive ? c.streak : 0;
+  const nextIndex = claimedToday ? (streak - 1) % 7 : streak % 7;
+  return { c, today, claimedToday, streak, nextIndex };
+}
+
 export default async function handler(req, res) {
   cors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
@@ -94,6 +112,43 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=120');
     const fresh = o && Date.now() - o.updatedAt < 15 * 60 * 1000;
     return res.json({ names: fresh ? o.names : [], updatedAt: o ? o.updatedAt : null });
+  }
+
+  if (action === 'discord' && req.method === 'GET') {
+    let out = { members: null, online: null };
+    try {
+      const r = await fetch('https://discord.com/api/v9/invites/AfTVp4f88?with_counts=true');
+      const d = await r.json();
+      out = { members: d.approximate_member_count ?? null, online: d.approximate_presence_count ?? null };
+    } catch { /* keep nulls */ }
+    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=900');
+    return res.json(out);
+  }
+
+  if (action === 'daily' && req.method === 'GET') {
+    const t = await auth(req);
+    if (!t) return res.status(401).json({ error: 'auth' });
+    const st = await dailyState(t.uuid);
+    const rw = (await getJson(`rewards/${t.uuid}.json`)) || { items: [] };
+    res.setHeader('Cache-Control', 'no-store');
+    return res.json({ rewards: DAILY, claimedToday: st.claimedToday, streak: st.streak, nextIndex: st.nextIndex, total: st.c.total || 0, undelivered: rw.items.filter((i) => !i.delivered).length });
+  }
+
+  if (action === 'daily' && req.method === 'POST') {
+    const t = await auth(req);
+    if (!t) return res.status(401).json({ error: 'auth' });
+    const st = await dailyState(t.uuid);
+    if (st.claimedToday) return res.status(409).json({ error: 'claimed', streak: st.streak });
+    const streak = st.streak + 1;
+    const reward = DAILY[(streak - 1) % 7];
+    await putJson(`daily/${t.uuid}.json`, { last: st.today, streak, total: (st.c.total || 0) + 1 });
+    const rw = (await getJson(`rewards/${t.uuid}.json`)) || { items: [] };
+    const item = { id: crypto.randomBytes(4).toString('hex'), key: reward.key, amount: reward.amount, reason: `daily-${streak}`, createdAt: Date.now(), delivered: false };
+    rw.items = [item, ...rw.items].slice(0, 40);
+    await putJson(`rewards/${t.uuid}.json`, rw);
+    const idx = (await getJson('rewards/pending.json')) || { uuids: [] };
+    if (!idx.uuids.includes(t.uuid)) { idx.uuids.push(t.uuid); await putJson('rewards/pending.json', idx); }
+    return res.json({ ok: true, streak, reward, nextIndex: (streak - 1) % 7 });
   }
 
   if (action === 'tickets' && req.method === 'GET') {

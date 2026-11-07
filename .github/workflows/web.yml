@@ -18,11 +18,11 @@ jobs:
         with:
           node-version: 22
       - name: Build web app
-        run: BASE=/Chickensmp-App bash scripts/build-web.sh
-      - name: Publish to gh-pages
+        run: bash scripts/build-web.sh
+      - name: Publish to web branch (served at store.chickensmp.net)
         working-directory: build/dist
         run: |
-          git init -q -b gh-pages
+          git init -q -b web
           git add -A
           git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Web app ${{ github.sha }}"
-          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" gh-pages
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" web

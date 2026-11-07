@@ -63,6 +63,8 @@ jobs:
             if (u.includes('action=me')) body = me;
             else if (u.includes('action=leaderboard')) body = lb;
             else if (u.includes('action=online')) body = { names: ['Fuzed_d', 'Carbon2834', 'ItzPinguTime'] };
+            else if (u.includes('action=daily')) body = { rewards: [{ key: 'basic', amount: 1 }, { key: 'basic', amount: 2 }, { key: 'plus', amount: 1 }, { key: 'plus', amount: 2 }, { key: 'core', amount: 1 }, { key: 'core', amount: 2 }, { key: 'supreme', amount: 1 }], claimedToday: false, streak: 3, nextIndex: 3, total: 9, undelivered: 1 };
+            else if (u.includes('action=discord')) body = { members: 412, online: 57 };
             else if (u.includes('action=tickets')) body = { tickets: [{ id: 'A1B2C3', category: 'bug', subject: 'Chest verschwindet', createdAt: now - 3600000, delivered: true }] };
             route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
           });
