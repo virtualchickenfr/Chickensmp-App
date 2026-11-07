@@ -13,6 +13,12 @@ export function currentBuild() {
   return Number((cfg.android && cfg.android.versionCode) || 0);
 }
 
+// Native runtime of this APK. New code arrives over the air; a new APK is only needed when this number changes.
+export function currentRuntime() {
+  const cfg = Constants.expoConfig || Constants.manifest || {};
+  return Number(cfg.runtimeVersion || 1);
+}
+
 export default function Updater({ t, Btn }) {
   const [update, setUpdate] = useState(null);
   const dismissed = useRef(0);
@@ -27,7 +33,9 @@ export default function Updater({ t, Btn }) {
       const m = /^v1\.0\.(\d+)$/.exec(d.tag_name || '');
       const latest = m ? Number(m[1]) : 0;
       const asset = (d.assets || []).find((a) => a.name === 'ChickenSMP.apk');
-      if (latest > currentBuild() && asset && latest !== dismissed.current) {
+      const rt = /runtime:\s*(\d+)/i.exec(d.body || '');
+      const latestRuntime = rt ? Number(rt[1]) : 0;
+      if (latestRuntime > currentRuntime() && latest > currentBuild() && asset && latest !== dismissed.current) {
         setUpdate({ build: latest, version: d.tag_name.slice(1), url: asset.browser_download_url, sizeMb: Math.round(asset.size / 1e6) });
       }
     } catch (e) { /* offline: try again later */ }

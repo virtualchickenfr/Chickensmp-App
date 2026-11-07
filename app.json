@@ -32,6 +32,36 @@
       "themeColor": "#141414",
       "backgroundColor": "#141414",
       "favicon": "./assets/icon.png"
-    }
+    },
+    "runtimeVersion": "2",
+    "updates": {
+      "url": "https://store.chickensmp.net/api/ota",
+      "enabled": true,
+      "checkAutomatically": "NEVER",
+      "fallbackToCacheTimeout": 0
+    },
+    "plugins": [
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "ServerStatus",
+              "label": "ChickenSMP Server",
+              "description": "Serverstatus und Spieler online",
+              "minWidth": "180dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 3,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "220dp",
+              "resizeMode": "horizontal|vertical",
+              "previewImage": "./assets/widget-preview.png",
+              "updatePeriodMinutes": 30
+            }
+          ]
+        }
+      ]
+    ]
   }
 }

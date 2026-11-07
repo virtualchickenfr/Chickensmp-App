@@ -27,10 +27,10 @@ jobs:
       - name: Create Expo project and add app code
         run: |
           npx --yes create-expo-app@latest build --template blank --yes
-          cp -r App.js app.json src assets build/
+          cp -r App.js index.js app.json src assets build/
           cd build
           node -e "const f='app.json';const j=require('./'+f);j.expo.android.versionCode=Number(process.env.RUN);j.expo.version='1.0.'+process.env.RUN;require('fs').writeFileSync(f,JSON.stringify(j,null,2))"
-          npx expo install expo-constants expo-clipboard expo-status-bar expo-font @expo/vector-icons @expo-google-fonts/poppins @react-native-async-storage/async-storage react-native-safe-area-context
+          npx expo install expo-updates react-native-android-widget expo-constants expo-clipboard expo-status-bar expo-font @expo/vector-icons @expo-google-fonts/poppins @react-native-async-storage/async-storage react-native-safe-area-context
         env:
           RUN: ${{ github.run_number }}
 
@@ -43,6 +43,20 @@ jobs:
       - name: Build release APK
         working-directory: build/android
         run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
+
+      - name: Publish over-the-air update
+        working-directory: build
+        run: |
+          RT=$(node -p "require('./app.json').expo.runtimeVersion")
+          npx expo export --platform android --output-dir ota
+          npx expo config --type public --json > ota-config.json
+          node ../scripts/ota-manifest.js ota "https://raw.githubusercontent.com/${{ github.repository }}/ota" "$RT" ota-config.json
+          cd ota
+          git init -q -b ota
+          git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "OTA ${{ github.sha }} (runtime $RT)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ota
+          echo "RUNTIME=$RT" >> $GITHUB_ENV
 
       - name: Rename APK
         run: cp build/android/app/build/outputs/apk/release/app-release.apk ChickenSMP.apk
@@ -60,5 +74,6 @@ jobs:
           make_latest: true
           files: ChickenSMP.apk
           body: |
+            runtime: ${{ env.RUNTIME }}
             Android-App für ChickenSMP. Lade **ChickenSMP.apk** aufs Handy und installiere sie.
             Direkter Link zur neuesten Version: https://github.com/${{ github.repository }}/releases/latest/download/ChickenSMP.apk

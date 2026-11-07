@@ -7,7 +7,7 @@ npx --yes create-expo-app@latest build --template blank --yes
 cp -r App.js app.json src assets build/
 cd build
 if [ -n "$BASE" ]; then BASE="$BASE" node -e 'const f="app.json",j=require("./"+f);j.expo.experiments={baseUrl:process.env.BASE};require("fs").writeFileSync(f,JSON.stringify(j,null,2))'; fi
-npx expo install expo-constants expo-clipboard expo-status-bar expo-font @expo/vector-icons @expo-google-fonts/poppins @react-native-async-storage/async-storage react-native-safe-area-context react-dom react-native-web @expo/metro-runtime
+npx expo install expo-updates react-native-android-widget expo-constants expo-clipboard expo-status-bar expo-font @expo/vector-icons @expo-google-fonts/poppins @react-native-async-storage/async-storage react-native-safe-area-context react-dom react-native-web @expo/metro-runtime
 npx expo export --platform web --output-dir dist
 cd dist
 cp ../assets/apple-touch-icon.png ../assets/icon-192.png ../assets/icon-512.png .

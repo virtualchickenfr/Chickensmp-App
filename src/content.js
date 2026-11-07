@@ -26,6 +26,7 @@ export const C = {
 };
 
 const EN = {
+  otaTitle: 'Updating…', otaText: 'Getting the newest version of the app. One moment.',
   onlineList: 'Online now', back: 'Back', yourRank: 'Your rank', rankPlayer: 'Player', prefix: 'Prefix', rankUpsell: 'Get a rank to stand out and unlock perks like more homes and /craft.', seeRanks: 'See ranks',
   badges: 'Badges', statsTitle: 'Stats', bd_first: 'First steps', bd_regular: 'Regular', bd_veteran: 'Veteran', bd_legend: 'Legend', bd_fighter: 'Fighter', bd_hunter: 'Mob hunter', bd_walker: 'Wanderer', bd_jumper: 'Bunny', bd_survivor: 'Untouchable', bd_supporter: 'Supporter',
   tkCard: 'Open a ticket', tkCardSub: 'Help, reports, purchases – straight to the team', tkMyTickets: 'My tickets / new ticket',
@@ -91,6 +92,7 @@ const EN = {
 };
 
 const DE = {
+  otaTitle: 'Update läuft…', otaText: 'Die App holt sich die neueste Version. Einen Moment.',
   onlineList: 'Gerade online', back: 'Zurück', yourRank: 'Dein Rang', rankPlayer: 'Spieler', prefix: 'Prefix', rankUpsell: 'Hol dir einen Rang, um aufzufallen und Vorteile wie mehr Homes und /craft freizuschalten.', seeRanks: 'Ränge ansehen',
   badges: 'Abzeichen', statsTitle: 'Stats', bd_first: 'Erste Schritte', bd_regular: 'Stammgast', bd_veteran: 'Veteran', bd_legend: 'Legende', bd_fighter: 'Kämpfer', bd_hunter: 'Monsterjäger', bd_walker: 'Wanderer', bd_jumper: 'Springmaus', bd_survivor: 'Unbesiegt', bd_supporter: 'Unterstützer',
   tkCard: 'Ticket erstellen', tkCardSub: 'Hilfe, Meldungen, Käufe – direkt ans Team', tkMyTickets: 'Meine Tickets / neues Ticket',

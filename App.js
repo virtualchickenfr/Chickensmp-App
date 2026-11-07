@@ -17,6 +17,7 @@ import {
 } from './src/content';
 import ProfileScreen from './src/Profile';
 import Updater from './src/Updater';
+import OtaUpdate from './src/OtaUpdate';
 import TicketScreen from './src/Tickets';
 import { API } from './src/Profile';
 
@@ -682,6 +683,7 @@ function Shell() {
         </ScrollView>
         <TabBar tab={tab} setTab={go} />
         <Updater t={t} Btn={Btn} />
+        <OtaUpdate t={t} />
         {toastMsg ? (
           <Animated.View
             pointerEvents="none"
