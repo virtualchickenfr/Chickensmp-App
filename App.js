@@ -17,6 +17,8 @@ import {
 } from './src/content';
 import ProfileScreen from './src/Profile';
 import Updater from './src/Updater';
+import TicketScreen from './src/Tickets';
+import { API } from './src/Profile';
 
 const F = {
   r: 'Poppins_400Regular', m: 'Poppins_500Medium', s: 'Poppins_600SemiBold', b: 'Poppins_700Bold', x: 'Poppins_800ExtraBold',
@@ -209,6 +211,36 @@ function StatusPill() {
   );
 }
 
+function OnlineNow() {
+  const { t } = useApp();
+  const [names, setNames] = useState(null);
+  useEffect(() => {
+    let alive = true;
+    const load = () => fetch(`${API}?action=online`).then((r) => r.json()).then((d) => { if (alive) setNames(d.names || []); }).catch(() => {});
+    load();
+    const id = setInterval(load, 60000);
+    return () => { alive = false; clearInterval(id); };
+  }, []);
+  if (!names || names.length === 0) return null;
+  return (
+    <Glass style={{ padding: 16, marginTop: 14 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+        <View style={[styles.statusDot, { backgroundColor: C.green }]} />
+        <Text style={{ color: '#fff', fontFamily: F.x, fontSize: 16 }}>{t('onlineList').toUpperCase()}</Text>
+        <Text style={{ color: C.muted, fontFamily: F.b, fontSize: 13 }}>{names.length}</Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
+        {names.map((n) => (
+          <View key={n} style={{ alignItems: 'center', width: 64 }}>
+            <Image source={{ uri: `https://mc-heads.net/avatar/${encodeURIComponent(n)}/64` }} style={{ width: 44, height: 44, borderRadius: 10 }} />
+            <Text style={{ color: C.soft, fontFamily: F.m, fontSize: 11, marginTop: 4 }} numberOfLines={1}>{n}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </Glass>
+  );
+}
+
 function HomeScreen({ go }) {
   const { t, live } = useApp();
   const online = live.status.state === 'online' ? String(live.status.players) : live.status.state === 'offline' ? t('offline') : '–';
@@ -239,6 +271,8 @@ function HomeScreen({ go }) {
         <StatusPill />
         <View style={styles.seasonBar} />
       </Glass>
+
+      <OnlineNow />
 
       {cards.map((c) => (
         <Squish key={c.title} onPress={c.onPress} style={{ marginTop: 14 }}>
@@ -428,11 +462,24 @@ function StoreScreen() {
   );
 }
 
-function CommunityScreen() {
+function CommunityScreen({ go }) {
   const { t, live } = useApp();
   const d = live.discord;
   return (
     <View>
+      <Squish onPress={() => go('tickets')} style={{ marginBottom: 14 }}>
+        <Glass style={styles.card} accent="rgba(59,123,255,0.55)">
+          <View style={[styles.cardStripe, { backgroundColor: C.blue }]} />
+          <View style={[styles.cardIcon, { backgroundColor: 'rgba(59,123,255,0.22)' }]}>
+            <Ionicons name="chatbubble-ellipses" size={26} color={C.sky} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.cardTitle}>{t('tkCard').toUpperCase()}</Text>
+            <Text style={[styles.cardSub, { color: C.sky }]}>{t('tkCardSub')}</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={C.muted} />
+        </Glass>
+      </Squish>
       <Glass style={{ padding: 22, alignItems: 'center' }} accent="rgba(88,101,242,0.55)">
         <View style={[styles.cardIcon, { backgroundColor: 'rgba(88,101,242,0.25)', marginBottom: 10 }]}>
           <Ionicons name="logo-discord" size={28} color="#fff" />
@@ -507,7 +554,7 @@ function TabBar({ tab, setTab }) {
   const { t } = useApp();
   const insets = useSafeAreaInsets();
   const [w, setW] = useState(0);
-  const idx = TABS.findIndex((x) => x.id === tab);
+  const idx = Math.max(0, TABS.findIndex((x) => x.id === (tab === 'tickets' ? 'community' : tab)));
   const pos = useRef(new Animated.Value(idx)).current;
   const sx = useRef(new Animated.Value(1)).current;
   const sy = useRef(new Animated.Value(1)).current;
@@ -537,7 +584,7 @@ function TabBar({ tab, setTab }) {
             />
           ) : null}
           {TABS.map((x) => {
-            const on = x.id === tab;
+            const on = x.id === (tab === 'tickets' ? 'community' : tab);
             return (
               <Pressable key={x.id} style={styles.tabItem} onPress={() => setTab(x.id)}>
                 <Ionicons name={on ? x.icon : x.icon + '-outline'} size={22} color={on ? '#fff' : C.muted} />
@@ -628,8 +675,9 @@ function Shell() {
             {tab === 'home' && <HomeScreen go={go} />}
             {tab === 'join' && <JoinScreen />}
             {tab === 'store' && <StoreScreen />}
-            {tab === 'community' && <CommunityScreen />}
-            {tab === 'profile' && <ProfileScreen ui={{ t, lang, toast, Glass, Btn, Segmented, PageHead }} />}
+            {tab === 'community' && <CommunityScreen go={go} />}
+            {tab === 'profile' && <ProfileScreen ui={{ t, lang, toast, Glass, Btn, Segmented, PageHead, go }} />}
+            {tab === 'tickets' && <TicketScreen ui={{ t, lang, toast, Glass, Btn, PageHead }} go={go} />}
           </Animated.View>
         </ScrollView>
         <TabBar tab={tab} setTab={go} />

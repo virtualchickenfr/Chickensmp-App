@@ -13,6 +13,8 @@ function cleanPlayer(p) {
     online: !!p.online,
     bedrock: !!p.bedrock,
     rank: p.rank ? String(p.rank).slice(0, 32) : null,
+    groups: Array.isArray(p.groups) ? p.groups.slice(0, 10).map((g) => String(g).slice(0, 32)) : [],
+    prefix: p.prefix ? String(p.prefix).slice(0, 40) : null,
     balance: p.balance == null ? null : num(p.balance),
     playtime: num(p.playtime),
     deaths: num(p.deaths),

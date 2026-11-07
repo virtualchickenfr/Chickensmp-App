@@ -46,6 +46,11 @@ jobs:
             await p.waitForTimeout(1500);
             await p.screenshot({ path: `../shots/${n}.png`, fullPage: true });
           }
+          await p.getByText('Community', { exact: true }).last().click();
+          await p.waitForTimeout(800);
+          await p.getByText('OPEN A TICKET', { exact: true }).first().click();
+          await p.waitForTimeout(1500);
+          await p.screenshot({ path: '../shots/6-ticket.png', fullPage: true });
           const fs = await import('fs');
           fs.writeFileSync('../shots/errors.txt', errs.join('\n') || 'no errors');
           await b.close();

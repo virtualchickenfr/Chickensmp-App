@@ -26,6 +26,16 @@ export const C = {
 };
 
 const EN = {
+  onlineList: 'Online now', back: 'Back', yourRank: 'Your rank', rankPlayer: 'Player', prefix: 'Prefix', rankUpsell: 'Get a rank to stand out and unlock perks like more homes and /craft.', seeRanks: 'See ranks',
+  badges: 'Badges', statsTitle: 'Stats', bd_first: 'First steps', bd_regular: 'Regular', bd_veteran: 'Veteran', bd_legend: 'Legend', bd_fighter: 'Fighter', bd_hunter: 'Mob hunter', bd_walker: 'Wanderer', bd_jumper: 'Bunny', bd_survivor: 'Untouchable', bd_supporter: 'Supporter',
+  tkCard: 'Open a ticket', tkCardSub: 'Help, reports, purchases – straight to the team', tkMyTickets: 'My tickets / new ticket',
+  tkTitle: 'Ticket', tkIntro: 'Your ticket goes straight to the team on Discord. We answer there.', tkLoginFirst: 'Log in with your Minecraft account first (Profile tab).', tkToProfile: 'Go to profile',
+  tkCategory: 'Category', tkCat_support: 'Help', tkCat_bug: 'Bug', tkCat_report: 'Report', tkCat_purchase: 'Purchase', tkCat_appeal: 'Appeal', tkCat_other: 'Other',
+  tkTarget: 'Player to report', tkSubject: 'Subject', tkSubjectPh: 'Short summary', tkMessage: 'Message', tkMessagePh: 'Describe what happened, where and when…',
+  tkDiscord: 'Your Discord name (so we can reply)', tkDiscordPh: 'e.g. steve123', tkSend: 'Send ticket', tkHint: 'Max. 3 tickets per 30 minutes. Your Minecraft name is attached automatically.',
+  tkSubjectShort: 'Please enter a subject.', tkMessageShort: 'Please describe your issue (at least 10 characters).', tkLimit: 'Too many tickets. Try again in a bit.', tkError: 'Could not send the ticket.',
+  tkSent: 'Ticket sent!', tkSentText: 'The team got your ticket on Discord and will get back to you there.', tkSentQueued: 'Your ticket is saved. The team will see it as soon as Discord is connected.', tkSentToast: 'Ticket sent!', tkAnother: 'New ticket',
+  tkMine: 'My tickets', tkStatusSent: 'At the team', tkStatusQueued: 'Saved',
   updTitle: 'Update available', updText: 'Version {v} of the ChickenSMP app is ready.', updHow: 'Tap Update, open the download ({mb} MB) and confirm Install. Your login stays.', updNow: 'Update now', updLater: 'Later',
   tabProfile: 'Profile', profileTitle: 'Your profile', profileIntro: 'Log in with your Minecraft account to see your stats.',
   l1: 'Join chickensmp.net in Minecraft.', l2: 'Type /app in the chat.', l3: 'Enter the code shown here.',
@@ -81,6 +91,16 @@ const EN = {
 };
 
 const DE = {
+  onlineList: 'Gerade online', back: 'Zurück', yourRank: 'Dein Rang', rankPlayer: 'Spieler', prefix: 'Prefix', rankUpsell: 'Hol dir einen Rang, um aufzufallen und Vorteile wie mehr Homes und /craft freizuschalten.', seeRanks: 'Ränge ansehen',
+  badges: 'Abzeichen', statsTitle: 'Stats', bd_first: 'Erste Schritte', bd_regular: 'Stammgast', bd_veteran: 'Veteran', bd_legend: 'Legende', bd_fighter: 'Kämpfer', bd_hunter: 'Monsterjäger', bd_walker: 'Wanderer', bd_jumper: 'Springmaus', bd_survivor: 'Unbesiegt', bd_supporter: 'Unterstützer',
+  tkCard: 'Ticket erstellen', tkCardSub: 'Hilfe, Meldungen, Käufe – direkt ans Team', tkMyTickets: 'Meine Tickets / neues Ticket',
+  tkTitle: 'Ticket', tkIntro: 'Dein Ticket geht direkt an das Team auf Discord. Wir antworten dir dort.', tkLoginFirst: 'Melde dich zuerst mit deinem Minecraft-Account an (Tab Profil).', tkToProfile: 'Zum Profil',
+  tkCategory: 'Kategorie', tkCat_support: 'Hilfe', tkCat_bug: 'Bug', tkCat_report: 'Melden', tkCat_purchase: 'Kauf', tkCat_appeal: 'Entbannung', tkCat_other: 'Sonstiges',
+  tkTarget: 'Spieler, den du meldest', tkSubject: 'Betreff', tkSubjectPh: 'Kurze Zusammenfassung', tkMessage: 'Nachricht', tkMessagePh: 'Beschreib, was passiert ist, wo und wann…',
+  tkDiscord: 'Dein Discord-Name (damit wir antworten können)', tkDiscordPh: 'z. B. steve123', tkSend: 'Ticket senden', tkHint: 'Max. 3 Tickets pro 30 Minuten. Dein Minecraft-Name wird automatisch mitgeschickt.',
+  tkSubjectShort: 'Bitte gib einen Betreff ein.', tkMessageShort: 'Bitte beschreib dein Anliegen (mind. 10 Zeichen).', tkLimit: 'Zu viele Tickets. Versuch es gleich nochmal.', tkError: 'Ticket konnte nicht gesendet werden.',
+  tkSent: 'Ticket gesendet!', tkSentText: 'Das Team hat dein Ticket auf Discord bekommen und meldet sich dort bei dir.', tkSentQueued: 'Dein Ticket ist gespeichert. Das Team sieht es, sobald Discord verbunden ist.', tkSentToast: 'Ticket gesendet!', tkAnother: 'Neues Ticket',
+  tkMine: 'Meine Tickets', tkStatusSent: 'Beim Team', tkStatusQueued: 'Gespeichert',
   updTitle: 'Update verfügbar', updText: 'Version {v} der ChickenSMP-App ist da.', updHow: 'Tippe auf Aktualisieren, öffne den Download ({mb} MB) und bestätige Installieren. Deine Anmeldung bleibt.', updNow: 'Jetzt aktualisieren', updLater: 'Später',
   tabProfile: 'Profil', profileTitle: 'Dein Profil', profileIntro: 'Melde dich mit deinem Minecraft-Account an und sieh deine Stats.',
   l1: 'Join chickensmp.net in Minecraft.', l2: 'Tippe /app in den Chat.', l3: 'Gib den angezeigten Code hier ein.',

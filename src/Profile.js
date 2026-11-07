@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
-import { C, DISCORD } from './content';
+import { C, DISCORD, EXTRAS, RANKS } from './content';
 
 export const API = 'https://store.chickensmp.net/api/app';
 const TOKEN_KEY = 'csmp-token';
@@ -26,8 +26,31 @@ function ago(ms, t) {
   return `${Math.round(h / 24)} d`;
 }
 
+function badgesFor(s) {
+  const h = (s.playtime || 0) / 72000;
+  const km = (s.walkCm || 0) / 100000;
+  const supporter = /^(plus|core|supreme|booster|media)$/i.test(s.rank || '');
+  return [
+    { id: 'first', icon: 'footsteps', color: C.green, cur: s.joins || 0, goal: 1 },
+    { id: 'regular', icon: 'time', color: C.sky, cur: h, goal: 10 },
+    { id: 'veteran', icon: 'shield', color: C.purple, cur: h, goal: 50 },
+    { id: 'legend', icon: 'trophy', color: C.gold, cur: h, goal: 200 },
+    { id: 'fighter', icon: 'flash', color: C.red, cur: s.playerKills || 0, goal: 10 },
+    { id: 'hunter', icon: 'bug', color: C.green, cur: s.mobKills || 0, goal: 500 },
+    { id: 'walker', icon: 'walk', color: C.gold, cur: km, goal: 100 },
+    { id: 'jumper', icon: 'arrow-up-circle', color: C.sky, cur: s.jumps || 0, goal: 10000 },
+    { id: 'survivor', icon: 'heart', color: C.pink, cur: s.deaths === 0 ? h : 0, goal: 5 },
+    { id: 'supporter', icon: 'star', color: C.gold, cur: supporter ? 1 : 0, goal: 1 },
+  ].map((b) => ({ ...b, done: b.cur >= b.goal, pct: Math.min(1, b.cur / b.goal) }));
+}
+
+function rankInfo(rank) {
+  const r = String(rank || '').toLowerCase();
+  return [...RANKS, ...EXTRAS].find((x) => x.name.toLowerCase() === r) || null;
+}
+
 export default function ProfileScreen({ ui }) {
-  const { t, lang, toast, Glass, Btn, Segmented, PageHead } = ui;
+  const { t, lang, toast, Glass, Btn, Segmented, PageHead, go } = ui;
   const [token, setToken] = useState(null);
   const [ready, setReady] = useState(false);
   const [me, setMe] = useState(null);
@@ -146,8 +169,65 @@ export default function ProfileScreen({ ui }) {
             {s ? <Text style={st.since}>{t('memberSince')} {fmtDate(s.firstPlayed, lang)}</Text> : null}
           </Glass>
 
+          {s ? (() => {
+            const info = rankInfo(s.rank);
+            const color = info ? info.color : C.muted;
+            const others = (s.groups || []).filter((g) => g.toLowerCase() !== String(s.rank || '').toLowerCase() && g.toLowerCase() !== 'default');
+            return (
+              <Glass style={{ padding: 18, marginTop: 14 }} accent={info ? color + '99' : null}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
+                  <View style={[st.rankIcon, { backgroundColor: color + '2a' }]}><Ionicons name={info ? 'diamond' : 'person'} size={26} color={color} /></View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={st.label}>{t('yourRank').toUpperCase()}</Text>
+                    <Text style={[st.rankName, { color: info ? color : '#fff' }]}>{info ? info.tag : (s.rank && s.rank.toLowerCase() !== 'default' ? s.rank.toUpperCase() : t('rankPlayer').toUpperCase())}</Text>
+                    {s.prefix ? <Text style={st.prefix}>{t('prefix')}: {s.prefix}</Text> : null}
+                  </View>
+                </View>
+                {others.length ? (
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 12 }}>
+                    {others.map((g) => <View key={g} style={[st.pill, { backgroundColor: 'rgba(255,255,255,0.08)' }]}><Text style={[st.pillText, { color: C.soft }]}>{g.toUpperCase()}</Text></View>)}
+                  </View>
+                ) : null}
+                {info ? (
+                  <View style={st.perkBox}>
+                    <Text style={st.label}>{t('perks').toUpperCase()}</Text>
+                    {info.perks.map((p) => (
+                      <View key={p} style={{ flexDirection: 'row', gap: 10, alignItems: 'center', marginTop: 4 }}>
+                        <Ionicons name="checkmark-circle" size={16} color={color} />
+                        <Text style={st.perk}>{t(p)}</Text>
+                      </View>
+                    ))}
+                  </View>
+                ) : (
+                  <View style={{ marginTop: 14 }}>
+                    <Text style={[st.hint, { marginTop: 0, marginBottom: 12 }]}>{t('rankUpsell')}</Text>
+                    <Btn small icon="cart" label={t('seeRanks')} onPress={() => go && go('store')} />
+                  </View>
+                )}
+              </Glass>
+            );
+          })() : null}
+
           {s ? (
-            <View style={st.grid}>
+            <>
+              <Text style={st.section}>{t('badges').toUpperCase()}</Text>
+              <View style={st.grid}>
+                {badgesFor(s).map((b) => (
+                  <Glass key={b.id} style={[st.stat, !b.done && { opacity: 0.55 }]}>
+                    <View style={[st.statIcon, { backgroundColor: b.done ? b.color + '30' : 'rgba(255,255,255,0.06)' }]}>
+                      <Ionicons name={b.done ? b.icon : 'lock-closed'} size={18} color={b.done ? b.color : C.muted} />
+                    </View>
+                    <Text style={st.badgeName} numberOfLines={1} adjustsFontSizeToFit>{t('bd_' + b.id)}</Text>
+                    <View style={st.bar}><View style={[st.barFill, { width: `${Math.round(b.pct * 100)}%`, backgroundColor: b.color }]} /></View>
+                  </Glass>
+                ))}
+              </View>
+              <Text style={st.section}>{t('statsTitle').toUpperCase()}</Text>
+            </>
+          ) : null}
+
+          {s ? (
+            <View style={[st.grid, { marginTop: 0 }]}>
               {items.map((it) => (
                 <Glass key={it.label} style={st.stat}>
                   <View style={[st.statIcon, { backgroundColor: it.color + '26' }]}><Ionicons name={it.icon} size={18} color={it.color} /></View>
@@ -182,7 +262,8 @@ export default function ProfileScreen({ ui }) {
       </Glass>
 
       {token ? (
-        <View style={{ marginTop: 18 }}>
+        <View style={{ marginTop: 18, gap: 10 }}>
+          <Btn icon="chatbubble-ellipses" label={t('tkMyTickets')} onPress={() => go && go('tickets')} />
           <Btn kind="ghost" icon="log-out-outline" label={t('logout')} onPress={logout} />
         </View>
       ) : (
@@ -215,6 +296,15 @@ const st = StyleSheet.create({
   statValue: { color: '#fff', fontFamily: F.x, fontSize: 16 },
   statLabel: { color: C.muted, fontFamily: F.b, fontSize: 9.5, letterSpacing: 0.3, marginTop: 1 },
   section: { color: '#fff', fontFamily: F.x, fontSize: 22, textAlign: 'center', marginTop: 26, marginBottom: 12 },
+  rankIcon: { width: 54, height: 54, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  label: { color: C.muted, fontFamily: F.b, fontSize: 10.5, letterSpacing: 0.8 },
+  rankName: { fontFamily: F.x, fontSize: 24, marginTop: -2 },
+  prefix: { color: C.soft, fontFamily: F.m, fontSize: 12.5 },
+  perkBox: { marginTop: 14, padding: 14, borderRadius: 14, backgroundColor: 'rgba(20,20,20,0.45)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' },
+  perk: { color: C.soft, fontFamily: F.m, fontSize: 14 },
+  badgeName: { color: '#fff', fontFamily: F.b, fontSize: 12 },
+  bar: { alignSelf: 'stretch', height: 5, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.08)', marginTop: 8, marginHorizontal: 6, overflow: 'hidden' },
+  barFill: { height: '100%', borderRadius: 3 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12, marginHorizontal: 6 },
   rank: { width: 22, color: C.muted, fontFamily: F.x, fontSize: 15, textAlign: 'center' },
   head: { width: 30, height: 30, borderRadius: 7 },

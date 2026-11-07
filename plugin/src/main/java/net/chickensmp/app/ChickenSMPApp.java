@@ -196,7 +196,12 @@ public final class ChickenSMPApp extends JavaPlugin implements Listener {
         o.addProperty("firstPlayed", p.getFirstPlayed());
         o.addProperty("lastSeen", online ? System.currentTimeMillis() : p.getLastPlayed());
         String rank = vaultRank(p);
+        if (rank == null) rank = luckPermsRank(p);
         if (rank != null) o.addProperty("rank", rank);
+        JsonArray groups = vaultGroups(p);
+        if (groups != null) o.add("groups", groups);
+        String prefix = vaultPrefix(p);
+        if (prefix != null && !prefix.isBlank()) o.addProperty("prefix", prefix);
         Double bal = vaultBalance(p);
         if (bal != null) o.addProperty("balance", bal);
         return o;
@@ -222,9 +227,57 @@ public final class ChickenSMPApp extends JavaPlugin implements Listener {
         Object perms = service("net.milkbowl.vault.permission.Permission");
         if (perms == null) return null;
         try {
-            Method m = perms.getClass().getMethod("getPrimaryGroup", String.class, OfflinePlayer.class);
+            Method m = Class.forName("net.milkbowl.vault.permission.Permission").getMethod("getPrimaryGroup", String.class, OfflinePlayer.class);
             Object r = m.invoke(perms, null, p);
             return r == null ? null : r.toString();
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    private JsonArray vaultGroups(OfflinePlayer p) {
+        Object perms = service("net.milkbowl.vault.permission.Permission");
+        if (perms == null) return null;
+        try {
+            Method m = Class.forName("net.milkbowl.vault.permission.Permission").getMethod("getPlayerGroups", String.class, OfflinePlayer.class);
+            Object r = m.invoke(perms, null, p);
+            if (!(r instanceof String[] arr)) return null;
+            JsonArray out = new JsonArray();
+            for (String g : arr) if (g != null && out.size() < 10) out.add(g);
+            return out;
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    private String vaultPrefix(OfflinePlayer p) {
+        Object chat = service("net.milkbowl.vault.chat.Chat");
+        if (chat == null) return null;
+        try {
+            Method m = Class.forName("net.milkbowl.vault.chat.Chat").getMethod("getPlayerPrefix", String.class, OfflinePlayer.class);
+            Object r = m.invoke(chat, null, p);
+            if (r == null) return null;
+            // strip legacy colour codes (&a, §a, &#rrggbb) and MiniMessage tags
+            return r.toString()
+                    .replaceAll("(?i)[&§]#[0-9a-f]{6}", "")
+                    .replaceAll("(?i)[&§][0-9a-fk-orx]", "")
+                    .replaceAll("<[^>]{1,40}>", "")
+                    .replace("[", "").replace("]", "")
+                    .trim();
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    private String luckPermsRank(OfflinePlayer p) {
+        try {
+            Class<?> prov = Class.forName("net.luckperms.api.LuckPermsProvider");
+            Object lp = prov.getMethod("get").invoke(null);
+            Object um = Class.forName("net.luckperms.api.LuckPerms").getMethod("getUserManager").invoke(lp);
+            Object user = Class.forName("net.luckperms.api.model.user.UserManager").getMethod("getUser", UUID.class).invoke(um, p.getUniqueId());
+            if (user == null) return null;
+            Object g = Class.forName("net.luckperms.api.model.user.User").getMethod("getPrimaryGroup").invoke(user);
+            return g == null ? null : g.toString();
         } catch (Throwable t) {
             return null;
         }
@@ -234,7 +287,7 @@ public final class ChickenSMPApp extends JavaPlugin implements Listener {
         Object eco = service("net.milkbowl.vault.economy.Economy");
         if (eco == null) return null;
         try {
-            Method m = eco.getClass().getMethod("getBalance", OfflinePlayer.class);
+            Method m = Class.forName("net.milkbowl.vault.economy.Economy").getMethod("getBalance", OfflinePlayer.class);
             Object r = m.invoke(eco, p);
             return r instanceof Number n ? n.doubleValue() : null;
         } catch (Throwable t) {
