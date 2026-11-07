@@ -51,6 +51,32 @@ jobs:
           await p.getByText('OPEN A TICKET', { exact: true }).first().click();
           await p.waitForTimeout(1500);
           await p.screenshot({ path: '../shots/6-ticket.png', fullPage: true });
+          // logged-in views with mocked backend data
+          const ctx2 = await b.newContext({ ...devices['Pixel 7'] });
+          await ctx2.addInitScript(() => { localStorage.setItem('csmp-token', 'a'.repeat(64)); localStorage.setItem('csmp-lang', 'de'); });
+          await ctx2.route('**/api/app?action=*', (route) => {
+            const u = route.request().url();
+            const now = Date.now();
+            const me = { uuid: '069a79f4-44e9-4726-a5be-fca90e38aaf5', name: 'Fuzed_d', stats: { uuid: '069a79f4-44e9-4726-a5be-fca90e38aaf5', name: 'Fuzed_d', online: true, rank: 'Core', groups: ['core', 'builder'], prefix: 'CORE', playtime: 20 * 3600 * 37, deaths: 12, playerKills: 31, mobKills: 842, jumps: 15400, walkCm: 21300000, joins: 88, firstPlayed: now - 86400000 * 40, lastSeen: now } };
+            const lb = { players: 3, playtime: [{ name: 'Fuzed_d', uuid: me.uuid, value: 20 * 3600 * 37 }, { name: 'Carbon2834', uuid: '853c80ef-3c37-49fd-aa49-938b674adae6', value: 20 * 3600 * 21 }], playerKills: [], mobKills: [] };
+            let body = {};
+            if (u.includes('action=me')) body = me;
+            else if (u.includes('action=leaderboard')) body = lb;
+            else if (u.includes('action=online')) body = { names: ['Fuzed_d', 'Carbon2834', 'ItzPinguTime'] };
+            else if (u.includes('action=tickets')) body = { tickets: [{ id: 'A1B2C3', category: 'bug', subject: 'Chest verschwindet', createdAt: now - 3600000, delivered: true }] };
+            route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+          });
+          const p2 = await ctx2.newPage();
+          p2.on('pageerror', e => errs.push('LOGGED-IN: ' + e.message));
+          await p2.goto('http://localhost:4000');
+          await p2.waitForTimeout(3500);
+          await p2.screenshot({ path: '../shots/7-home-in.png', fullPage: true });
+          await p2.getByText('Profil', { exact: true }).last().click();
+          await p2.waitForTimeout(2500);
+          await p2.screenshot({ path: '../shots/8-profile-in.png', fullPage: true });
+          await p2.getByText('Meine Tickets / neues Ticket', { exact: true }).first().click();
+          await p2.waitForTimeout(2000);
+          await p2.screenshot({ path: '../shots/9-ticket-in.png', fullPage: true });
           const fs = await import('fs');
           fs.writeFileSync('../shots/errors.txt', errs.join('\n') || 'no errors');
           await b.close();
