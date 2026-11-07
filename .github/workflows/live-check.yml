@@ -1,0 +1,51 @@
+name: Live site check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Screenshots of store.chickensmp.net
+        run: |
+          mkdir -p shots && cd shots
+          B=https://store.chickensmp.net
+          {
+            curl -s -o /dev/null -w "index %{http_code} %{content_type}\n" $B/
+            curl -s -o /dev/null -w "deeplink %{http_code} %{content_type}\n" $B/profile
+            curl -s -o /dev/null -w "manifest %{http_code} %{content_type}\n" $B/manifest.json
+            echo "discord: $(curl -s "$B/api/app?action=discord")"
+            echo "daily(no auth): $(curl -s -X POST "$B/api/app?action=daily")"
+            curl -s -o /dev/null -w "ota %{http_code}\n" -H 'expo-runtime-version: 2' -H 'expo-platform: android' $B/api/ota
+          } > checks.txt
+          npm init -y >/dev/null && npm i --no-save playwright >/dev/null 2>&1 && npx playwright install --with-deps chromium >/dev/null 2>&1
+          cat > s.mjs <<'JS'
+          import { chromium, devices } from 'playwright';
+          import fs from 'fs';
+          const b = await chromium.launch();
+          const errs = [];
+          for (const [name, opts] of [['desktop', { viewport: { width: 1440, height: 900 } }], ['mobile', devices['iPhone 13']]]) {
+            const p = await b.newPage(opts);
+            p.on('pageerror', e => errs.push(name + ': ' + e.message));
+            await p.goto('https://store.chickensmp.net', { waitUntil: 'networkidle' });
+            await p.waitForTimeout(3000);
+            await p.screenshot({ path: `live-${name}.png` });
+          }
+          fs.writeFileSync('live-errors.txt', errs.join('\n') || 'no errors');
+          await b.close();
+          JS
+          node s.mjs
+          rm -rf node_modules package*.json s.mjs
+      - name: Push results
+        run: |
+          cd shots
+          git init -q -b live-check && git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "live check"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" live-check
