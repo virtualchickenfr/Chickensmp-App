@@ -47,9 +47,18 @@ function useLiveData() {
       setStatus({ state: 'offline', players: null, max: null });
     }
     try {
-      const r = await fetch(`${API}?action=discord`);
-      const d = await r.json();
-      setDiscord({ members: d.members ?? null, online: d.online ?? null });
+      let members = null; let online = null;
+      try {
+        const r = await fetch(DISCORD_INVITE_API);
+        const d = await r.json();
+        members = d.approximate_member_count ?? null; online = d.approximate_presence_count ?? null;
+      } catch (e) { /* blocked (e.g. browser) – try our backend */ }
+      if (members == null) {
+        const r2 = await fetch(`${API}?action=discord`);
+        const d2 = await r2.json();
+        members = d2.members ?? null; online = d2.online ?? null;
+      }
+      setDiscord({ members, online });
     } catch (e) { /* keep last */ }
   }, []);
   useEffect(() => {
@@ -829,7 +838,7 @@ const styles = StyleSheet.create({
   roleText: { fontFamily: F.x, fontSize: 10.5 },
   memberText: { color: C.soft, fontFamily: F.r, fontSize: 12.5, textAlign: 'center', marginTop: 8, lineHeight: 18 },
 
-  tabWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 14 },
+  tabWrap: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 14, zIndex: 20, elevation: 20 },
   tabBar: { padding: 4, borderRadius: 26, backgroundColor: 'rgba(26,26,28,0.985)' },
   tabBlob: {
     position: 'absolute', top: 0, bottom: 0, left: 0, borderRadius: 22, backgroundColor: 'rgba(59,123,255,0.9)',
