@@ -116,12 +116,28 @@ export default async function handler(req, res) {
 
   if (action === 'discord' && req.method === 'GET') {
     let out = { members: null, online: null };
+    const UA = { 'User-Agent': 'DiscordBot (https://store.chickensmp.net, 1.0)', Accept: 'application/json' };
     try {
-      const r = await fetch('https://discord.com/api/v9/invites/AfTVp4f88?with_counts=true');
-      const d = await r.json();
-      out = { members: d.approximate_member_count ?? null, online: d.approximate_presence_count ?? null };
-    } catch { /* keep nulls */ }
-    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=900');
+      const r = await fetch('https://discord.com/api/v10/invites/AfTVp4f88?with_counts=true', { headers: UA });
+      if (r.ok) {
+        const d = await r.json();
+        out = { members: d.approximate_member_count ?? null, online: d.approximate_presence_count ?? null };
+      }
+    } catch { /* blocked */ }
+    if (out.members != null) {
+      putJson('cache/discord.json', { ...out, at: Date.now() }).catch(() => {});
+    } else {
+      // Fallbacks: counts written every few minutes by a GitHub Action, then our last good value
+      try {
+        const r = await fetch(`https://raw.githubusercontent.com/virtualchickenfr/Chickensmp-App/status/discord.json?t=${Date.now()}`);
+        if (r.ok) { const d = await r.json(); if (d.members != null) out = { members: d.members, online: d.online ?? null }; }
+      } catch { /* ignore */ }
+      if (out.members == null) {
+        const c = await getJson('cache/discord.json');
+        if (c && c.members != null) out = { members: c.members, online: c.online ?? null };
+      }
+    }
+    res.setHeader('Cache-Control', out.members != null ? 's-maxage=300, stale-while-revalidate=900' : 'no-store');
     return res.json(out);
   }
 

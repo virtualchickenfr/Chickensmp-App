@@ -1,0 +1,23 @@
+name: discord-status
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Discord counts
+        run: |
+          set -e
+          curl -sf -A 'DiscordBot (https://store.chickensmp.net, 1.0)' 'https://discord.com/api/v10/invites/AfTVp4f88?with_counts=true' -o inv.json
+          node -e 'const d=require("./inv.json");const o={members:d.approximate_member_count??null,online:d.approximate_presence_count??null,at:Date.now()};if(o.members==null)process.exit(1);require("fs").writeFileSync("discord.json",JSON.stringify(o));console.log(o)'
+      - name: Publish to status branch
+        run: |
+          mkdir out && cp discord.json out/ && cd out
+          git init -q -b status
+          git config user.name "status-bot"; git config user.email "status-bot@users.noreply.github.com"
+          git add discord.json && git commit -qm "discord status"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" status
