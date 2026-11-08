@@ -5,15 +5,16 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+env:
+  INVITE: AfTVp4f88
 jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Discord counts
         run: |
-          set -e
-          curl -s -w '\nHTTP %{http_code}\n' -A 'Mozilla/5.0' 'https://discord.com/api/v10/invites/AfTVp4f88?with_counts=true' -o inv.json || true; cat inv.json; echo; curl -s -A 'Mozilla/5.0' 'https://discord.com/api/guilds/1554105933213335552/widget.json'; echo
-          node -e 'const d=require("./inv.json");const o={members:d.approximate_member_count??null,online:d.approximate_presence_count??null,at:Date.now()};if(o.members==null)process.exit(1);require("fs").writeFileSync("discord.json",JSON.stringify(o));console.log(o)'
+          curl -s -A 'DiscordBot (https://store.chickensmp.net, 1.0)' "https://discord.com/api/v10/invites/$INVITE?with_counts=true" -o inv.json
+          node -e 'const d=require("./inv.json");const o={members:d.approximate_member_count??null,online:d.approximate_presence_count??null,at:Date.now()};if(o.members==null){console.log(d);process.exit(1)}require("fs").writeFileSync("discord.json",JSON.stringify(o));console.log(o)'
       - name: Publish to status branch
         run: |
           mkdir out && cp discord.json out/ && cd out
