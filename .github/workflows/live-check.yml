@@ -38,6 +38,14 @@ jobs:
             await p.waitForTimeout(3000);
             await p.screenshot({ path: `live-${name}.png` });
           }
+          const d = await b.newPage({ viewport: { width: 1440, height: 2200 } });
+          d.on('pageerror', e => errs.push('deskfull: ' + e.message));
+          await d.goto('https://store.chickensmp.net', { waitUntil: 'networkidle' });
+          await d.waitForTimeout(3000);
+          await d.screenshot({ path: 'd-home.png' });
+          for (const lab of ['Join', 'Store', 'Community', 'Profile']) {
+            try { await d.getByText(lab, { exact: true }).first().click(); await d.waitForTimeout(2000); await d.screenshot({ path: `d-${lab.toLowerCase()}.png` }); } catch (e) { errs.push('nav ' + lab + ': ' + e.message); }
+          }
           fs.writeFileSync('live-errors.txt', errs.join('\n') || 'no errors');
           await b.close();
           JS
