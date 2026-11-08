@@ -3,7 +3,7 @@ export const BEDROCK_PORT = '25573';
 export const VERSION = '1.21+';
 export const DISCORD = 'https://discord.gg/AfTVp4f88';
 export const DISCORD_INVITE_API = 'https://discord.com/api/v9/invites/AfTVp4f88?with_counts=true';
-export const STATUS_API = 'https://api.mcsrvstat.us/3/' + IP;
+export const STATUS_API = 'https://api.mcsrvstat.us/3/mc.chickensmp.net:25577';
 export const WEBSITE = 'https://store.chickensmp.net';
 
 export const C = {
