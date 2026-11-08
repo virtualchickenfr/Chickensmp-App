@@ -294,12 +294,22 @@ function HomeScreen({ go }) {
 
         <View style={styles.dRow}>
           <View style={{ flex: 1 }}><DailyReward ui={{ t, toast, Glass, Btn }} go={go} /></View>
-          <View style={{ flex: 1 }}><OnlineNow /></View>
+          <View style={{ flex: 1 }}>
+            <Glass style={{ padding: 16, flexDirection: 'row', alignItems: 'center', gap: 14 }} accent="rgba(88,101,242,0.55)">
+              <View style={[styles.cardIcon, { backgroundColor: 'rgba(88,101,242,0.25)' }]}><Ionicons name="logo-discord" size={26} color="#fff" /></View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.cardTitle}>DISCORD</Text>
+                <Text style={[styles.cardSub, { color: C.soft }]}>{live.discord.members ?? '–'} {t('members')} · {live.discord.online ?? '–'} {t('onlineNow')}</Text>
+              </View>
+              <Btn small kind="discord" icon="logo-discord" label={t('joinDiscord')} onPress={() => Linking.openURL(DISCORD)} />
+            </Glass>
+          </View>
         </View>
+        <OnlineNow />
 
         <View style={[styles.dRow, { marginTop: 22 }]}>
           {cards.map((c) => (
-            <Squish key={c.title} onPress={c.onPress} style={{ flex: 1 }}>
+            <View key={c.title} style={{ flex: 1 }}><Squish onPress={c.onPress}>
               <Glass style={styles.dTile}>
                 <View style={[styles.cardStripe, { backgroundColor: c.color, top: undefined, bottom: 26, height: 56 }]} />
                 <View style={[styles.cardIcon, { backgroundColor: c.color + '26', width: 60, height: 60, borderRadius: 18 }]}>
@@ -309,7 +319,7 @@ function HomeScreen({ go }) {
                 <Text style={[styles.cardTitle, { fontSize: 22 }]}>{c.title.toUpperCase()}</Text>
                 <Text style={[styles.cardSub, { color: c.color }]}>{c.sub}</Text>
               </Glass>
-            </Squish>
+            </Squish></View>
           ))}
         </View>
       </View>
@@ -607,7 +617,7 @@ function CommunityScreen({ go }) {
   const team = (
     <View style={styles.teamGrid}>
       {TEAM.map((m) => (
-        <Glass key={m.name} style={[styles.member, desk && { width: '23.5%' }]}>
+        <Glass key={m.name} style={[styles.member, desk && { width: TEAM.length >= 4 ? '23.5%' : '32%' }]}>
           <Image source={{ uri: `https://mc-heads.net/avatar/${m.name}/96` }} style={[styles.avatar, { shadowColor: m.color }]} />
           <Text style={styles.memberName} numberOfLines={1} adjustsFontSizeToFit>{m.name}</Text>
           <View style={[styles.role, { backgroundColor: m.color + '2e' }]}>
