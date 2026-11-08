@@ -5,4 +5,4 @@ secret: ""
 # How often stats of online players are sent (minutes)
 sync-minutes: 5
 # Command used to give daily-login rewards from the app ({player}, {key}, {amount})
-reward-command: "keymanager give {player} {key} {amount}"
+reward-command: "keymanager add {player} {key} {amount}"

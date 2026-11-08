@@ -163,7 +163,7 @@ public final class ChickenSMPApp extends JavaPlugin implements Listener {
                     if (p == null) continue;
                     String key = r.get("key").getAsString().replaceAll("[^a-zA-Z0-9_-]", "");
                     int amount = Math.max(1, Math.min(64, r.get("amount").getAsInt()));
-                    String cmd = getConfig().getString("reward-command", "keymanager give {player} {key} {amount}")
+                    String cmd = getConfig().getString("reward-command", "keymanager add {player} {key} {amount}")
                             .replace("{player}", p.getName()).replace("{key}", key).replace("{amount}", String.valueOf(amount));
                     boolean ok = Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
                     if (!ok) { getLogger().warning("Reward command failed: " + cmd); continue; }
