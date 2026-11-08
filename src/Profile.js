@@ -51,7 +51,7 @@ function rankInfo(rank) {
 }
 
 export default function ProfileScreen({ ui }) {
-  const { t, lang, toast, Glass, Btn, Segmented, PageHead, go } = ui;
+  const { t, lang, toast, Glass, Btn, Segmented, PageHead, go, desk } = ui;
   const [token, setToken] = useState(null);
   const [ready, setReady] = useState(false);
   const [me, setMe] = useState(null);
@@ -123,7 +123,8 @@ export default function ProfileScreen({ ui }) {
   const fmtBoard = (v) => (boardKey === 'playtime' ? fmtHours(v) : fmtNum(v));
 
   return (
-    <View>
+    <View style={desk ? st.dWrap : null}>
+     <View style={desk ? st.dLeft : null}>
       {!token ? (
         <>
           <PageHead eyebrow="ChickenSMP" title={t('profileTitle').toUpperCase()} intro={t('profileIntro')} />
@@ -210,7 +211,26 @@ export default function ProfileScreen({ ui }) {
               </Glass>
             );
           })() : null}
-
+        </>
+      )}
+      {desk ? (
+        <>
+      {token ? (
+        <View style={{ marginTop: 18, gap: 10 }}>
+          <Btn icon="chatbubble-ellipses" label={t('tkMyTickets')} onPress={() => go && go('tickets')} />
+          <Btn kind="ghost" icon="log-out-outline" label={t('logout')} onPress={logout} />
+        </View>
+      ) : (
+        <Pressable onPress={() => Linking.openURL(DISCORD)} style={{ marginTop: 16, alignItems: 'center' }}>
+          <Text style={{ color: C.sky, fontFamily: F.b, fontSize: 13 }}>{t('loginHelp')}</Text>
+        </Pressable>
+      )}
+        </>
+      ) : null}
+     </View>
+     <View style={desk ? st.dRight : null}>
+      {token ? (
+        <>
           {s ? (
             <>
               <Text style={st.section}>{t('badges').toUpperCase()}</Text>
@@ -243,8 +263,7 @@ export default function ProfileScreen({ ui }) {
             <Glass style={{ padding: 18, marginTop: 14 }}><Text style={st.hint}>{t('noStatsYet')}</Text></Glass>
           )}
         </>
-      )}
-
+      ) : null}
       <Text style={st.section}>{t('leaderboard').toUpperCase()}</Text>
       <Segmented
         items={[{ id: 'playtime', label: t('stPlaytime') }, { id: 'playerKills', label: t('stKills') }, { id: 'mobKills', label: t('stMobs') }]}
@@ -263,7 +282,8 @@ export default function ProfileScreen({ ui }) {
           </View>
         ))}
       </Glass>
-
+      {!desk ? (
+        <>
       {token ? (
         <View style={{ marginTop: 18, gap: 10 }}>
           <Btn icon="chatbubble-ellipses" label={t('tkMyTickets')} onPress={() => go && go('tickets')} />
@@ -274,11 +294,17 @@ export default function ProfileScreen({ ui }) {
           <Text style={{ color: C.sky, fontFamily: F.b, fontSize: 13 }}>{t('loginHelp')}</Text>
         </Pressable>
       )}
+        </>
+      ) : null}
+     </View>
     </View>
   );
 }
 
 const st = StyleSheet.create({
+  dWrap: { flexDirection: 'row', gap: 24, alignItems: 'flex-start' },
+  dLeft: { flex: 1 },
+  dRight: { flex: 1.25 },
   num: { width: 28, height: 28, borderRadius: 9, backgroundColor: 'rgba(255,255,255,0.1)', alignItems: 'center', justifyContent: 'center' },
   numText: { color: '#fff', fontFamily: F.x, fontSize: 13 },
   step: { flex: 1, color: C.soft, fontFamily: F.r, fontSize: 15 },

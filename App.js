@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated, Easing, Image, Linking, Pressable, RefreshControl, ScrollView,
-  StyleSheet, Text, View, useWindowDimensions,
+  Platform, StyleSheet, Text, View, useWindowDimensions,
 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -253,7 +253,7 @@ function OnlineNow() {
 }
 
 function HomeScreen({ go }) {
-  const { t, live, toast } = useApp();
+  const { t, live, toast, desk } = useApp();
   const online = live.status.state === 'online' ? String(live.status.players) : live.status.state === 'offline' ? t('offline') : '–';
   const cards = [
     { title: t('cardJoin'), sub: t('cardJoinSub'), color: C.sky, icon: 'game-controller', onPress: () => go('join') },
@@ -261,6 +261,60 @@ function HomeScreen({ go }) {
     { title: t('cardStore'), sub: t('cardStoreSub'), color: C.gold, icon: 'cart', onPress: () => go('store') },
     { title: t('cardDiscord'), sub: t('cardDiscordSub'), color: C.purple, icon: 'logo-discord', onPress: () => Linking.openURL(DISCORD) },
   ];
+  if (desk) {
+    return (
+      <View>
+        <View style={styles.dHero}>
+          <View style={{ flex: 1.15, paddingRight: 24 }}>
+            <Eyebrow dot>{t('seasonLive')}</Eyebrow>
+            <Text style={styles.dHeroTitle}>{t('welcome').toUpperCase()}</Text>
+            <Text style={[styles.dHeroTitle, { color: C.sky }]}>CHICKENSMP</Text>
+            <Text style={[styles.heroText, { fontSize: 18, lineHeight: 28, maxWidth: 520 }]}>{t('tagline')}</Text>
+            <View style={{ flexDirection: 'row', gap: 12, marginTop: 24 }}>
+              <CopyBtn value={IP} label={IP} />
+              <Btn kind="ghost" icon="game-controller-outline" label={t('cardJoin')} onPress={() => go('join')} />
+            </View>
+            <View style={[styles.chips, { maxWidth: 560, marginTop: 26 }]}>
+              <ChipCard icon="person" tint={C.green} value={online} label={t('online')} />
+              <ChipCard icon="cube" tint={C.sky} value={VERSION} label={t('version')} />
+              <ChipCard icon="phone-portrait" tint={C.purple} value="Java & BE" label={t('crossplay')} />
+            </View>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Glass style={styles.dShowcase} strong>
+              <Image source={require('./assets/logo.png')} style={{ width: '78%', height: 170 }} resizeMode="contain" />
+              <View style={[styles.seasonTag, { marginTop: 18 }]}><Text style={styles.seasonTagText}>SEASON 2</Text></View>
+              <Text style={styles.seasonTitle}>{t('seasonTitle').toUpperCase()}</Text>
+              <Text style={styles.seasonSub}>{t('seasonSub')}</Text>
+              <StatusPill />
+              <View style={styles.seasonBar} />
+            </Glass>
+          </View>
+        </View>
+
+        <View style={styles.dRow}>
+          <View style={{ flex: 1 }}><DailyReward ui={{ t, toast, Glass, Btn }} go={go} /></View>
+          <View style={{ flex: 1 }}><OnlineNow /></View>
+        </View>
+
+        <View style={[styles.dRow, { marginTop: 22 }]}>
+          {cards.map((c) => (
+            <Squish key={c.title} onPress={c.onPress} style={{ flex: 1 }}>
+              <Glass style={styles.dTile}>
+                <View style={[styles.cardStripe, { backgroundColor: c.color, top: undefined, bottom: 26, height: 56 }]} />
+                <View style={[styles.cardIcon, { backgroundColor: c.color + '26', width: 60, height: 60, borderRadius: 18 }]}>
+                  <Ionicons name={c.icon} size={30} color={c.color} />
+                </View>
+                <View style={{ flex: 1 }} />
+                <Text style={[styles.cardTitle, { fontSize: 22 }]}>{c.title.toUpperCase()}</Text>
+                <Text style={[styles.cardSub, { color: c.color }]}>{c.sub}</Text>
+              </Glass>
+            </Squish>
+          ))}
+        </View>
+      </View>
+    );
+  }
   return (
     <View>
       <Eyebrow dot>{t('seasonLive')}</Eyebrow>
@@ -384,9 +438,40 @@ function HelpPanel() {
   );
 }
 
-function JoinScreen() {
+function EditionCard({ ed }) {
   const { t } = useApp();
+  return (
+    <Glass style={{ padding: 24, flex: 1 }}>
+      <View style={styles.joinHead}>
+        <Text style={styles.h2}>{ed === 'java' ? 'JAVA EDITION' : 'BEDROCK EDITION'}</Text>
+        <View style={[styles.chip, ed === 'bedrock' && { backgroundColor: 'rgba(61,220,132,0.15)' }]}>
+          <Text style={[styles.chipText, ed === 'bedrock' && { color: C.green }]}>{ed === 'java' ? 'PC · Mac' : 'Mobile · Console'}</Text>
+        </View>
+      </View>
+      <View style={{ gap: 10 }}>
+        <Field label={t('address')} value={IP} copy />
+        {ed === 'java' ? <Field label={t('version')} value={VERSION} /> : <Field label={t('port')} value={BEDROCK_PORT} copy />}
+      </View>
+      <Steps items={ed === 'java' ? [t('j1'), t('j2'), t('j3'), t('j4')] : [t('b1'), t('b2'), t('b3'), t('b4')]} />
+    </Glass>
+  );
+}
+
+function JoinScreen() {
+  const { t, desk } = useApp();
   const [ed, setEd] = useState('java');
+  if (desk) {
+    return (
+      <View>
+        <PageHead eyebrow="4 Steps" title={t('joinTitle').toUpperCase()} intro={t('joinIntro')} />
+        <View style={styles.dRow}>
+          <EditionCard ed="java" />
+          <EditionCard ed="bedrock" />
+        </View>
+        <HelpPanel />
+      </View>
+    );
+  }
   return (
     <View>
       <PageHead eyebrow="4 Steps" title={t('joinTitle').toUpperCase()} intro={t('joinIntro')} />
@@ -453,7 +538,7 @@ function PackageCard({ it }) {
 }
 
 function StoreScreen() {
-  const { t } = useApp();
+  const { t, desk } = useApp();
   const [cat, setCat] = useState('ranks');
   const data = cat === 'ranks' ? RANKS : cat === 'keys' ? KEYS : EXTRAS;
   const desc = cat === 'ranks' ? t('ranksDesc') : cat === 'keys' ? t('keysDesc') : t('extrasDesc');
@@ -462,8 +547,8 @@ function StoreScreen() {
       <PageHead eyebrow="ChickenSMP" title={t('storeTitle').toUpperCase()} intro={t('storeIntro')} />
       <Segmented items={[{ id: 'ranks', label: t('catRanks') }, { id: 'keys', label: t('catKeys') }, { id: 'extras', label: t('catExtras') }]} value={cat} onChange={setCat} />
       <Text style={[styles.body, { textAlign: 'center', marginVertical: 14 }]}>{desc}</Text>
-      <View style={{ gap: 14 }}>
-        {data.map((it) => <PackageCard key={it.name} it={it} />)}
+      <View style={desk ? styles.dGrid : { gap: 14 }}>
+        {data.map((it) => <View key={it.name} style={desk ? styles.dGrid3 : null}><PackageCard it={it} /></View>)}
       </View>
       <Glass style={{ padding: 20, marginTop: 16 }}>
         <View style={[styles.tab, { backgroundColor: C.blue }]} />
@@ -475,8 +560,84 @@ function StoreScreen() {
 }
 
 function CommunityScreen({ go }) {
-  const { t, live } = useApp();
+  const { t, live, desk } = useApp();
   const d = live.discord;
+  const ticketCard = (
+    <Squish onPress={() => go('tickets')} style={{ marginBottom: 14 }}>
+      <Glass style={styles.card} accent="rgba(59,123,255,0.55)">
+        <View style={[styles.cardStripe, { backgroundColor: C.blue }]} />
+        <View style={[styles.cardIcon, { backgroundColor: 'rgba(59,123,255,0.22)' }]}>
+          <Ionicons name="chatbubble-ellipses" size={26} color={C.sky} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.cardTitle}>{t('tkCard').toUpperCase()}</Text>
+          <Text style={[styles.cardSub, { color: C.sky }]}>{t('tkCardSub')}</Text>
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={C.muted} />
+      </Glass>
+    </Squish>
+  );
+  const discordCard = (
+    <Glass style={{ padding: 22, alignItems: 'center' }} accent="rgba(88,101,242,0.55)">
+      <View style={[styles.cardIcon, { backgroundColor: 'rgba(88,101,242,0.25)', marginBottom: 10 }]}>
+        <Ionicons name="logo-discord" size={28} color="#fff" />
+      </View>
+      <Text style={styles.h2}>{t('discordTitle')}</Text>
+      <Text style={[styles.body, { textAlign: 'center' }]}>{t('discordText')}</Text>
+      <View style={{ flexDirection: 'row', gap: 22, marginVertical: 14 }}>
+        <Count value={d.members} label={t('members')} />
+        <Count value={d.online} label={t('onlineNow')} dot />
+      </View>
+      <Btn kind="discord" icon="logo-discord" label={t('joinDiscord')} onPress={() => Linking.openURL(DISCORD)} />
+    </Glass>
+  );
+  const rules = (
+    <View style={{ gap: 10 }}>
+      {RULES.map((r, i) => (
+        <Glass key={r} style={styles.rule}>
+          <View style={styles.ruleNum}><Text style={styles.ruleNumText}>{i + 1}</Text></View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.ruleTitle}>{t(r)}</Text>
+            <Text style={styles.ruleText}>{t(r + 'p')}</Text>
+          </View>
+        </Glass>
+      ))}
+    </View>
+  );
+  const team = (
+    <View style={styles.teamGrid}>
+      {TEAM.map((m) => (
+        <Glass key={m.name} style={[styles.member, desk && { width: '23.5%' }]}>
+          <Image source={{ uri: `https://mc-heads.net/avatar/${m.name}/96` }} style={[styles.avatar, { shadowColor: m.color }]} />
+          <Text style={styles.memberName} numberOfLines={1} adjustsFontSizeToFit>{m.name}</Text>
+          <View style={[styles.role, { backgroundColor: m.color + '2e' }]}>
+            <Text style={[styles.roleText, { color: m.color }]}>{(m.roleKey ? t(m.roleKey) : m.role).toUpperCase()}</Text>
+          </View>
+          <Text style={styles.memberText}>{t(m.text)}</Text>
+        </Glass>
+      ))}
+    </View>
+  );
+  if (desk) {
+    return (
+      <View>
+        <View style={[styles.dRow, { alignItems: 'flex-start' }]}>
+          <View style={{ flex: 1 }}>
+            {ticketCard}
+            {discordCard}
+          </View>
+          <View style={{ flex: 1.3 }}>
+            <Text style={[styles.dSection, { marginTop: 0 }]}>{t('rulesTitle').toUpperCase()}</Text>
+            <Text style={[styles.body, { marginBottom: 14 }]}>{t('rulesIntro')}</Text>
+            {rules}
+            <Text style={styles.note}>{t('rulesNote')}</Text>
+          </View>
+        </View>
+        <Text style={styles.dSection}>{t('teamTitle').toUpperCase()}</Text>
+        {team}
+      </View>
+    );
+  }
   return (
     <View>
       <Squish onPress={() => go('tickets')} style={{ marginBottom: 14 }}>
@@ -631,8 +792,69 @@ function Header({ lang, setLang }) {
   );
 }
 
+function DeskHeader({ lang, setLang, tab, go }) {
+  const { t, live } = useApp();
+  const cur = tab === 'tickets' ? 'community' : tab;
+  return (
+    <View style={styles.dHeader}>
+      <Pressable onPress={() => go('home')}>
+        <Image source={require('./assets/logo.png')} style={{ width: 150, height: 46 }} resizeMode="contain" />
+      </Pressable>
+      <View style={styles.dNav}>
+        {TABS.map((x) => {
+          const on = x.id === cur;
+          return (
+            <Pressable key={x.id} onPress={() => go(x.id)} style={[styles.dNavItem, on && styles.dNavOn]}>
+              <Ionicons name={on ? x.icon : x.icon + '-outline'} size={17} color={on ? '#fff' : C.muted} />
+              <Text style={[styles.dNavText, on && { color: '#fff' }]}>{t(x.label)}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+        <View style={[styles.statusPill, { marginTop: 0 }]}>
+          <View style={[styles.statusDot, { backgroundColor: live.status.state === 'online' ? C.green : live.status.state === 'offline' ? C.red : C.muted }]} />
+          <Text style={styles.statusText}>{live.status.state === 'online' ? `${live.status.players} ${t('online')}` : '–'}</Text>
+        </View>
+        <CopyBtn value={IP} label={IP} small />
+        <Glass style={styles.lang} strong>
+          {['de', 'en'].map((l) => (
+            <Pressable key={l} onPress={() => setLang(l)} style={[styles.langBtn, lang === l && { backgroundColor: C.blue }]}>
+              <Text style={[styles.langText, lang === l && { color: '#fff' }]}>{l.toUpperCase()}</Text>
+            </Pressable>
+          ))}
+        </Glass>
+      </View>
+    </View>
+  );
+}
+
+function DeskFooter({ go }) {
+  const { t } = useApp();
+  return (
+    <View style={styles.dFooter}>
+      <View style={{ flex: 1.4 }}>
+        <Image source={require('./assets/logo.png')} style={{ width: 130, height: 40 }} resizeMode="contain" />
+        <Text style={[styles.note, { maxWidth: 380 }]}>© {new Date().getFullYear()} ChickenSMP · {t('disclaimer')}</Text>
+      </View>
+      <View style={{ flex: 1, gap: 8 }}>
+        {TABS.map((x) => (
+          <Pressable key={x.id} onPress={() => go(x.id)}><Text style={styles.dFootLink}>{t(x.label)}</Text></Pressable>
+        ))}
+      </View>
+      <View style={{ flex: 1, gap: 8 }}>
+        <Pressable onPress={() => Linking.openURL(DISCORD)}><Text style={styles.dFootLink}>Discord</Text></Pressable>
+        <Pressable onPress={() => go('tickets')}><Text style={styles.dFootLink}>{t('tkCard')}</Text></Pressable>
+        <Text style={[styles.dFootLink, { color: C.muted }]}>{IP}</Text>
+      </View>
+    </View>
+  );
+}
+
 function Shell() {
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const desk = Platform.OS === 'web' && width >= 900;
   const [lang, setLangState] = useState('en');
   const [tab, setTab] = useState('home');
   const [toastMsg, setToastMsg] = useState(null);
@@ -668,21 +890,21 @@ function Shell() {
   };
 
   const onRefresh = async () => { setRefreshing(true); await live.reload(); setRefreshing(false); };
-  const ctx = useMemo(() => ({ t, lang, toast, live }), [t, lang, toast, live]);
+  const ctx = useMemo(() => ({ t, lang, toast, live, desk }), [t, lang, toast, live, desk]);
 
   return (
     <Ctx.Provider value={ctx}>
       <View style={{ flex: 1, backgroundColor: C.bg, overflow: 'hidden' }}>
         <StatusBar style="light" />
         <LiquidBackground />
-        <View style={styles.frame}>
+        <View style={[styles.frame, desk && { maxWidth: 1200 }]}>
         <View style={{ paddingTop: insets.top }}>
-          <Header lang={lang} setLang={setLang} />
+          {desk ? <DeskHeader lang={lang} setLang={setLang} tab={tab} go={go} /> : <Header lang={lang} setLang={setLang} />}
         </View>
         <ScrollView
           style={{ zIndex: 0 }}
           ref={scrollRef}
-          contentContainerStyle={{ padding: 16, paddingBottom: 120 + insets.bottom }}
+          contentContainerStyle={desk ? { paddingHorizontal: 32, paddingTop: 28, paddingBottom: 40 } : { padding: 16, paddingBottom: 120 + insets.bottom }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#fff" colors={[C.blue]} progressBackgroundColor={C.surface} />}
         >
           <Animated.View style={{ opacity: fade, transform: [{ translateY: fade.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }] }}>
@@ -690,18 +912,19 @@ function Shell() {
             {tab === 'join' && <JoinScreen />}
             {tab === 'store' && <StoreScreen />}
             {tab === 'community' && <CommunityScreen go={go} />}
-            {tab === 'profile' && <ProfileScreen ui={{ t, lang, toast, Glass, Btn, Segmented, PageHead, go }} />}
-            {tab === 'tickets' && <TicketScreen ui={{ t, lang, toast, Glass, Btn, PageHead }} go={go} />}
+            {tab === 'profile' && <ProfileScreen ui={{ t, lang, toast, Glass, Btn, Segmented, PageHead, go, desk }} />}
+            {tab === 'tickets' && <TicketScreen ui={{ t, lang, toast, Glass, Btn, PageHead, desk }} go={go} />}
           </Animated.View>
+          {desk ? <DeskFooter go={go} /> : null}
         </ScrollView>
-        <TabBar tab={tab} setTab={go} />
+        {desk ? null : <TabBar tab={tab} setTab={go} />}
         </View>
         <Updater t={t} Btn={Btn} />
         <OtaUpdate t={t} />
         {toastMsg ? (
           <Animated.View
             pointerEvents="none"
-            style={[styles.toast, { bottom: 104 + insets.bottom, opacity: toastAnim, transform: [{ scale: toastAnim.interpolate({ inputRange: [0, 1], outputRange: [0.7, 1] }) }] }]}
+            style={[styles.toast, { bottom: desk ? 32 : 104 + insets.bottom, opacity: toastAnim, transform: [{ scale: toastAnim.interpolate({ inputRange: [0, 1], outputRange: [0.7, 1] }) }] }]}
           >
             <Ionicons name="checkmark-circle" size={18} color="#06210f" />
             <Text style={styles.toastText}>{toastMsg}</Text>
@@ -725,6 +948,21 @@ export default function App() {
 /* ---------------- styles ---------------- */
 const styles = StyleSheet.create({
   frame: { flex: 1, width: '100%', maxWidth: 560, alignSelf: 'center' },
+  dHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 32, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.08)' },
+  dNav: { flexDirection: 'row', gap: 4, padding: 4, borderRadius: 16, backgroundColor: 'rgba(20,20,22,0.7)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' },
+  dNavItem: { flexDirection: 'row', alignItems: 'center', gap: 7, paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12, cursor: 'pointer' },
+  dNavOn: { backgroundColor: C.blue },
+  dNavText: { color: C.muted, fontFamily: F.b, fontSize: 14 },
+  dHero: { flexDirection: 'row', alignItems: 'center', paddingVertical: 24, marginBottom: 12 },
+  dHeroTitle: { color: '#fff', fontFamily: F.x, fontSize: 64, lineHeight: 70 },
+  dShowcase: { padding: 32, alignItems: 'center', minHeight: 420, justifyContent: 'center' },
+  dRow: { flexDirection: 'row', gap: 22 },
+  dTile: { padding: 22, height: 200, borderRadius: 24 },
+  dGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 20 },
+  dGrid3: { width: '31.8%' },
+  dSection: { color: '#fff', fontFamily: F.x, fontSize: 30, marginTop: 40, marginBottom: 16 },
+  dFooter: { flexDirection: 'row', gap: 32, marginTop: 56, paddingTop: 28, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.08)' },
+  dFootLink: { color: C.soft, fontFamily: F.m, fontSize: 14 },
   glass: {
     backgroundColor: GLASS, borderRadius: 22, borderWidth: 1, borderColor: EDGE, overflow: 'hidden',
   },

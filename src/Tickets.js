@@ -19,7 +19,7 @@ export const CATEGORIES = [
 const when = (ms, lang) => new Date(ms).toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 
 export default function TicketScreen({ ui, go }) {
-  const { t, lang, toast, Glass, Btn, PageHead } = ui;
+  const { t, lang, toast, Glass, Btn, PageHead, desk } = ui;
   const [token, setToken] = useState(undefined);
   const [cat, setCat] = useState('support');
   const [subject, setSubject] = useState('');
@@ -83,6 +83,8 @@ export default function TicketScreen({ ui, go }) {
       </Pressable>
       <PageHead eyebrow="Support" title={t('tkTitle').toUpperCase()} intro={t('tkIntro')} />
 
+      <View style={desk ? { flexDirection: 'row', gap: 24, alignItems: 'flex-start' } : null}>
+      <View style={desk ? { flex: 1.4 } : null}>
       {!token ? (
         <Glass style={{ padding: 20, alignItems: 'center' }}>
           <Ionicons name="lock-closed" size={30} color={C.sky} />
@@ -104,7 +106,7 @@ export default function TicketScreen({ ui, go }) {
             {CATEGORIES.map((c) => {
               const on = c.id === cat;
               return (
-                <Pressable key={c.id} onPress={() => setCat(c.id)} style={[st.cat, on && { borderColor: c.color, backgroundColor: c.color + '2a' }]}>
+                <Pressable key={c.id} onPress={() => setCat(c.id)} style={[st.cat, desk && { width: '15.2%' }, on && { borderColor: c.color, backgroundColor: c.color + '2a' }]}>
                   <Ionicons name={c.icon} size={18} color={on ? c.color : C.muted} />
                   <Text style={[st.catText, on && { color: '#fff' }]} numberOfLines={1}>{t('tkCat_' + c.id)}</Text>
                 </Pressable>
@@ -136,10 +138,11 @@ export default function TicketScreen({ ui, go }) {
           <Text style={st.hint}>{t('tkHint')}</Text>
         </Glass>
       )}
+      </View>
 
       {token && mine && mine.length ? (
-        <>
-          <Text style={st.section}>{t('tkMine').toUpperCase()}</Text>
+        <View style={desk ? { flex: 1 } : null}>
+          <Text style={[st.section, desk && { marginTop: 0, textAlign: 'left' }]}>{t('tkMine').toUpperCase()}</Text>
           <View style={{ gap: 10 }}>
             {mine.map((x) => {
               const c = CATEGORIES.find((k) => k.id === x.category) || CATEGORIES[5];
@@ -157,8 +160,9 @@ export default function TicketScreen({ ui, go }) {
               );
             })}
           </View>
-        </>
+        </View>
       ) : null}
+      </View>
     </View>
   );
 }
