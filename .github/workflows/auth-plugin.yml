@@ -1,0 +1,55 @@
+name: auth-plugin
+on:
+  push:
+    branches: [main]
+    paths: ['auth-plugin/**', '.github/workflows/auth-plugin.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Build plugin
+        run: cd auth-plugin && mvn -q -B package && ls -la target/*.jar
+      - name: Prepare test server
+        run: |
+          mkdir -p srv/plugins && cd srv
+          B=$(curl -s https://fill.papermc.io/v3/projects/paper/versions/1.21.11/builds/latest)
+          curl -sfo paper.jar "$(echo "$B" | jq -r '.downloads["server:default"].url')"
+          curl -sfo plugins/packetevents.jar https://repo.codemc.io/repository/maven-releases/com/github/retrooper/packetevents-spigot/2.14.0/packetevents-spigot-2.14.0.jar
+          H="Authorization: Bearer ${{ github.token }}"
+          for r in ViaVersion/ViaVersion ViaVersion/ViaBackwards; do
+            u=$(curl -s -H "$H" https://api.github.com/repos/$r/releases/latest | jq -r '[.assets[]|select(.name|endswith(".jar"))][0].browser_download_url')
+            echo "$r -> $u"; curl -sfLo plugins/$(basename $r).jar "$u"
+          done
+          cp ../auth-plugin/target/ChickenSMPAuth.jar plugins/
+          echo "eula=true" > eula.txt
+          printf "online-mode=false\nenforce-secure-profile=false\nserver-port=25565\nspawn-protection=0\nlevel-type=minecraft\\\\:flat\n" > server.properties
+          ls -la plugins
+      - name: Start server
+        run: |
+          cd srv && touch server.in
+          (tail -f server.in | java -Xmx2G -jar paper.jar --nogui > server.log 2>&1 &)
+          for i in $(seq 1 150); do grep -q 'Done (' server.log && break; sleep 2; done
+          grep -E 'ChickenSMPAuth|packetevents|Done \(|ERROR' server.log | head -30
+      - name: Run bots
+        run: |
+          cd srv && npm init -y >/dev/null && npm i -s mineflayer >/dev/null 2>&1
+          cp ../auth-plugin/test/test.js .
+          timeout 300 node test.js
+      - name: Server log
+        if: always()
+        run: cd srv && grep -v "^\s*$" server.log | tail -80
+      - name: Publish jar
+        if: success() && github.event_name != 'pull_request'
+        run: |
+          git config user.name "ci"; git config user.email "ci@users.noreply.github.com"
+          git fetch -q origin plugin-dist && git checkout -q plugin-dist
+          cp auth-plugin/target/ChickenSMPAuth.jar . 2>/dev/null || cp $GITHUB_WORKSPACE/auth-plugin/target/ChickenSMPAuth.jar .
+          git add ChickenSMPAuth.jar && git commit -qm "ChickenSMPAuth build" && git push -q origin plugin-dist || echo "nothing to publish"

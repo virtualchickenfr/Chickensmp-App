@@ -1,0 +1,22 @@
+# ChickenSMPAuth
+# Server must run with online-mode=false. Premium Java accounts are verified with Mojang
+# (same cryptographic check as online mode) and keep their normal UUID, skin and data.
+# Bedrock players (Floodgate) join directly. Everyone else must /register and /login.
+
+# Seconds a cracked player has to log in / register before being kicked
+login-timeout: 120
+# Wrong passwords before kick
+max-attempts: 5
+# Failed logins per IP within 10 minutes before that IP is blocked for 10 minutes
+ip-fail-limit: 12
+password-min-length: 6
+# Remember a cracked login for the same name + IP for this many minutes (0 = always ask)
+session-minutes: 30
+# Allowed names for cracked players
+allowed-names: '^[a-zA-Z0-9_]{3,16}$'
+# If Mojang cannot be reached to check whether a name is premium:
+#   true  = refuse the connection (safest)
+#   false = let them in as cracked (must log in with password, gets an offline UUID)
+fail-closed: true
+# Max accounts a single IP may register
+max-accounts-per-ip: 3

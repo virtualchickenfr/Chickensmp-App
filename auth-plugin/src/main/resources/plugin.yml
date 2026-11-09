@@ -1,0 +1,25 @@
+name: ChickenSMPAuth
+version: ${project.version}
+main: net.chickensmp.auth.AuthPlugin
+api-version: '1.21'
+author: ChickenSMP
+description: Login for cracked players only - premium Java and Bedrock players join directly.
+depend: [packetevents]
+softdepend: [floodgate, Geyser-Spigot, ViaVersion]
+commands:
+  register:
+    aliases: [reg]
+    description: Register your account
+  login:
+    aliases: [l]
+    description: Log in
+  changepassword:
+    aliases: [changepw]
+    description: Change your password
+  chickenauth:
+    aliases: [cauth]
+    description: Admin commands
+    permission: chickenauth.admin
+permissions:
+  chickenauth.admin:
+    default: op
