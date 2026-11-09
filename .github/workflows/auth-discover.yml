@@ -5,10 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          H="Authorization: Bearer ${{ github.token }}"
-          for t in 6.0.0 6.0.1; do echo "== AuthMe $t"; curl -s -H "$H" https://api.github.com/repos/AuthMe/AuthMeReloaded/releases/tags/$t | jq -r .body | head -60; done
-          echo "== PL dev-build body"; curl -s -H "$H" https://api.github.com/repos/dmulloy2/ProtocolLib/releases/tags/dev-build | jq -r '.body, (.assets[]|.name+" "+.updated_at)' | head -20
-          echo "== PL commits"; curl -s -H "$H" "https://api.github.com/repos/dmulloy2/ProtocolLib/commits?per_page=6" | jq -r '.[]|.commit.committer.date+" "+(.commit.message|split("\n")[0])'
-          echo "== FL commits"; curl -s -H "$H" "https://api.github.com/repos/TuxCoding/FastLogin/commits?per_page=6" | jq -r '.[]|.commit.committer.date+" "+(.commit.message|split("\n")[0])'
-          echo "== FL issues 1.21"; curl -s -H "$H" "https://api.github.com/search/issues?q=repo:TuxCoding/FastLogin+1.21&sort=created&per_page=8" | jq -r '.items[]|.created_at+" "+.state+" "+.title'
-          echo "== AuthMe premium search"; curl -s -H "$H" "https://api.github.com/search/issues?q=repo:AuthMe/AuthMeReloaded+premium&sort=created&per_page=8" | jq -r '.items[]|.created_at+" "+.state+" "+.title'
+          B=https://raw.githubusercontent.com/AuthMe/AuthMeReloaded/6.0.1
+          echo "=== premium.md"; curl -s $B/docs/premium.md
+          echo "=== config grep"; curl -s $B/docs/config.md | grep -n -i -A3 "premium\|floodgate\|bedrock\|dialog\|unrestricted\|forceSingleSession\|allowedNicknameCharacters\|enforce" | head -150
+          echo "=== floodgate in src"; curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/search/code?q=floodgate+repo:AuthMe/AuthMeReloaded" | jq -r '.items[]?.path' | head
