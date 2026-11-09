@@ -4,8 +4,11 @@ jobs:
   d:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
       - run: |
-          B=https://raw.githubusercontent.com/AuthMe/AuthMeReloaded/6.0.1
-          echo "=== premium.md"; curl -s $B/docs/premium.md
-          echo "=== config grep"; curl -s $B/docs/config.md | grep -n -i -A3 "premium\|floodgate\|bedrock\|dialog\|unrestricted\|forceSingleSession\|allowedNicknameCharacters\|enforce" | head -150
-          echo "=== floodgate in src"; curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/search/code?q=floodgate+repo:AuthMe/AuthMeReloaded" | jq -r '.items[]?.path' | head
+          R=https://repo.codemc.io/repository/maven-releases/com/github/retrooper
+          for a in packetevents-api packetevents-spigot packetevents-netty-common; do curl -sfo $a.jar $R/$a/2.14.0/$a-2.14.0.jar && echo "got $a" || echo "miss $a"; done
+          curl -s $R/packetevents-spigot/2.14.0/packetevents-spigot-2.14.0.pom | head -60
+          for c in com.github.retrooper.packetevents.wrapper.login.server.WrapperLoginServerEncryptionRequest com.github.retrooper.packetevents.wrapper.login.client.WrapperLoginClientEncryptionResponse com.github.retrooper.packetevents.wrapper.login.client.WrapperLoginClientLoginStart com.github.retrooper.packetevents.protocol.player.User com.github.retrooper.packetevents.netty.channel.ChannelHelper com.github.retrooper.packetevents.event.PacketReceiveEvent com.github.retrooper.packetevents.event.ProtocolPacketEvent com.github.retrooper.packetevents.event.PacketListenerAbstract; do echo "=== $c"; javap -cp packetevents-api.jar:packetevents-netty-common.jar:packetevents-spigot.jar -public $c 2>&1 | head -80; done
+          unzip -l packetevents-spigot.jar | grep -i "plugin.yml\|paper-plugin"; unzip -p packetevents-spigot.jar plugin.yml 2>/dev/null | head
