@@ -1,0 +1,16 @@
+name: auth-discover
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for r in dmulloy2/ProtocolLib TuxCoding/FastLogin AuthMe/AuthMeReloaded; do
+            echo "== $r"; curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/$r/releases?per_page=5" | jq -r '.[]|.tag_name+" "+.published_at+" pre="+(.prerelease|tostring)+" | "+([.assets[]|.name+"="+.browser_download_url]|join(" , "))'
+          done
+          for p in fastlogin protocollib authmereloaded authme; do
+            echo "== modrinth $p"; curl -s "https://api.modrinth.com/v2/project/$p/version?loaders=%5B%22paper%22%5D" | jq -r '.[:3][]|.version_number+" "+.date_published+" gv="+(.game_versions[-3:]|join(","))+" | "+(.files[0].url)' 2>/dev/null
+          done
+          echo "== PL CI"; curl -s "https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/api/json?tree=number,timestamp,artifacts[fileName,relativePath]" | head -c 600
