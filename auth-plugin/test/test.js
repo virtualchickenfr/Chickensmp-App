@@ -8,7 +8,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) failed+
 
 function bot(name) {
   return new Promise((resolve) => {
-    const b = mineflayer.createBot({ host: '127.0.0.1', port: 25565, username: name, auth: 'offline', version: VERSION });
+    const b = mineflayer.createBot({ host: process.env.BOT_HOST || '127.0.0.1', port: 25565, username: name, auth: 'offline', version: VERSION });
     const log = [];
     b.log = log;
     b.on('messagestr', (m) => log.push(m));

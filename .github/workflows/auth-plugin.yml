@@ -22,7 +22,9 @@ jobs:
           mkdir -p srv/plugins && cd srv
           B=$(curl -s https://fill.papermc.io/v3/projects/paper/versions/1.21.11/builds/latest)
           curl -sfo paper.jar "$(echo "$B" | jq -r '.downloads["server:default"].url')"
-          curl -sfo plugins/packetevents.jar https://repo.codemc.io/repository/maven-releases/com/github/retrooper/packetevents-spigot/2.14.0/packetevents-spigot-2.14.0.jar
+          PE=$(curl -s 'https://api.modrinth.com/v2/project/packetevents/version?loaders=%5B%22paper%22%5D' | jq -r '[.[]|select(.version_number|startswith("2.14.0"))][0].files[]|select(.primary==true or (.filename|test("spigot";"i")))|.url' | head -1)
+          echo "packetevents -> $PE"; curl -sfLo plugins/packetevents.jar "$PE"
+          unzip -l plugins/packetevents.jar | grep -c "com/github/retrooper/packetevents/PacketEvents.class" 
           H="Authorization: Bearer ${{ github.token }}"
           for r in ViaVersion/ViaVersion ViaVersion/ViaBackwards; do
             u=$(curl -s -H "$H" https://api.github.com/repos/$r/releases/latest | jq -r '[.assets[]|select(.name|endswith(".jar"))][0].browser_download_url')
@@ -42,7 +44,7 @@ jobs:
         run: |
           cd srv && npm init -y >/dev/null && npm i -s mineflayer >/dev/null 2>&1
           cp ../auth-plugin/test/test.js .
-          timeout 300 node test.js
+          BOT_HOST=$(hostname -I | awk '{print $1}') timeout 300 node test.js
       - name: Server log
         if: always()
         run: cd srv && grep -v "^\s*$" server.log | tail -80
