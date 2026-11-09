@@ -32,6 +32,7 @@ jobs:
           done
           cp ../auth-plugin/target/ChickenSMPAuth.jar plugins/
           echo "eula=true" > eula.txt
+          printf "settings:\n  connection-throttle: -1\n" > bukkit.yml
           printf "online-mode=false\nenforce-secure-profile=false\nserver-port=25565\nspawn-protection=0\nlevel-type=minecraft\\\\:flat\n" > server.properties
           ls -la plugins
       - name: Start server
