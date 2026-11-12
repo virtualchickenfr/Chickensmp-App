@@ -27,11 +27,16 @@ const clip = (v, n) => String(v || '').replace(/\s+$/g, '').slice(0, n);
 const noPing = (v) => v.replace(/@(everyone|here)/gi, '@​$1');
 
 async function sendToDiscord(t, player) {
-  const hook = String(process.env.DISCORD_TICKET_WEBHOOK || '').trim();
-  if (!/^https:\/\/([a-z]+\.)?(discord|discordapp)\.com\/api\/webhooks\/\d+\//.test(hook)) {
-    console.log(`ticket ${t.id}: webhook ${hook ? 'has an unexpected format' : 'is not set'}`);
+  const raw = String(process.env.DISCORD_TICKET_WEBHOOK || '');
+  // Find the webhook address inside the value, even with quotes, a "KEY=" prefix or an /api/v10/ path.
+  const m = /https:\/\/(?:[a-z]+\.)?discord(?:app)?\.com\/api\/(?:v\d+\/)?webhooks\/\d+\/[\w-]+/.exec(raw);
+  if (!m) {
+    // Log only the shape of the value, never the address or its token.
+    const shape = raw.trim().replace(/[A-Za-z0-9_-]{12,}/g, '…').slice(0, 80);
+    console.log(`ticket ${t.id}: webhook ${raw.trim() ? `has an unexpected format (length ${raw.length}, shape "${shape}")` : 'is not set'}`);
     return false;
   }
+  const hook = m[0];
   const cat = CATS[t.category] || CATS.other;
   const fields = [
     { name: 'Player', value: noPing(t.name) || '–', inline: true },
