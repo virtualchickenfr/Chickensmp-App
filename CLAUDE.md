@@ -54,7 +54,7 @@ Results go to branches because artifacts can't be downloaded from the cloud cont
 
 ## Open items
 1. **Discord invite `AfTVp4f88` has expired** – all "Join Discord" buttons are dead. Need a new never-expiring invite code from the owner, then replace it in `src/content.js`, `backend/api/app.js`, `.github/workflows/discord-status.yml` in the `discord` reminder of `server-config/EconomyCore/reminder.yml` (copy to the server) and in `menus/discord.yml` on the server, redeploy backend, re-enable `discord-status.yml`.
-2. Ticket webhook: owner must set Vercel env `DISCORD_TICKET_WEBHOOK` himself (never enter webhook URLs/tokens yourself), then redeploy backend and send a test ticket.
+2. Ticket webhook: env `DISCORD_TICKET_WEBHOOK` is set (production), channel `#📱・ᴀᴘᴘ-ᴛɪᴄᴋᴇᴛꜱ` (id 1568823436720082944), webhook "ChickenSMP Tickets". A real test ticket from a logged-in player is still pending.
 3. Daily reward delivery in game not yet tested with a real player.
 4. Server is in maintenance mode (owner decides when to turn it off).
 
