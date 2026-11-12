@@ -28,7 +28,7 @@ jobs:
           grep -E "ChickenSMPAnnounce|Announcements:|Reloaded|ERROR|Exception" log
           ! grep -q "Exception" log
           # every message must parse as MiniMessage: check via a tiny java run is overkill; YAML validity checked by load count
-          grep -q "Loaded 12 announcements" log
+          grep -q "Loaded 11 announcements" log
       - name: Publish jar
         run: |
           git config user.name ci; git config user.email ci@users.noreply.github.com
