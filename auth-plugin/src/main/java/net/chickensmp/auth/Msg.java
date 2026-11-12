@@ -52,14 +52,13 @@ final class Msg {
 
     private void put(String k, String d, String e) { de.put(k, d); en.put(k, e); }
 
-    static String lang(Player p) {
-        try { return p.locale().getLanguage().equals("de") ? "de" : "en"; } catch (Throwable t) { return "en"; }
-    }
+    /** Server is English-only. */
+    static String lang(Player p) { return "en"; }
 
     String raw(String lang, String key) { return (lang.equals("de") ? de : en).getOrDefault(key, key); }
 
     /** Plain text in both languages, for disconnect screens. */
-    String both(String key) { return de.get(key) + "\n\n" + en.get(key); }
+    String both(String key) { return en.get(key); }
 
     Component c(Player p, String key, Object... n) {
         String s = raw(lang(p), key);
@@ -70,6 +69,6 @@ final class Msg {
     void send(Player p, String key, Object... n) { p.sendMessage(MiniMessage.miniMessage().deserialize(P).append(c(p, key, n))); }
 
     Component kick(String key) {
-        return MiniMessage.miniMessage().deserialize("<gradient:#3b7bff:#7cc4ff><bold>ChickenSMP</bold></gradient>\n\n<red>" + de.get(key) + "\n\n<gray>" + en.get(key));
+        return MiniMessage.miniMessage().deserialize("<gradient:#3b7bff:#7cc4ff><bold>ChickenSMP</bold></gradient>\n\n<red>" + en.get(key));
     }
 }

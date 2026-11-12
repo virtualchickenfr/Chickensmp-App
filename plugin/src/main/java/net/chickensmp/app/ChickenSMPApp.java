@@ -130,7 +130,6 @@ public final class ChickenSMPApp extends JavaPlugin implements Listener {
                             .clickEvent(ClickEvent.copyToClipboard(code))
                             .hoverEvent(HoverEvent.showText(Component.text("Click to copy")))));
             player.sendMessage(Component.text("Open the app → Profile and enter the code. Valid for 10 minutes.", NamedTextColor.GRAY));
-            player.sendMessage(Component.text("Dein Code gilt 10 Minuten – in der App unter Profil eingeben.", NamedTextColor.DARK_GRAY));
             player.sendMessage(Component.empty());
         }));
         return true;

@@ -63,7 +63,7 @@ public final class AnnouncePlugin extends JavaPlugin {
     private void send(Player p, String id) {
         if (isOff(p)) return;
         String lang = "en";
-        try { if (p.locale().getLanguage().equals("de")) lang = "de"; } catch (Throwable ignored) { }
+        // English-only server
         List<String> lines = getConfig().getStringList("messages." + id + "." + lang);
         if (lines.isEmpty()) lines = getConfig().getStringList("messages." + id + ".en");
         if (lines.isEmpty()) return;
@@ -102,7 +102,7 @@ public final class AnnouncePlugin extends JavaPlugin {
         boolean admin = s.hasPermission("chickenannounce.admin");
         if (a.length == 0 || !admin) {
             if (!(s instanceof Player p)) { s.sendMessage("/announcer reload | list | send <id> | next"); return true; }
-            boolean de = p.locale().getLanguage().equals("de");
+            boolean de = false;
             String prefix = getConfig().getString("prefix", "");
             if (isOff(p)) {
                 p.getPersistentDataContainer().remove(offKey);
