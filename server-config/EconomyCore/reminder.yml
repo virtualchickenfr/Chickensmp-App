@@ -1,0 +1,157 @@
+# ============================================================================
+#  Reminders  (ChickenSMP)
+# ============================================================================
+#  Add as many reminders as you like under "reminders:". Each one:
+#    interval-minutes : how often it is broadcast to chat.
+#    sound            : played when it is sent. Format: key|volume|pitch.
+#                       Empty = no sound.
+#    lines            : the message, sent line by line to every player.
+#
+#  "lines" go to chat, so MiniMessage works there on top of the & codes, and
+#  both may be mixed in one line:
+#    <click:open_url:'https://example.com'>text</click>
+#    <hover:show_text:'&7Tooltip'>text</hover>
+#    <gradient:#00A4FC:#ffffff>text</gradient>   <rainbow>text</rainbow>
+#  A line without any < is parsed exactly as before. Inside a line that has a
+#  tag, an & colour no longer clears bold/italic; use </bold> or <reset>.
+#
+#  Fire one at any time with:  /reminder <name>
+#  Reminders are staggered so two never send at the same moment
+#  (see reminders.stagger-seconds in config.yml).
+#
+#  ChickenSMP: 11 reminders, each every 44 minutes, staggered by 4 minutes
+#  -> one reminder every 4 minutes.
+#  Discord: the old invite expired. When there is a new one, replace
+#  https://store.chickensmp.net in the "discord" reminder with it.
+# ============================================================================
+
+reminders:
+
+  discord:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "           &#5865F2&lDISCORD"
+      - ""
+      - "&fJoin our &#5865F2Discord &fto chat with the community."
+      - "&fGet &#5865F2support &fand hear about &#5865F2events &ffirst."
+      - "&fEveryone is welcome, come say hi!"
+      - ""
+      - "        <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to join our Discord'>&#5865F2▶ Click to join ◀</hover></click>"
+
+  store:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "             &#00FC00&lSTORE"
+      - ""
+      - "&fSupport the server and grab &#00FC00ranks&f, &#00FC00keys &fand more."
+      - "&fCrate keys start at just &#00FC00€0.49&f."
+      - "&fEvery purchase keeps the server &#00FC00online&f. Thank you!"
+      - ""
+      - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to open the store'>&#00FC00▶ store.chickensmp.net ◀</hover></click>"
+
+  rules:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "             &#FCE300&lRULES"
+      - ""
+      - "&fPlay fair, no &#FCE300cheating&f. &#FCE300Griefing &fand &#FCE300scamming &fare allowed."
+      - "&fBe respectful to everyone on the server."
+      - "&fSomeone breaking the rules? Use &#FCE300/report&f."
+      - ""
+      - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to read all rules'>&#FCE300▶ /rules ◀ &7or &#FCE300store.chickensmp.net</hover></click>"
+
+  app:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "          &#3B7BFF&lCHICKENSMP APP"
+      - ""
+      - "&fSee your &#7CC4FFstats&f, &#7CC4FFrank &fand the &#7CC4FFleaderboard &fon your phone."
+      - "&fClaim &#7CC4FFfree crate keys &fevery day and open &#7CC4FFtickets&f."
+      - "&fType &#7CC4FF/app &fin game to get your login code."
+      - ""
+      - "      <click:open_url:'https://github.com/virtualchickenfr/Chickensmp-App/releases/latest/download/ChickenSMP.apk'><hover:show_text:'&7Click to download the Android app'>&#3B7BFF▶ Download the app ◀</hover></click>"
+
+  website:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "            &#7CC4FF&lWEBSITE"
+      - ""
+      - "&fRanks, keys, rules, the team and your &#7CC4FFprofile&f."
+      - "&fLog in with &#7CC4FF/app &fand claim your &#7CC4FFdaily reward &fthere too."
+      - ""
+      - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to open the website'>&#7CC4FF▶ store.chickensmp.net ◀</hover></click>"
+
+  daily:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "          &#FFB347&lDAILY REWARD"
+      - ""
+      - "&fClaim your reward &#FFB347every day&f. Day 7 is the &#FFB347&ljackpot&f!"
+      - "&fMiss a day and your streak starts again."
+      - "&fThe app gives you &#FFB347free keys &fevery day on top."
+      - ""
+      - "             <click:run_command:'/daily'><hover:show_text:'&7Click to claim'>&#FFB347▶ /daily ◀</hover></click>"
+
+  tickets:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "            &#FF3B6B&lNEED HELP?"
+      - ""
+      - "&fBug, report, purchase problem or ban appeal?"
+      - "&fOpen a &#FF8FAEticket &fin the app or on our website."
+      - "&fOur team gets it right away."
+      - ""
+      - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to open a ticket'>&#FF3B6B▶ Open a ticket ◀</hover></click>"
+
+  keyall:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "             &#FCE300&lKEY ALL"
+      - ""
+      - "&fEvery &#FCE300full hour &feveryone online gets a &#FCE300free crate key&f."
+      - "&fStay online and don't miss it!"
+      - ""
+      - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7See all crates and keys'>&#FCE300▶ See all keys ◀</hover></click>"
+
+  referral:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "          &#FFB347&lINVITE FRIENDS"
+      - ""
+      - "&fBring your friends to ChickenSMP!"
+      - "&fThey type &#FFB347/ref <your name> &fafter joining"
+      - "&fand you &#FFB347both &fget a reward."
+      - ""
+      - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Share our website with your friends'>&#FFB347▶ chickensmp.net ◀</hover></click>"
+
+  quests:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "             &#3DDC84&lQUESTS"
+      - ""
+      - "&fHourly, daily and weekly &#3DDC84quests&f."
+      - "&fComplete them for &#3DDC84money &fand &#3DDC84crate keys&f."
+      - ""
+      - "             <click:run_command:'/quests'><hover:show_text:'&7Click to open your quests'>&#3DDC84▶ /quests ◀</hover></click>"
+
+  bedrock:
+    interval-minutes: 44
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "            &#B98CFF&lBEDROCK"
+      - ""
+      - "&fFriends on &#B98CFFphone&f, &#B98CFFconsole &for &#B98CFFWindows 10&f?"
+      - "&fThey can play with you on ChickenSMP!"
+      - "&fAddress: &#B98CFFchickensmp.net &f Port: &#B98CFF25573"
+      - ""
+      - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7How to join'>&#B98CFF▶ How to join ◀</hover></click>"

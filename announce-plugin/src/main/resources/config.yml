@@ -109,9 +109,9 @@ messages:
   rules:
     de:
       - "<white><bold>📖 Regeln</bold>"
-      - "<gray>Kein Cheaten, kein Griefen, sei nett zu allen. Alle Regeln: <click:open_url:'{website}'><hover:show_text:'<gray>Regeln lesen'><aqua><u>store.chickensmp.net</u></aqua></hover></click>"
+      - "<gray>Kein Cheaten, sei respektvoll zu allen. Griefen und Scammen sind erlaubt. Alle Regeln: <click:open_url:'{website}'><hover:show_text:'<gray>Regeln lesen'><aqua><u>store.chickensmp.net</u></aqua></hover></click>"
       - "<gray>Jemand hält sich nicht dran? Melde ihn mit <yellow>/report</yellow><gray>."
     en:
       - "<white><bold>📖 Rules</bold>"
-      - "<gray>No cheating, no griefing, be nice to everyone. All rules: <click:open_url:'{website}'><hover:show_text:'<gray>Read the rules'><aqua><u>store.chickensmp.net</u></aqua></hover></click>"
+      - "<gray>No cheating, be respectful to everyone. Griefing and scamming are allowed. All rules: <click:open_url:'{website}'><hover:show_text:'<gray>Read the rules'><aqua><u>store.chickensmp.net</u></aqua></hover></click>"
       - "<gray>Someone breaking them? Report them with <yellow>/report</yellow><gray>."
