@@ -18,10 +18,10 @@ async function auth(req) {
 const CATS = {
   support: { label: 'Support', color: 0x3b7bff },
   bug: { label: 'Bug', color: 0xf5b82e },
-  report: { label: 'Spieler melden', color: 0xff5a6a },
-  purchase: { label: 'Kauf / Rang', color: 0x3ddc84 },
-  appeal: { label: 'Entbannung', color: 0xa855f7 },
-  other: { label: 'Sonstiges', color: 0x9a9a9a },
+  report: { label: 'Player report', color: 0xff5a6a },
+  purchase: { label: 'Purchase / rank', color: 0x3ddc84 },
+  appeal: { label: 'Ban appeal', color: 0xa855f7 },
+  other: { label: 'Other', color: 0x9a9a9a },
 };
 const clip = (v, n) => String(v || '').replace(/\s+$/g, '').slice(0, n);
 const noPing = (v) => v.replace(/@(everyone|here)/gi, '@​$1');
@@ -31,14 +31,14 @@ async function sendToDiscord(t, player) {
   if (!hook || !/^https:\/\/(discord|discordapp)\.com\/api\/webhooks\//.test(hook)) return false;
   const cat = CATS[t.category] || CATS.other;
   const fields = [
-    { name: 'Spieler', value: noPing(t.name) || '–', inline: true },
-    { name: 'Rang', value: noPing((player && player.rank) || '–'), inline: true },
+    { name: 'Player', value: noPing(t.name) || '–', inline: true },
+    { name: 'Rank', value: noPing((player && player.rank) || '–'), inline: true },
     { name: 'Discord', value: noPing(t.discord || '–'), inline: true },
   ];
-  if (t.target) fields.push({ name: 'Gemeldeter Spieler', value: noPing(t.target), inline: true });
-  if (player) fields.push({ name: 'Status', value: player.online ? 'Gerade online' : 'Offline', inline: true });
+  if (t.target) fields.push({ name: 'Reported player', value: noPing(t.target), inline: true });
+  if (player) fields.push({ name: 'Status', value: player.online ? 'Online now' : 'Offline', inline: true });
   const body = {
-    username: 'ChickenSMP App',
+    username: 'ChickenSMP Tickets',
     allowed_mentions: { parse: [] },
     embeds: [{
       title: `🎫 ${cat.label} · #${t.id}`,
@@ -46,7 +46,7 @@ async function sendToDiscord(t, player) {
       color: cat.color,
       fields,
       thumbnail: { url: `https://mc-heads.net/avatar/${t.uuid}/64` },
-      footer: { text: 'Erstellt in der ChickenSMP-App' },
+      footer: { text: 'Sent from the ChickenSMP app / website' },
       timestamp: new Date(t.createdAt).toISOString(),
     }],
   };
