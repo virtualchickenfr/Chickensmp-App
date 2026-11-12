@@ -1,6 +1,6 @@
 # ChickenSMP – project context for Claude Code
 
-The owner writes in German and wants short German answers. Do the work yourself; only stop for decisions that can't be undone.
+The owner writes in German and wants short German answers. **Everything in game is English only** (no German texts in plugins/configs). Do the work yourself; only stop for decisions that can't be undone.
 
 ## What this repo is
 One repo for everything around the Minecraft server **ChickenSMP**:
