@@ -6,8 +6,8 @@ export default {
     s.camera(punch(s, '#hiring', { zoom: 1.12 }));
     hookFrame(s, "We're *hiring*", { kicker: 'ChickenSMP' });
     echo(s, 'megaphone', { color: 'blue', at: -1 });
-    s.image('assets/logo.png', { w: s.safe.w * 0.8, x: s.cx, y: s.safe.y + s.safe.h * 0.68, shadow: false, at: -1 });
-    fact(s, '*Social Media* Manager', { at: '#hiring' });
+    s.image('assets/logo.png', { w: s.safe.w * 0.8, x: s.cx, y: s.safe.y + s.safe.h * 0.8, shadow: false, at: -1 });
+    fact(s, '*Social Media* Manager', { at: '#hiring', x: s.cx, y: s.safe.y + s.safe.h * 0.47 });
   },
 
   what(s) {
