@@ -195,7 +195,7 @@ export default async function handler(req, res) {
     const message = clip(b.message, 1500).trim();
     if (subject.length < 3 || message.length < 10) return res.status(400).json({ error: 'short' });
     const idx = (await getJson(`tickets/${t.uuid}/index.json`)) || { tickets: [] };
-    const recent = idx.tickets.filter((x) => Date.now() - x.createdAt < 30 * 60 * 1000);
+    const recent = idx.tickets.filter((x) => x.delivered !== false && Date.now() - x.createdAt < 30 * 60 * 1000);
     if (recent.length >= 3) return res.status(429).json({ error: 'limit' });
     const player = await getJson(`players/${t.uuid}.json`);
     const ticket = {
