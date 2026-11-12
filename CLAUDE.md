@@ -8,6 +8,7 @@ One repo for everything around the Minecraft server **ChickenSMP**:
 - **Backend** (Vercel serverless): `backend/api/*.js`, `backend/vercel.json`
 - **Server plugin ChickenSMPApp** (app login, stats, daily rewards): `plugin/`
 - **Server plugin ChickenSMPAuth** (login for cracked players only): `auth-plugin/`
+- **Server plugin ChickenSMPAnnounce** (automatic announcements DE/EN, `/announcer`): `announce-plugin/` – installed 2026-11-12, active after the next restart
 - **Build scripts**: `scripts/` (`build-web.sh`, `ota-manifest.js`)
 
 ## Server facts
@@ -26,6 +27,7 @@ One repo for everything around the Minecraft server **ChickenSMP**:
 | `live-check.yml` | Screenshots of store.chickensmp.net (mobile + desktop tabs) → `live-check` branch |
 | `plugin.yml` | Builds ChickenSMPApp → release `plugin-N` |
 | `auth-plugin.yml` | Builds ChickenSMPAuth, runs a real Paper 1.21.11 test server with mineflayer bots, pushes the jar to `plugin-dist` |
+| `announce-plugin.yml` | Builds ChickenSMPAnnounce, loads it on a Paper test server, pushes the jar to `plugin-dist` |
 | `discord-status.yml` | Every 10 min: Discord member/online counts → `status` branch. **Currently disabled** (invite expired, see below). |
 
 Results go to branches because artifacts can't be downloaded from the cloud container.
@@ -50,7 +52,7 @@ Results go to branches because artifacts can't be downloaded from the cloud cont
 - **Not installed yet.** Plan: (1) upload jar (passive), (2) with nobody online set `online-mode=false` and `enforce-secure-profile=false`, restart, owner joins with his real account + one Bedrock test. Rollback: `online-mode=true`.
 
 ## Open items
-1. **Discord invite `AfTVp4f88` has expired** – all "Join Discord" buttons are dead. Need a new never-expiring invite code from the owner, then replace it in `src/content.js`, `backend/api/app.js` and `.github/workflows/discord-status.yml`, redeploy backend, re-enable `discord-status.yml`.
+1. **Discord invite `AfTVp4f88` has expired** – all "Join Discord" buttons are dead. Need a new never-expiring invite code from the owner, then replace it in `src/content.js`, `backend/api/app.js`, `.github/workflows/discord-status.yml` and on the server in `plugins/ChickenSMPAnnounce/config.yml` (`links.discord`, then `/announcer reload`), redeploy backend, re-enable `discord-status.yml`.
 2. Ticket webhook: owner must set Vercel env `DISCORD_TICKET_WEBHOOK` himself (never enter webhook URLs/tokens yourself), then redeploy backend and send a test ticket.
 3. Daily reward delivery in game not yet tested with a real player.
 4. Server is in maintenance mode (owner decides when to turn it off).
