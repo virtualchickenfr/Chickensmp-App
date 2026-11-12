@@ -1,0 +1,42 @@
+name: explainroo-video
+on:
+  workflow_dispatch:
+    inputs:
+      project: { description: 'folder under videos/', required: true, default: 'hiring-smm' }
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/explainroo
+            ~/.cache/ms-playwright
+            ~/.npm
+          key: explainroo-v1
+      - name: Setup
+        run: |
+          npx --yes playwright@1.63.0 install --with-deps chromium >/dev/null 2>&1 || true
+          npx --yes explainroo doctor --fetch
+      - name: Voice
+        run: cd videos && npx --yes explainroo voice ${{ inputs.project }}
+      - name: Check
+        run: cd videos && npx --yes explainroo check ${{ inputs.project }} --platform tiktok || true
+      - name: Stills
+        run: cd videos && (npx --yes explainroo sheet ${{ inputs.project }} --platform tiktok || true)
+      - name: Render
+        run: cd videos && npx --yes explainroo render ${{ inputs.project }} --platform tiktok
+      - name: Verify
+        run: cd videos && (npx --yes explainroo verify ${{ inputs.project }} --platform tiktok || true)
+      - name: Publish output to branch
+        if: always()
+        run: |
+          mkdir -p /tmp/out && find videos/${{ inputs.project }} -type f \( -name '*.mp4' -o -name '*.jpg' -o -name '*.png' -o -name '*.srt' -o -name '*.vtt' -o -name '*.json' \) -not -path '*/assets/*' -not -path '*/node_modules/*' -size -95M -exec cp --parents {} /tmp/out \; ; ls -laR /tmp/out | head -60
+          cd /tmp/out && git init -q -b video-out && git add -A && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "video ${{ inputs.project }}" && git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" video-out
