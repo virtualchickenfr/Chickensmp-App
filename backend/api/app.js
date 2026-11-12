@@ -69,6 +69,94 @@ async function sendToDiscord(t, player) {
   }
 }
 
+// ---- Real tickets: one Discord forum thread per ticket, read/written by a bot ----
+const DAPI = 'https://discord.com/api/v10';
+const BOT = () => String(process.env.DISCORD_BOT_TOKEN || '').trim();
+const FORUM = () => String(process.env.DISCORD_TICKET_FORUM || '').trim();
+const hasBot = () => BOT().length > 20 && /^\d{15,}$/.test(FORUM());
+const WEB_FOOTER = 'Reply from the website / app';
+
+async function dc(method, path, body) {
+  const r = await fetch(DAPI + path, {
+    method,
+    headers: { Authorization: `Bot ${BOT()}`, 'Content-Type': 'application/json', 'User-Agent': 'DiscordBot (https://store.chickensmp.net, 1.0)' },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const text = await r.text();
+  let data = null; try { data = text ? JSON.parse(text) : null; } catch { /* not json */ }
+  if (!r.ok) { console.log(`discord ${method} ${path.replace(/\d{15,}/g, ':id')} -> ${r.status} ${text.slice(0, 160)}`); }
+  return { ok: r.ok, status: r.status, data };
+}
+
+let tagCache = null;
+async function forumTag(label) {
+  if (!tagCache) {
+    const r = await dc('GET', `/channels/${FORUM()}`);
+    tagCache = (r.ok && r.data && r.data.available_tags) || [];
+  }
+  const t = tagCache.find((x) => x.name.toLowerCase() === label.toLowerCase());
+  return t ? [t.id] : [];
+}
+
+function ticketEmbed(t, player) {
+  const cat = CATS[t.category] || CATS.other;
+  const fields = [
+    { name: 'Player', value: noPing(t.name) || '–', inline: true },
+    { name: 'Rank', value: noPing((player && player.rank) || '–'), inline: true },
+    { name: 'Discord', value: noPing(t.discord || '–'), inline: true },
+  ];
+  if (t.target) fields.push({ name: 'Reported player', value: noPing(t.target), inline: true });
+  if (player) fields.push({ name: 'Status', value: player.online ? 'Online now' : 'Offline', inline: true });
+  return {
+    title: `🎫 ${cat.label} · #${t.id}`,
+    description: `**${noPing(t.subject)}**\n\n${noPing(t.message)}`.slice(0, 3900),
+    color: cat.color, fields,
+    thumbnail: { url: `https://mc-heads.net/avatar/${t.uuid}/64` },
+    footer: { text: 'Answer in this thread – the player sees it on the website / in the app. Close the post when done.' },
+    timestamp: new Date(t.createdAt).toISOString(),
+  };
+}
+
+async function openThread(t, player) {
+  const cat = CATS[t.category] || CATS.other;
+  const r = await dc('POST', `/channels/${FORUM()}/threads`, {
+    name: `${cat.label} · ${t.name} · #${t.id}`.slice(0, 100),
+    applied_tags: await forumTag(cat.label),
+    message: { embeds: [ticketEmbed(t, player)], allowed_mentions: { parse: [] } },
+  });
+  return r.ok && r.data ? r.data.id : null;
+}
+
+function cleanContent(m) {
+  let s = String(m.content || '');
+  for (const u of m.mentions || []) s = s.split(`<@${u.id}>`).join(`@${u.global_name || u.username}`).split(`<@!${u.id}>`).join(`@${u.global_name || u.username}`);
+  return s.replace(/<a?:(\w+):\d+>/g, ':$1:').replace(/<#\d+>/g, '#channel').replace(/<@&\d+>/g, '@role');
+}
+
+async function threadView(threadId) {
+  const [ch, ms] = await Promise.all([dc('GET', `/channels/${threadId}`), dc('GET', `/channels/${threadId}/messages?limit=100`)]);
+  const closed = !ch.ok || !!(ch.data && ch.data.thread_metadata && (ch.data.thread_metadata.archived || ch.data.thread_metadata.locked));
+  const list = (ms.ok && Array.isArray(ms.data) ? ms.data : []).filter((m) => m.id !== threadId && (m.type === 0 || m.type === 19)).reverse();
+  const messages = [];
+  for (const m of list) {
+    const e = m.embeds && m.embeds[0];
+    if (m.author && m.author.bot) {
+      if (e && e.footer && e.footer.text === WEB_FOOTER) messages.push({ id: m.id, from: 'player', name: (e.author && e.author.name) || 'You', text: e.description || '', at: Date.parse(m.timestamp) });
+      continue; // other bot messages are not shown
+    }
+    const text = cleanContent(m);
+    const files = (m.attachments || []).map((a) => ({ url: a.url, name: a.filename, image: /^image\//.test(a.content_type || '') }));
+    if (!text && !files.length) continue;
+    messages.push({
+      id: m.id, from: 'staff',
+      name: (m.member && m.member.nick) || m.author.global_name || m.author.username,
+      avatar: m.author.avatar ? `https://cdn.discordapp.com/avatars/${m.author.id}/${m.author.avatar}.png?size=64` : null,
+      text, files, at: Date.parse(m.timestamp),
+    });
+  }
+  return { closed, messages };
+}
+
 // Daily login rewards: a 7-day streak, delivered in-game by the server plugin.
 export const DAILY = [
   { key: 'basic', amount: 1 }, { key: 'basic', amount: 2 }, { key: 'plus', amount: 1 }, { key: 'plus', amount: 2 },
@@ -205,11 +293,83 @@ export default async function handler(req, res) {
       discord: clip(b.discord, 40).trim(), target: clip(b.target, 32).trim(),
       createdAt: Date.now(), status: 'open',
     };
-    ticket.delivered = await sendToDiscord(ticket, player);
+    if (hasBot()) {
+      ticket.threadId = await openThread(ticket, player);
+      ticket.delivered = !!ticket.threadId;
+      if (!ticket.delivered) ticket.delivered = await sendToDiscord(ticket, player);
+    } else {
+      ticket.delivered = await sendToDiscord(ticket, player);
+    }
     await putJson(`tickets/${t.uuid}/${ticket.id}.json`, ticket);
-    idx.tickets = [{ id: ticket.id, category, subject, createdAt: ticket.createdAt, status: 'open', delivered: ticket.delivered }, ...idx.tickets].slice(0, 50);
+    idx.tickets = [{ id: ticket.id, category, subject, createdAt: ticket.createdAt, status: 'open', delivered: ticket.delivered, chat: !!ticket.threadId }, ...idx.tickets].slice(0, 50);
     await putJson(`tickets/${t.uuid}/index.json`, idx);
-    return res.json({ ok: true, id: ticket.id, delivered: ticket.delivered });
+    return res.json({ ok: true, id: ticket.id, delivered: ticket.delivered, chat: !!ticket.threadId });
+  }
+
+  // One ticket with its conversation
+  if (action === 'ticket' && req.method === 'GET') {
+    const t = await auth(req);
+    if (!t) return res.status(401).json({ error: 'auth' });
+    const id = String((req.query && req.query.id) || '').toUpperCase().replace(/[^A-F0-9]/g, '').slice(0, 8);
+    const tk = id ? await getJson(`tickets/${t.uuid}/${id}.json`) : null;
+    if (!tk) return res.status(404).json({ error: 'ticket' });
+    res.setHeader('Cache-Control', 'no-store');
+    const base = { id: tk.id, category: tk.category, subject: tk.subject, message: tk.message, createdAt: tk.createdAt, name: tk.name };
+    if (!tk.threadId || !hasBot()) return res.json({ ticket: base, chat: false, closed: tk.status === 'closed', messages: [] });
+    const v = await threadView(tk.threadId);
+    if (v.closed && tk.status !== 'closed') {
+      tk.status = 'closed'; await putJson(`tickets/${t.uuid}/${id}.json`, tk);
+      const idx = (await getJson(`tickets/${t.uuid}/index.json`)) || { tickets: [] };
+      idx.tickets = idx.tickets.map((x) => (x.id === id ? { ...x, status: 'closed' } : x));
+      await putJson(`tickets/${t.uuid}/index.json`, idx);
+    }
+    return res.json({ ticket: base, chat: true, closed: v.closed, messages: v.messages });
+  }
+
+  // Player writes into the ticket
+  if (action === 'reply' && req.method === 'POST') {
+    const t = await auth(req);
+    if (!t) return res.status(401).json({ error: 'auth' });
+    const b = readBody(req);
+    const id = String(b.id || '').toUpperCase().replace(/[^A-F0-9]/g, '').slice(0, 8);
+    const text = clip(b.text, 1500).trim();
+    if (!text) return res.status(400).json({ error: 'short' });
+    const tk = id ? await getJson(`tickets/${t.uuid}/${id}.json`) : null;
+    if (!tk || !tk.threadId || !hasBot()) return res.status(404).json({ error: 'ticket' });
+    if (tk.status === 'closed') return res.status(409).json({ error: 'closed' });
+    const r = await dc('POST', `/channels/${tk.threadId}/messages`, {
+      allowed_mentions: { parse: [] },
+      embeds: [{
+        author: { name: tk.name, icon_url: `https://mc-heads.net/avatar/${tk.uuid}/32` },
+        description: noPing(text), color: 0x3b7bff, footer: { text: WEB_FOOTER }, timestamp: new Date().toISOString(),
+      }],
+    });
+    if (!r.ok) {
+      if (r.status === 400 || r.status === 403 || r.status === 404) {
+        const v = await threadView(tk.threadId).catch(() => null);
+        if (v && v.closed) return res.status(409).json({ error: 'closed' });
+      }
+      return res.status(502).json({ error: 'discord' });
+    }
+    return res.json({ ok: true });
+  }
+
+  // Player closes the ticket
+  if (action === 'close' && req.method === 'POST') {
+    const t = await auth(req);
+    if (!t) return res.status(401).json({ error: 'auth' });
+    const id = String(readBody(req).id || '').toUpperCase().replace(/[^A-F0-9]/g, '').slice(0, 8);
+    const tk = id ? await getJson(`tickets/${t.uuid}/${id}.json`) : null;
+    if (!tk) return res.status(404).json({ error: 'ticket' });
+    if (tk.threadId && hasBot()) {
+      await dc('POST', `/channels/${tk.threadId}/messages`, { allowed_mentions: { parse: [] }, embeds: [{ description: `🔒 **${noPing(tk.name)}** closed this ticket.`, color: 0x9a9a9a, footer: { text: 'Ticket closed' } }] });
+      await dc('PATCH', `/channels/${tk.threadId}`, { archived: true, locked: true });
+    }
+    tk.status = 'closed'; await putJson(`tickets/${t.uuid}/${id}.json`, tk);
+    const idx = (await getJson(`tickets/${t.uuid}/index.json`)) || { tickets: [] };
+    idx.tickets = idx.tickets.map((x) => (x.id === id ? { ...x, status: 'closed' } : x));
+    await putJson(`tickets/${t.uuid}/index.json`, idx);
+    return res.json({ ok: true });
   }
 
   if (action === 'leaderboard' && req.method === 'GET') {
