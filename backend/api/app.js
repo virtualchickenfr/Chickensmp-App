@@ -27,8 +27,11 @@ const clip = (v, n) => String(v || '').replace(/\s+$/g, '').slice(0, n);
 const noPing = (v) => v.replace(/@(everyone|here)/gi, '@​$1');
 
 async function sendToDiscord(t, player) {
-  const hook = process.env.DISCORD_TICKET_WEBHOOK;
-  if (!hook || !/^https:\/\/(discord|discordapp)\.com\/api\/webhooks\//.test(hook)) return false;
+  const hook = String(process.env.DISCORD_TICKET_WEBHOOK || '').trim();
+  if (!/^https:\/\/([a-z]+\.)?(discord|discordapp)\.com\/api\/webhooks\/\d+\//.test(hook)) {
+    console.log(`ticket ${t.id}: webhook ${hook ? 'has an unexpected format' : 'is not set'}`);
+    return false;
+  }
   const cat = CATS[t.category] || CATS.other;
   const fields = [
     { name: 'Player', value: noPing(t.name) || '–', inline: true },
@@ -52,8 +55,11 @@ async function sendToDiscord(t, player) {
   };
   try {
     const r = await fetch(hook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) console.log(`ticket ${t.id}: Discord answered ${r.status} ${(await r.text()).slice(0, 200)}`);
+    else console.log(`ticket ${t.id}: delivered to Discord`);
     return r.ok;
-  } catch {
+  } catch (e) {
+    console.log(`ticket ${t.id}: Discord request failed ${e && e.message}`);
     return false;
   }
 }
