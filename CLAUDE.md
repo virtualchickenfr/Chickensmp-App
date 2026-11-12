@@ -8,7 +8,7 @@ One repo for everything around the Minecraft server **ChickenSMP**:
 - **Backend** (Vercel serverless): `backend/api/*.js`, `backend/vercel.json`
 - **Server plugin ChickenSMPApp** (app login, stats, daily rewards): `plugin/`
 - **Server plugin ChickenSMPAuth** (login for cracked players only): `auth-plugin/`
-- **Server plugin ChickenSMPAnnounce** (automatic announcements DE/EN, `/announcer`): `announce-plugin/` – installed 2026-11-12, active after the next restart
+- **Auto-announcements** run through **EconomyCore reminders** (`plugins/EconomyCore/economy/announcement/reminder.yml` + `config.yml` stagger 240 s). Our version lives in `server-config/EconomyCore/reminder.yml` – edit there and copy to the server. The separate plugin `announce-plugin/` (ChickenSMPAnnounce) exists but is **disabled** on the server (`ChickenSMPAnnounce.jar.disabled`) to avoid double messages.
 - **Build scripts**: `scripts/` (`build-web.sh`, `ota-manifest.js`)
 
 ## Server facts
@@ -52,7 +52,7 @@ Results go to branches because artifacts can't be downloaded from the cloud cont
 - **Not installed yet.** Plan: (1) upload jar (passive), (2) with nobody online set `online-mode=false` and `enforce-secure-profile=false`, restart, owner joins with his real account + one Bedrock test. Rollback: `online-mode=true`.
 
 ## Open items
-1. **Discord invite `AfTVp4f88` has expired** – all "Join Discord" buttons are dead. Need a new never-expiring invite code from the owner, then replace it in `src/content.js`, `backend/api/app.js`, `.github/workflows/discord-status.yml` and on the server in `plugins/ChickenSMPAnnounce/config.yml` (`links.discord`, then `/announcer reload`), redeploy backend, re-enable `discord-status.yml`.
+1. **Discord invite `AfTVp4f88` has expired** – all "Join Discord" buttons are dead. Need a new never-expiring invite code from the owner, then replace it in `src/content.js`, `backend/api/app.js`, `.github/workflows/discord-status.yml` and in the `discord` reminder of `server-config/EconomyCore/reminder.yml` (copy to the server), redeploy backend, re-enable `discord-status.yml`.
 2. Ticket webhook: owner must set Vercel env `DISCORD_TICKET_WEBHOOK` himself (never enter webhook URLs/tokens yourself), then redeploy backend and send a test ticket.
 3. Daily reward delivery in game not yet tested with a real player.
 4. Server is in maintenance mode (owner decides when to turn it off).
