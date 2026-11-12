@@ -202,8 +202,7 @@ export default async function handler(req, res) {
   }
 
   if (action === 'leaderboard' && req.method === 'GET') {
-    const blobs = await listPlayers();
-    const players = (await Promise.all(blobs.map((b) => fetch(b.url).then((r) => (r.ok ? r.json() : null)).catch(() => null)))).filter(Boolean);
+    const players = await listPlayers();
     const top = (key) => players.filter((p) => p[key] > 0).sort((a, b) => b[key] - a[key]).slice(0, 10).map((p) => ({ name: p.name, uuid: p.uuid, value: p[key], rank: p.rank || null }));
     res.setHeader('Cache-Control', 's-maxage=120, stale-while-revalidate=600');
     return res.json({

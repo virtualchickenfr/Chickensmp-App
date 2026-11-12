@@ -1,5 +1,7 @@
 // Called by the ChickenSMP server plugin (outbound only, shared secret).
-import { getJson, putJson, sha, readBody } from './_store.js';
+import { getJson, putJson, putPlayers, sha, readBody } from './_store.js';
+
+let secretHash = null; // cached per warm instance to save Redis commands
 
 const lc = (u) => String(u).toLowerCase();
 
@@ -40,22 +42,25 @@ export default async function handler(req, res) {
   if (secret.length < 32) return res.status(401).json({ error: 'secret' });
 
   // First server to connect registers its secret (trust on first use).
-  const reg = await getJson('server/secret.json');
-  if (!reg) await putJson('server/secret.json', { hash: sha(secret), createdAt: Date.now() });
-  else if (reg.hash !== sha(secret)) return res.status(401).json({ error: 'secret' });
+  if (!secretHash) {
+    const reg = await getJson('server/secret.json');
+    if (!reg) await putJson('server/secret.json', { hash: sha(secret), createdAt: Date.now() });
+    secretHash = reg ? reg.hash : sha(secret);
+  }
+  if (secretHash !== sha(secret)) return res.status(401).json({ error: 'secret' });
 
   if (b.action === 'hello') return res.json({ ok: true });
 
   if (b.action === 'code') {
     const code = String(b.code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
     if (code.length < 6 || !UUID.test(String(b.uuid))) return res.status(400).json({ error: 'bad' });
-    await putJson(`codes/${sha(code)}.json`, { uuid: String(b.uuid).toLowerCase(), name: String(b.name || ''), exp: Date.now() + 10 * 60 * 1000 });
+    await putJson(`codes/${sha(code)}.json`, { uuid: String(b.uuid).toLowerCase(), name: String(b.name || ''), exp: Date.now() + 10 * 60 * 1000 }, { ex: 600 });
     return res.json({ ok: true });
   }
 
   if (b.action === 'stats') {
     const players = (Array.isArray(b.players) ? b.players : []).filter((p) => p && UUID.test(String(p.uuid))).slice(0, 300);
-    await Promise.all(players.map((p) => putJson(`players/${String(p.uuid).toLowerCase()}.json`, cleanPlayer(p))));
+    await putPlayers(players.map(cleanPlayer));
     if (Array.isArray(b.onlineNames)) await putJson('server/online.json', { names: b.onlineNames.slice(0, 200).map(String), updatedAt: Date.now() });
     return res.json({ ok: true, count: players.length });
   }

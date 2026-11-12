@@ -42,7 +42,7 @@ Results go to branches because artifacts can't be downloaded from the cloud cont
 
 ## Backend (Vercel)
 - Team `team_5pxkgffktT4kPsTuSYBb8Q98`, project `chickensmp` (`prj_hIc9rrMHAdtnMky7N1hGqvWw9Qps`), domain store.chickensmp.net. Deployed with the Vercel MCP `create_deployment` (files inline or by sha).
-- Blob store (public) via env `BLOB_READ_WRITE_TOKEN`; env `MC_SERVER_IPS="208.115.203.109,208.115.203.106"` (plugin allowlist).
+- Storage: **Upstash Redis** (env `KV_REST_API_URL` / `KV_REST_API_TOKEN`), players in one hash `players` (field = uuid). The old Vercel Blob store was suspended on 2026-11-10 (free quota exceeded) and its data is lost; env `MC_SERVER_IPS="208.115.203.109,208.115.203.106"` (plugin allowlist).
 - `api/app.js`: login, me, logout, online, discord, daily, tickets, ticket, leaderboard. `api/mc.js`: plugin-only endpoints (IP allowlist + TOFU secret).
 - Daily rewards: 7-day streak, Europe/Berlin day boundary, delivered in game with `keymanager add {player} {key} {amount}`.
 

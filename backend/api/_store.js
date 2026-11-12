@@ -1,38 +1,55 @@
-import { put, del, list } from '@vercel/blob';
+// Storage on Upstash Redis (REST). Replaces Vercel Blob, whose free plan was far too small.
+// Players live in one hash ("players", field = uuid) so the server's stats sync is a single command.
 import crypto from 'node:crypto';
 
-const TOKEN = process.env.BLOB_READ_WRITE_TOKEN || '';
-const STORE = (TOKEN.split('_')[3] || '').toLowerCase();
-export const BASE = `https://${STORE}.public.blob.vercel-storage.com`;
+const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '';
+const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '';
 
 export const sha = (s) => crypto.createHash('sha256').update(String(s)).digest('hex');
 
-export async function getJson(path) {
-  const r = await fetch(`${BASE}/${path}?t=${Date.now()}`, { cache: 'no-store' });
-  if (!r.ok) return null;
-  try { return await r.json(); } catch { return null; }
+async function cmd(...args) {
+  if (!URL_ || !TOKEN) throw new Error('redis not configured');
+  const r = await fetch(URL_, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(args),
+  });
+  const d = await r.json();
+  if (d.error) throw new Error(d.error);
+  return d.result;
 }
 
-export async function putJson(path, obj) {
-  await put(path, JSON.stringify(obj), {
-    access: 'public', addRandomSuffix: false, allowOverwrite: true,
-    contentType: 'application/json', cacheControlMaxAge: 60,
-  });
+const parse = (v) => { if (v == null) return null; try { return JSON.parse(v); } catch { return null; } };
+const playerId = (path) => { const m = /^players\/([^/]+)\.json$/.exec(path); return m ? m[1] : null; };
+
+export async function getJson(path) {
+  const pid = playerId(path);
+  return parse(pid ? await cmd('HGET', 'players', pid) : await cmd('GET', path));
+}
+
+// opts.ex = expiry in seconds
+export async function putJson(path, obj, opts = {}) {
+  const pid = playerId(path);
+  if (pid) return cmd('HSET', 'players', pid, JSON.stringify(obj));
+  return opts.ex ? cmd('SET', path, JSON.stringify(obj), 'EX', String(opts.ex)) : cmd('SET', path, JSON.stringify(obj));
+}
+
+export async function putPlayers(list) {
+  if (!list.length) return 0;
+  const args = ['HSET', 'players'];
+  for (const p of list) args.push(p.uuid, JSON.stringify(p));
+  return cmd(...args);
 }
 
 export async function delPath(path) {
-  try { await del(`${BASE}/${path}`); } catch { /* already gone */ }
+  const pid = playerId(path);
+  try { return pid ? await cmd('HDEL', 'players', pid) : await cmd('DEL', path); } catch { return 0; }
 }
 
+// All synced players as objects
 export async function listPlayers() {
-  const out = [];
-  let cursor;
-  do {
-    const r = await list({ prefix: 'players/', limit: 1000, cursor });
-    out.push(...r.blobs);
-    cursor = r.hasMore ? r.cursor : undefined;
-  } while (cursor && out.length < 5000);
-  return out;
+  const vals = (await cmd('HVALS', 'players')) || [];
+  return vals.map(parse).filter(Boolean);
 }
 
 export function readBody(req) {
