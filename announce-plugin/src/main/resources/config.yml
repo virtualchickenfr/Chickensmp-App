@@ -1,0 +1,117 @@
+# ============================================================
+#  ChickenSMPAnnounce - automatic announcements
+#  Text format: MiniMessage  https://docs.advntr.dev/minimessage/format.html
+#  Every message has a German (de) and English (en) version; each player gets
+#  the one matching their game language (everything else = en).
+#  Placeholders: {player}, {website}, {store}, {discord}, {apk}, {ip}, {online}
+#  plus PlaceholderAPI placeholders (e.g. %keyall_timer%) if PlaceholderAPI is installed.
+#
+#  Admin:  /announcer reload | list | send <id> | next
+#  Player: /announcer  -> turn announcements off/on for yourself
+# ============================================================
+
+# Minutes between two announcements
+interval-minutes: 5
+# true = random order (never the same twice in a row), false = in the order below
+random: true
+# Don't announce when fewer players are online
+min-players: 1
+# Sound for each announcement ("" = none)   sound|volume|pitch
+sound: "minecraft:block.note_block.chime|0.6|1.4"
+# Empty line before/after each announcement
+blank-lines: true
+
+links:
+  website: "https://store.chickensmp.net"
+  store: "https://store.chickensmp.net"
+  # The old invite expired - put the new never-expiring invite here (e.g. https://discord.gg/abc123)
+  discord: "https://store.chickensmp.net"
+  apk: "https://github.com/virtualchickenfr/Chickensmp-App/releases/latest/download/ChickenSMP.apk"
+  ip: "chickensmp.net"
+
+prefix: "<gradient:#3b7bff:#7cc4ff><bold>ChickenSMP</bold></gradient> <dark_gray>»</dark_gray> "
+
+messages:
+  app:
+    de:
+      - "<white><bold>📱 Die ChickenSMP-App ist da!</bold>"
+      - "<gray>Stats, Ränge, Bestenliste, tägliche Belohnungen und Tickets – alles auf dem Handy."
+      - "<gray>Tippe <aqua>/app</aqua> für deinen Login-Code. <click:open_url:'{apk}'><hover:show_text:'<gray>Android-App herunterladen'><aqua><u>» App herunterladen</u></aqua></hover></click>"
+    en:
+      - "<white><bold>📱 The ChickenSMP app is here!</bold>"
+      - "<gray>Stats, ranks, leaderboard, daily rewards and tickets – all on your phone."
+      - "<gray>Type <aqua>/app</aqua> for your login code. <click:open_url:'{apk}'><hover:show_text:'<gray>Download the Android app'><aqua><u>» Download the app</u></aqua></hover></click>"
+  website:
+    de:
+      - "<white><bold>🌐 Unsere Website</bold>"
+      - "<gray>Ränge, Keys, Regeln und dein Profil findest du auf <click:open_url:'{website}'><hover:show_text:'<gray>Website öffnen'><aqua><u>store.chickensmp.net</u></aqua></hover></click>"
+    en:
+      - "<white><bold>🌐 Our website</bold>"
+      - "<gray>Ranks, keys, rules and your profile: <click:open_url:'{website}'><hover:show_text:'<gray>Open website'><aqua><u>store.chickensmp.net</u></aqua></hover></click>"
+  store:
+    de:
+      - "<white><bold>⭐ Unterstütze ChickenSMP</bold>"
+      - "<gray>Ränge und Crate-Keys gibt's im <click:open_url:'{store}'><hover:show_text:'<gray>Store öffnen'><gold><u>Store</u></gold></hover></click><gray> – Keys schon ab <gold>0,49 €</gold>."
+    en:
+      - "<white><bold>⭐ Support ChickenSMP</bold>"
+      - "<gray>Ranks and crate keys in our <click:open_url:'{store}'><hover:show_text:'<gray>Open store'><gold><u>store</u></gold></hover></click><gray> – keys from <gold>€0.49</gold>."
+  daily:
+    de:
+      - "<white><bold>🎁 Tägliche Belohnung</bold>"
+      - "<gray>Hol dir jeden Tag deine Belohnung mit <yellow><click:run_command:'/daily'><hover:show_text:'<gray>Klicken zum Öffnen'>/daily</hover></click></yellow><gray>. An Tag 7 wartet der <gold>Jackpot</gold>!"
+      - "<gray>Und in der App gibt's jeden Tag zusätzlich gratis Crate-Keys."
+    en:
+      - "<white><bold>🎁 Daily reward</bold>"
+      - "<gray>Claim your reward every day with <yellow><click:run_command:'/daily'><hover:show_text:'<gray>Click to open'>/daily</hover></click></yellow><gray>. Day 7 is the <gold>jackpot</gold>!"
+      - "<gray>The app gives you free crate keys every day on top."
+  discord:
+    de:
+      - "<white><bold>💬 Komm auf unseren Discord!</bold>"
+      - "<gray>News, Events, Giveaways und Support: <click:open_url:'{discord}'><hover:show_text:'<gray>Discord beitreten'><#5865F2><u>» Discord beitreten</u></#5865F2></hover></click>"
+    en:
+      - "<white><bold>💬 Join our Discord!</bold>"
+      - "<gray>News, events, giveaways and support: <click:open_url:'{discord}'><hover:show_text:'<gray>Join Discord'><#5865F2><u>» Join Discord</u></#5865F2></hover></click>"
+  tickets:
+    de:
+      - "<white><bold>🎫 Hilfe gebraucht?</bold>"
+      - "<gray>Bug, Report, Kauf-Problem oder Entbannung? Öffne ein Ticket in der App oder auf <click:open_url:'{website}'><hover:show_text:'<gray>Ticket öffnen'><aqua><u>der Website</u></aqua></hover></click><gray>."
+    en:
+      - "<white><bold>🎫 Need help?</bold>"
+      - "<gray>Bug, report, purchase issue or appeal? Open a ticket in the app or on <click:open_url:'{website}'><hover:show_text:'<gray>Open a ticket'><aqua><u>our website</u></aqua></hover></click><gray>."
+  keyall:
+    de:
+      - "<white><bold>🔑 Key All</bold>"
+      - "<gray>Jede volle Stunde bekommt jeder, der online ist, einen gratis Key. Nächster in <yellow>%keyall_timer%</yellow>."
+    en:
+      - "<white><bold>🔑 Key All</bold>"
+      - "<gray>Every full hour everyone online gets a free key. Next one in <yellow>%keyall_timer%</yellow>."
+  referral:
+    de:
+      - "<white><bold>🤝 Freunde einladen</bold>"
+      - "<gray>Bring deine Freunde mit! Sie tippen <yellow>/ref {player}</yellow><gray> und ihr bekommt beide eine Belohnung."
+    en:
+      - "<white><bold>🤝 Invite your friends</bold>"
+      - "<gray>Bring your friends! They type <yellow>/ref {player}</yellow><gray> and you both get a reward."
+  quests:
+    de:
+      - "<white><bold>📜 Quests</bold>"
+      - "<gray>Stündliche, tägliche und wöchentliche Quests bringen Geld und Crate-Keys. Schau rein mit <yellow><click:run_command:'/quests'>/quests</click></yellow><gray>."
+    en:
+      - "<white><bold>📜 Quests</bold>"
+      - "<gray>Hourly, daily and weekly quests give money and crate keys. Check them with <yellow><click:run_command:'/quests'>/quests</click></yellow><gray>."
+  bedrock:
+    de:
+      - "<white><bold>📲 Freunde auf Handy oder Konsole?</bold>"
+      - "<gray>ChickenSMP läuft auch auf Bedrock: Adresse <aqua>{ip}</aqua><gray>, Port <aqua>25573</aqua><gray>."
+    en:
+      - "<white><bold>📲 Friends on phone or console?</bold>"
+      - "<gray>ChickenSMP works on Bedrock too: address <aqua>{ip}</aqua><gray>, port <aqua>25573</aqua><gray>."
+  rules:
+    de:
+      - "<white><bold>📖 Regeln</bold>"
+      - "<gray>Kein Cheaten, kein Griefen, sei nett zu allen. Alle Regeln: <click:open_url:'{website}'><hover:show_text:'<gray>Regeln lesen'><aqua><u>store.chickensmp.net</u></aqua></hover></click>"
+      - "<gray>Jemand hält sich nicht dran? Melde ihn mit <yellow>/report</yellow><gray>."
+    en:
+      - "<white><bold>📖 Rules</bold>"
+      - "<gray>No cheating, no griefing, be nice to everyone. All rules: <click:open_url:'{website}'><hover:show_text:'<gray>Read the rules'><aqua><u>store.chickensmp.net</u></aqua></hover></click>"
+      - "<gray>Someone breaking them? Report them with <yellow>/report</yellow><gray>."

@@ -1,0 +1,14 @@
+name: ChickenSMPAnnounce
+version: ${project.version}
+main: net.chickensmp.announce.AnnouncePlugin
+api-version: '1.21'
+author: ChickenSMP
+description: Automatic announcements for ChickenSMP (website, app, Discord, daily rewards ...)
+softdepend: [PlaceholderAPI]
+commands:
+  announcer:
+    aliases: [autoannounce]
+    description: Toggle automatic announcements for yourself / admin commands
+permissions:
+  chickenannounce.admin:
+    default: op

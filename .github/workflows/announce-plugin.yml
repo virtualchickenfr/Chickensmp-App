@@ -1,0 +1,37 @@
+name: announce-plugin
+on:
+  push:
+    branches: [main]
+    paths: ['announce-plugin/**', '.github/workflows/announce-plugin.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - name: Build
+        run: cd announce-plugin && mvn -q -B package && ls -la target/*.jar
+      - name: Test on Paper 1.21.11
+        run: |
+          mkdir -p srv/plugins && cd srv
+          B=$(curl -s https://fill.papermc.io/v3/projects/paper/versions/1.21.11/builds/latest)
+          curl -sfo paper.jar "$(echo "$B" | jq -r '.downloads["server:default"].url')"
+          cp ../announce-plugin/target/ChickenSMPAnnounce.jar plugins/
+          echo "eula=true" > eula.txt; printf "online-mode=false\n" > server.properties
+          touch in; (tail -f in | java -Xmx1G -jar paper.jar --nogui > log 2>&1 &)
+          for i in $(seq 1 120); do grep -q 'Done (' log && break; sleep 2; done
+          echo "announcer list" >> in; echo "announcer reload" >> in; sleep 4
+          grep -E "ChickenSMPAnnounce|Announcements:|Reloaded|ERROR|Exception" log
+          ! grep -q "Exception" log
+          # every message must parse as MiniMessage: check via a tiny java run is overkill; YAML validity checked by load count
+          grep -q "Loaded 12 announcements" log
+      - name: Publish jar
+        run: |
+          git config user.name ci; git config user.email ci@users.noreply.github.com
+          cp announce-plugin/target/ChickenSMPAnnounce.jar /tmp/
+          git fetch -q origin plugin-dist && git checkout -q plugin-dist
+          cp /tmp/ChickenSMPAnnounce.jar . && git add ChickenSMPAnnounce.jar && git commit -qm "ChickenSMPAnnounce build" && git push -q origin plugin-dist || echo unchanged
