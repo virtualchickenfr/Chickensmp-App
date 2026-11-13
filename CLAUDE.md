@@ -45,7 +45,7 @@ Results go to branches because artifacts can't be downloaded from the cloud cont
 - Style: glassmorphism / liquid, dark, blue gradient (#3b7bff → #7cc4ff), Poppins. Default language English, German available.
 - OTA updates: expo-updates against `https://store.chickensmp.net/api/ota` (runtimeVersion "2"). A new APK is only needed for native changes.
 - Android home-screen widget: react-native-android-widget (`src/widget/`).
-- Server status: `https://api.mcsrvstat.us/3/mc.chickensmp.net:25577`, backup `https://api.mcstatus.io/v2/status/java/mc.chickensmp.net:25577`. A MOTD/version containing "maintenance" shows a yellow **Maintenance – back soon** state (app, website, widget).
+- Server status: `https://api.mcsrvstat.us/3/chickensmp.net`, backup `https://api.mcstatus.io/v2/status/java/chickensmp.net` (SRV). A MOTD/version containing "maintenance" shows a yellow **Maintenance – back soon** state (app, website, widget).
 - Tickets screen (`src/Tickets.js`): ticket list → tap opens `TicketChat` (staff messages, reply box, close). Falls back to a note when the chat backend isn't available.
 
 ## Backend (Vercel)
@@ -77,7 +77,7 @@ Results go to branches because artifacts can't be downloaded from the cloud cont
 1. **Discord invite `AfTVp4f88` has expired** – all "Join Discord" buttons are dead. Need a new never-expiring invite code from the owner, then replace it in `src/content.js`, `backend/api/app.js`, `.github/workflows/discord-status.yml` in the `discord` reminder of `server-config/EconomyCore/reminder.yml` (copy to the server) and in `menus/discord.yml` on the server, redeploy backend, re-enable `discord-status.yml`.
 2. Ticket webhook: env `DISCORD_TICKET_WEBHOOK` is set (production), channel `#📱・ᴀᴘᴘ-ᴛɪᴄᴋᴇᴛꜱ` (id 1568823436720082944), webhook "ChickenSMP Tickets". A real test ticket from a logged-in player is still pending.
 3. **Ticket chat** – see the section above (needs owner: "ja" for the Discord app, bot token into Vercel, authorize invite).
-4. **Ban/punishment logs to Discord** (asked 2026-11-13): ChickenSMPAC can send punishments via Discord webhook (it has `discord-webhook-url` for reports, line ~395 of its config; check for a punishment/log webhook field too). Ask the owner for the exact log channel name, create a webhook "ChickenSMP Logs" there, let **the owner** paste the URL into the config, then `/csac reload` and test with a warn on the owner. Also set `server-name: "ChickenSMP"` (done) and keep messages English.
+4. ~~Ban/punishment logs~~ **done 2026-11-13**: ChickenSMPAC `discord.enabled: true`, webhook "ChickenSMP Logs" in `#💻・ɪɴɢᴀᴍᴇ-ʟᴏɢs` (id 1554239408968830997), URL pasted by the owner; tested with a warn (removed with `/unwarn <ID>`).
 5. Daily reward delivery in game not yet tested with a real player.
 6. Server is still in **maintenance mode** (MOTD "⚠ Maintenance") – owner decides when to turn it off (`/maintenance off`). Promo videos are already live.
 7. ChickenSMPApp 1.2.2 (English-only `/app`) sits in `plugins/update/` and is applied on the next restart.
