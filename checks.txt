@@ -1,0 +1,6 @@
+index 200 text/html; charset=utf-8
+deeplink 200 text/html; charset=utf-8
+manifest 200 application/json; charset=utf-8
+discord: {"members":null,"online":null}
+daily(no auth): {"error":"auth"}
+ota 200
