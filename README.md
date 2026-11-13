@@ -6,7 +6,7 @@ Offizielle App für den Minecraft-Server **ChickenSMP** (chickensmp.net) – geb
 
 ## Version 1
 - Live-Serverstatus und Spielerzahl, IP mit einem Tipp kopieren
-- „So joinst du“ für Java und Bedrock (Port 25573)
+- „So joinst du“ für Java und Bedrock (Port 25018)
 - Shop: Ränge, Crate-Keys, Extras – Kauf per Discord-Ticket
 - Community: Discord (Mitglieder/online), Regeln, Team
 - Deutsch / Englisch, Glass- und Liquid-Design passend zur Website

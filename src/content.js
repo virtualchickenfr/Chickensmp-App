@@ -1,10 +1,10 @@
 export const IP = 'chickensmp.net';
-export const BEDROCK_PORT = '25573';
+export const BEDROCK_PORT = '25018';
 export const VERSION = '1.21+';
 export const DISCORD = 'https://discord.gg/AfTVp4f88';
 export const DISCORD_INVITE_API = 'https://discord.com/api/v9/invites/AfTVp4f88?with_counts=true';
-export const STATUS_API = 'https://api.mcsrvstat.us/3/mc.chickensmp.net:25577';
-export const STATUS_API_BACKUP = 'https://api.mcstatus.io/v2/status/java/mc.chickensmp.net:25577';
+export const STATUS_API = 'https://api.mcsrvstat.us/3/chickensmp.net';
+export const STATUS_API_BACKUP = 'https://api.mcstatus.io/v2/status/java/chickensmp.net';
 export const WEBSITE = 'https://store.chickensmp.net';
 
 export const C = {
@@ -64,7 +64,7 @@ const EN = {
   joinTitle: 'How to join', joinIntro: 'ChickenSMP runs on Java and Bedrock (1.21+). Pick your version.',
   address: 'Server address', port: 'Port',
   j1: 'Open Minecraft Java Edition.', j2: 'Click Multiplayer, then Add Server.', j3: 'Enter chickensmp.net as the server address.', j4: 'Select ChickenSMP, join and start playing.',
-  b1: 'Open Minecraft Bedrock Edition.', b2: 'Go to Play → Servers → Add Server.', b3: 'Address chickensmp.net, port 25573.', b4: 'Save, select ChickenSMP and join.',
+  b1: 'Open Minecraft Bedrock Edition.', b2: 'Go to Play → Servers → Add Server.', b3: 'Address chickensmp.net, port 25018.', b4: 'Save, select ChickenSMP and join.',
   helpTitle: "Can't connect?", helpText: 'Open a ticket on our Discord and the team will help you.', joinDiscord: 'Join Discord',
   storeTitle: 'Store', storeIntro: 'Stand out in chat and help keep ChickenSMP running. Ranks and keys are bought via a ticket on Discord.',
   catRanks: 'Ranks', catKeys: 'Crate keys', catExtras: 'Extras',
@@ -133,7 +133,7 @@ const DE = {
   joinTitle: 'So joinst du', joinIntro: 'ChickenSMP läuft auf Java und Bedrock (1.21+). Wähl deine Version.',
   address: 'Serveradresse', port: 'Port',
   j1: 'Öffne Minecraft Java Edition.', j2: 'Klick auf Mehrspieler und dann Server hinzufügen.', j3: 'Gib chickensmp.net als Serveradresse ein.', j4: 'ChickenSMP auswählen, beitreten und loslegen.',
-  b1: 'Öffne Minecraft Bedrock Edition.', b2: 'Geh zu Spielen → Server → Server hinzufügen.', b3: 'Adresse chickensmp.net, Port 25573.', b4: 'Speichern, ChickenSMP auswählen und beitreten.',
+  b1: 'Öffne Minecraft Bedrock Edition.', b2: 'Geh zu Spielen → Server → Server hinzufügen.', b3: 'Adresse chickensmp.net, Port 25018.', b4: 'Speichern, ChickenSMP auswählen und beitreten.',
   helpTitle: 'Verbindung klappt nicht?', helpText: 'Öffne ein Ticket auf unserem Discord, das Team hilft dir.', joinDiscord: 'Discord beitreten',
   storeTitle: 'Shop', storeIntro: 'Fall im Chat auf und hilf, ChickenSMP am Laufen zu halten. Ränge und Keys kaufst du per Ticket auf Discord.',
   catRanks: 'Ränge', catKeys: 'Crate-Keys', catExtras: 'Extras',

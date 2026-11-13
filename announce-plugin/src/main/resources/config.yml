@@ -102,10 +102,10 @@ messages:
   bedrock:
     de:
       - "<white><bold>📲 Freunde auf Handy oder Konsole?</bold>"
-      - "<gray>ChickenSMP läuft auch auf Bedrock: Adresse <aqua>{ip}</aqua><gray>, Port <aqua>25573</aqua><gray>."
+      - "<gray>ChickenSMP läuft auch auf Bedrock: Adresse <aqua>{ip}</aqua><gray>, Port <aqua>25018</aqua><gray>."
     en:
       - "<white><bold>📲 Friends on phone or console?</bold>"
-      - "<gray>ChickenSMP works on Bedrock too: address <aqua>{ip}</aqua><gray>, port <aqua>25573</aqua><gray>."
+      - "<gray>ChickenSMP works on Bedrock too: address <aqua>{ip}</aqua><gray>, port <aqua>25018</aqua><gray>."
   rules:
     de:
       - "<white><bold>📖 Regeln</bold>"

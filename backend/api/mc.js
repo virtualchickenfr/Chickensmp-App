@@ -7,7 +7,7 @@ const lc = (u) => String(u).toLowerCase();
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 // Only the ChickenSMP game server may call this endpoint.
-const ALLOWED_IPS = (process.env.MC_SERVER_IPS || '208.115.203.109').split(',').map((x) => x.trim());
+const ALLOWED_IPS = (process.env.MC_SERVER_IPS || '45.93.248.37').split(',').map((x) => x.trim());
 const num = (v) => (Number.isFinite(Number(v)) ? Number(v) : 0);
 
 function cleanPlayer(p) {
