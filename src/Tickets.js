@@ -25,13 +25,14 @@ function TicketChat({ id, token, ui, onBack, onChanged }) {
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
+  const [failed, setFailed] = useState(false);
   const scroller = useRef(null);
 
   const load = useCallback(async () => {
     try {
       const r = await fetch(`${API}?action=ticket&id=${id}`, { headers: { Authorization: `Bearer ${token}` } });
-      if (r.ok) setData(await r.json());
-    } catch (e) { /* offline */ }
+      if (r.ok) { setData(await r.json()); setFailed(false); } else setFailed(true);
+    } catch (e) { setFailed(true); }
   }, [id, token]);
 
   useEffect(() => {
@@ -69,6 +70,20 @@ function TicketChat({ id, token, ui, onBack, onChanged }) {
     Alert.alert(t('tkClose'), t('tkCloseConfirm'), [{ text: t('back'), style: 'cancel' }, { text: t('tkClose'), style: 'destructive', onPress: doClose }]);
   };
 
+  if (!data && failed) {
+    return (
+      <View>
+        <Pressable onPress={onBack} style={st.back}>
+          <Ionicons name="chevron-back" size={18} color="#fff" />
+          <Text style={st.backText}>{t('tkMine')}</Text>
+        </Pressable>
+        <Glass style={{ padding: 20, marginTop: 12, alignItems: 'center' }}>
+          <Ionicons name="chatbubbles-outline" size={28} color={C.sky} />
+          <Text style={[st.p, { marginTop: 10 }]}>{t('tkNoChat')}</Text>
+        </Glass>
+      </View>
+    );
+  }
   if (!data) return <ActivityIndicator color="#fff" style={{ marginTop: 40 }} />;
   const tk = data.ticket;
   const c = CATEGORIES.find((k) => k.id === tk.category) || CATEGORIES[5];
