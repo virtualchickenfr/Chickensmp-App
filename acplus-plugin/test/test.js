@@ -110,12 +110,13 @@ function bot(name) {
   await sleep(2000);
   const pick = viewer.inventory.items().find((i) => i.name === 'diamond_pickaxe');
   if (pick) await viewer.equip(pick, 'hand');
-  for (let i = 0; i < 9; i++) {
-    const x = 62 + i * 4;
-    consoleCmd(`setblock ${x} -61 60 minecraft:deepslate_diamond_ore`);
-    consoleCmd(`tp NormalBot ${x} -60 59`);
+  // inside the test safe box (-15..15), so the PvP-area map protection doesn't cancel the digging
+  const spots = [-14, -10, -6, -2, 2, 6, 10, 14].map((x) => [x, 5]).concat([[-14, 12]]);
+  for (const [x, z] of spots) {
+    consoleCmd(`setblock ${x} -61 ${z} minecraft:deepslate_diamond_ore`);
+    consoleCmd(`tp NormalBot ${x} -60 ${z - 1}`);
     await sleep(900);
-    const b = viewer.blockAt(new (require('vec3'))(x, -61, 60));
+    const b = viewer.blockAt(new (require('vec3'))(x, -61, z));
     if (b && b.name.includes('diamond')) { try { await viewer.dig(b, true); } catch (e) {} }
     await sleep(300);
   }
