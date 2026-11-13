@@ -15,9 +15,13 @@ One repo for everything around the Minecraft server **ChickenSMP**:
 - **Build scripts**: `scripts/` (`build-web.sh`, `ota-manifest.js`)
 
 ## Server facts
-- Paper 1.21.11, Java 21. Join address `chickensmp.net` (SRV → `mc.chickensmp.net:25577`), Bedrock port 25573.
+- Paper 1.21.11, Java 21. Join address `chickensmp.net` (SRV → `mc.chickensmp.net:25018`), Bedrock port 25018 (needs a 2nd port, see below).
+- **Moved to MC-HOST24 on 2026-11-13**: panel mc-panel.mc-host24.de, server id `ff44cd6b`, IP `45.93.248.37`, only one port `25018` (allocation limit 0). Old EnderHost server (launch.enderhost.co, `8e834fdc`, 208.115.203.109) is stopped and kept as backup – don't delete it.
+- DNS for chickensmp.net is at **lima-city** (usercp/domains/59856/records): A `chickensmp.net` + A `mc` → 45.93.248.37, SRV `_minecraft._tcp` → `0 25018 mc.chickensmp.net`. Owner logs in himself.
+- **Bedrock/voice chat open issue:** Geyser (nethernet) needs its own TCP+UDP port for built-in signaling; external signaling (warden.cloud) rejects us (404). Voice chat was disabled (`voicechat-bukkit-2.6.18.jar.disabled`) because it blocked UDP 25018. Fix: owner gets a 2nd port from MC-HOST24 → set Geyser `bedrock.port` to it, `advertise-addresses: ['45.93.248.37']` (done), re-enable voicechat (port=-1), update BEDROCK_PORT in `src/content.js`, the bedrock reminder and the Bedrock join texts.
+- Backend allowlist `MC_SERVER_IPS` includes 45.93.248.37 (redeployed 2026-11-13). App/website status uses `chickensmp.net` (SRV), no fixed port.
 - Installed: Geyser-Spigot + Floodgate, ViaVersion/ViaBackwards, PacketEvents 2.14.0, LuckPerms, Vault, PlaceholderAPI, Maintenance, TAB and many ChickenSMP* plugins.
-- Panel: launch.enderhost.co, server id `8e834fdc` (Pterodactyl). Upload jars by fetching them from raw.githubusercontent.com (branch `plugin-dist`) and POSTing to the panel's signed upload URL (`files/pull` fails with DaemonConnectionException).
+- Panel (old): launch.enderhost.co, server id `8e834fdc` (Pterodactyl). Panel (new): mc-panel.mc-host24.de `ff44cd6b` – the client API works from the page with the XSRF-TOKEN cookie. Upload jars by fetching them from raw.githubusercontent.com (branch `plugin-dist`) and POSTing to the panel's signed upload URL (`files/pull` fails with DaemonConnectionException).
 - Owner: **Fuzed_d**. Team: Carbon2834 (Developer), ItzPinguTime (Admin). Discord guild `1554105933213335552`.
 - Before any restart: check that no players are online. Never broadcast with `say`.
 
