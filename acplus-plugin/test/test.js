@@ -103,6 +103,24 @@ function bot(name) {
     ok(v.blockAt(placedPos).name === 'air', 'placed block disappears after its lifetime: ' + v.blockAt(placedPos).name);
   }
 
+  // --- X-ray alerts: NormalBot mines 9 separate diamond veins quickly
+  consoleCmd('gamemode survival NormalBot');
+  consoleCmd('tp NormalBot 60 -60 60');
+  consoleCmd('give NormalBot diamond_pickaxe 1');
+  await sleep(2000);
+  const pick = viewer.inventory.items().find((i) => i.name === 'diamond_pickaxe');
+  if (pick) await viewer.equip(pick, 'hand');
+  for (let i = 0; i < 9; i++) {
+    const x = 62 + i * 4;
+    consoleCmd(`setblock ${x} -61 60 minecraft:deepslate_diamond_ore`);
+    consoleCmd(`tp NormalBot ${x} -60 59`);
+    await sleep(900);
+    const b = viewer.blockAt(new (require('vec3'))(x, -61, 60));
+    if (b && b.name.includes('diamond')) { try { await viewer.dig(b, true); } catch (e) {} }
+    await sleep(300);
+  }
+  ok(await waitLog(/X-RAY\? NormalBot found/, 6000), 'X-ray alert after many diamond veins');
+
   for (const b of [staff, viewer]) { try { b.quit(); } catch (e) {} }
   await sleep(1000);
   console.log(failed ? `${failed} FAILED` : 'ALL PASSED');

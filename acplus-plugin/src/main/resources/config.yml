@@ -10,6 +10,8 @@ weights:
   combat: 2.0
   movement: 1.0
   player: 1.0
+  # X-ray alerts below (Grim can't see X-ray)
+  xray: 5.0
   default: 1.0
 
 # Experimental checks only count this much (0.5 = half).
@@ -129,3 +131,23 @@ arena:
   leave-title: "<green><bold>SAFE ZONE</bold></green>"
   leave-subtitle: "<gray>No PvP at spawn</gray>"
   cant-break: "<red>You can only break blocks that players placed here.</red>"
+
+# ------------------------------------------------------------
+#  X-ray alerts - GrimAC can't detect X-ray, so we watch mining:
+#  too many separate ore veins in a short time = staff alert + "XRay" flag in /sus.
+#  (Paper's built-in anti-xray is also turned on in config/paper-world-defaults.yml.)
+# ------------------------------------------------------------
+xray-alerts:
+  enabled: true
+  window-minutes: 10
+  # Points per vein; alert when a player reaches alert-points within the window.
+  ores:
+    diamond_ore: 1.0
+    deepslate_diamond_ore: 1.0
+    ancient_debris: 2.0
+    emerald_ore: 0.5
+    deepslate_emerald_ore: 0.5
+  alert-points: 8
+  # Ores above this height are ignored (except ancient debris).
+  max-y: 32
+  alert-cooldown-minutes: 5

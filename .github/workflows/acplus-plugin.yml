@@ -36,7 +36,7 @@ jobs:
           cd srv && touch server.in
           (tail -f server.in | java -Xmx2G -jar paper.jar --nogui > server.log 2>&1 &)
           for i in $(seq 1 150); do grep -q 'Done (' server.log && break; sleep 2; done
-          sed -i 's/^  cage-seconds: .*/  cage-seconds: 6/; s/^  world: "Spawn1"/  world: "world"\n  block-lifetime-seconds: 8/; s/^  safe-min: .*/  safe-min: [-15, -64, -15]/; s/^  safe-max: .*/  safe-max: [15, 319, 15]/' plugins/ChickenSMPAC-plus/config.yml
+          sed -i 's/^  cage-seconds: .*/  cage-seconds: 6/; s/^  world: "Spawn1"/  world: "world"\n  block-lifetime-seconds: 8/; s/^  safe-min: .*/  safe-min: [-15, -64, -15]/; s/^  safe-max: .*/  safe-max: [15, 319, 15]/; s/^  max-y: 32/  max-y: 320/' plugins/ChickenSMPAC-plus/config.yml
           grep -A6 "^arena:" plugins/ChickenSMPAC-plus/config.yml
           for i in $(seq 1 21); do echo "sus test Steve KillAura combat" >> server.in; done
           echo "sus" >> server.in; echo "sus Steve" >> server.in; echo "sus reload" >> server.in; sleep 4

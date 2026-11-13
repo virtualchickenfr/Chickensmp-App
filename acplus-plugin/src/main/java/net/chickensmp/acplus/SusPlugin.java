@@ -43,6 +43,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     private BanHammer hammer;
     private StaffMode staff;
     private Arena arena;
+    private XrayAlerts xray;
     private File dataFile;
 
     // config cache
@@ -77,6 +78,9 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
 
         arena = new Arena(this);
         getServer().getPluginManager().registerEvents(arena, this);
+
+        xray = new XrayAlerts(this);
+        getServer().getPluginManager().registerEvents(xray, this);
 
         // Vulcan may enable after us: try now, on its enable event, and once after startup.
         hook.tryHook();
@@ -288,6 +292,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
                 loadSettings();
                 hammer.load();
                 arena.load();
+                xray.load();
                 hook.tryHook();
                 hook.tryHookGrim();
                 send(s, "reloaded", Map.of());
