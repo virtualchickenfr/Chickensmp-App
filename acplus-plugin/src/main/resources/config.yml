@@ -107,3 +107,25 @@ staff-mode:
   fake-messages: true
   fake-quit: "<yellow>{player} left the game</yellow>"
   fake-join: "<yellow>{player} joined the game</yellow>"
+
+# ------------------------------------------------------------
+#  PvP area - everything in "world" outside the WorldGuard region
+#  "safe-region" (the spawn) is a PvP area. Players can build there;
+#  their blocks disappear again after "block-lifetime-minutes".
+#  The map itself can't be broken (except by chickensmp.acplus.arena.bypass).
+# ------------------------------------------------------------
+arena:
+  enabled: true
+  world: "Spawn1"
+  safe-region: "spawn"
+  # Used if WorldGuard is missing: the safe zone as a box.
+  safe-min: [-213, -64, 385]
+  safe-max: [-134, 319, 464]
+  block-lifetime-minutes: 20
+  # Little particle puff when a block disappears.
+  vanish-effect: true
+  enter-title: "<red><bold>PVP AREA</bold></red>"
+  enter-subtitle: "<gray>Blocks you place disappear after {minutes} minutes</gray>"
+  leave-title: "<green><bold>SAFE ZONE</bold></green>"
+  leave-subtitle: "<gray>No PvP at spawn</gray>"
+  cant-break: "<red>You can only break blocks that players placed here.</red>"

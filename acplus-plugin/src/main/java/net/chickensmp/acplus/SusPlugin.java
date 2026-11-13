@@ -42,6 +42,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     private VulcanHook hook;
     private BanHammer hammer;
     private StaffMode staff;
+    private Arena arena;
     private File dataFile;
 
     // config cache
@@ -74,6 +75,9 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         getServer().getPluginManager().registerEvents(staff, this);
         Objects.requireNonNull(getCommand("staff")).setExecutor(staff);
 
+        arena = new Arena(this);
+        getServer().getPluginManager().registerEvents(arena, this);
+
         // Vulcan may enable after us: try now, on its enable event, and once after startup.
         if (!hook.tryHook()) {
             Bukkit.getScheduler().runTask(this, () -> {
@@ -89,6 +93,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     public void onDisable() {
         if (hammer != null) hammer.shutdown();
         if (staff != null) staff.shutdown();
+        if (arena != null) arena.shutdown();
         saveData();
     }
 
@@ -279,6 +284,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
                 if (!admin(s)) return true;
                 loadSettings();
                 hammer.load();
+                arena.load();
                 hook.tryHook();
                 send(s, "reloaded", Map.of());
             }

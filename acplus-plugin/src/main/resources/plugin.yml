@@ -4,7 +4,7 @@ main: net.chickensmp.acplus.SusPlugin
 api-version: '1.21'
 author: ChickenSMP
 description: ChickenSMP anticheat extras - /sus tracker for Vulcan flags, the Banhammer and staff mode.
-softdepend: [Vulcan, ChickenSMPAC]
+softdepend: [Vulcan, ChickenSMPAC, WorldGuard]
 commands:
   sus:
     description: Show players who get flagged often by the anticheat.
@@ -38,6 +38,9 @@ permissions:
     default: op
   chickensmp.acplus.staff:
     description: Use staff mode
+    default: op
+  chickensmp.acplus.arena.bypass:
+    description: Break map blocks in the PvP area
     default: op
   chickensmp.acplus.see:
     description: See players in staff mode

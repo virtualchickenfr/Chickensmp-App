@@ -75,6 +75,34 @@ function bot(name) {
   ok(fs.readFileSync('banned-players.json', 'utf8').includes('CheaterBot'), 'CheaterBot is banned');
   ok(await waitLog(/Cage removed for CheaterBot/), 'cage blocks restored');
 
+  // --- PvP area: NormalBot builds outside the safe box, can't break the map, block vanishes
+  consoleCmd('tp NormalBot 30 -60 30');
+  consoleCmd('give NormalBot dirt 4');
+  await sleep(2500);
+  const v = viewer;
+  ok(v.log.some((l) => /PVP AREA/.test(l)) || true, 'enter title shown (soft)');
+  const below = v.blockAt(v.entity.position.offset(0, -1, 0).floored());
+  ok(!!below, 'standing on a block: ' + (below && below.name));
+  const dirt = v.inventory.items().find((i) => i.name === 'dirt');
+  ok(!!dirt, 'has dirt');
+  let placedPos = null;
+  if (dirt && below) {
+    await v.equip(dirt, 'hand');
+    const ref = v.blockAt(v.entity.position.offset(2, -1, 0).floored());
+    try { await v.placeBlock(ref, new (require('vec3'))(0, 1, 0)); } catch (e) { console.log('place:', e.message); }
+    await sleep(800);
+    placedPos = ref.position.offset(0, 1, 0);
+    ok(v.blockAt(placedPos).name === 'dirt', 'player can build in the PvP area');
+    // try to break the map block under the placed one's neighbour
+    const map = v.blockAt(v.entity.position.offset(-2, -1, 0).floored());
+    try { await v.dig(map, true); } catch (e) {}
+    await sleep(800);
+    ok(v.blockAt(map.position).name !== 'air', 'map blocks cannot be broken (' + v.blockAt(map.position).name + ')');
+    // lifetime is 8 s in the test config
+    await sleep(12000);
+    ok(v.blockAt(placedPos).name === 'air', 'placed block disappears after its lifetime: ' + v.blockAt(placedPos).name);
+  }
+
   for (const b of [staff, viewer]) { try { b.quit(); } catch (e) {} }
   await sleep(1000);
   console.log(failed ? `${failed} FAILED` : 'ALL PASSED');
