@@ -1,0 +1,22 @@
+name: ChickenSMPSus
+version: ${project.version}
+main: net.chickensmp.sus.SusPlugin
+api-version: '1.21'
+author: ChickenSMP
+description: Tracks players who get flagged often by Vulcan and lists them with /sus.
+softdepend: [Vulcan]
+commands:
+  sus:
+    description: Show players who get flagged often by the anticheat.
+    usage: /sus [player|tp|clear|reload|test]
+    permission: chickensmp.sus.use
+permissions:
+  chickensmp.sus.use:
+    description: Use /sus
+    default: op
+  chickensmp.sus.alerts:
+    description: Receive suspicious player alerts
+    default: op
+  chickensmp.sus.admin:
+    description: /sus clear, reload and test
+    default: op
