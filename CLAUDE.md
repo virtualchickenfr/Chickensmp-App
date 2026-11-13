@@ -10,6 +10,8 @@ One repo for everything around the Minecraft server **ChickenSMP**:
 - **Server plugin ChickenSMPAuth** (login for cracked players only): `auth-plugin/`
 - **Auto-announcements** run through **EconomyCore reminders** (`plugins/EconomyCore/economy/announcement/reminder.yml` + `config.yml` stagger 240 s). Our version lives in `server-config/EconomyCore/reminder.yml` – edit there and copy to the server. The separate plugin `announce-plugin/` (ChickenSMPAnnounce) exists but is **disabled** on the server (`ChickenSMPAnnounce.jar.disabled`) to avoid double messages.
 - EconomyCore menus `/discord`, `/store`, `/media`, `/rules` (`plugins/EconomyCore/economy/menus/*.yml`) were edited on the server with our links and the Media requirements from the website. EconomyCore loads **every `.yml`** in that folder as a menu – backups must end in `.bak`, never `copy.yml`.
+- **Videos** (explainroo, TikTok/Shorts 1080×1920): `videos/<name>/` (`video.json`, `script.md`, `scenes.js`, `format.js`). Rendered by `.github/workflows/explainroo.yml` (dispatch with input `project`), output pushed to branch `video-out`. Public copies for posting live on branch `media` (`videos/*.mp4`, served via raw.githubusercontent.com).
+- **Server config copies**: `server-config/` (e.g. EconomyCore reminders).
 - **Build scripts**: `scripts/` (`build-web.sh`, `ota-manifest.js`)
 
 ## Server facts
@@ -29,6 +31,7 @@ One repo for everything around the Minecraft server **ChickenSMP**:
 | `plugin.yml` | Builds ChickenSMPApp → release `plugin-N` |
 | `auth-plugin.yml` | Builds ChickenSMPAuth, runs a real Paper 1.21.11 test server with mineflayer bots, pushes the jar to `plugin-dist` |
 | `announce-plugin.yml` | Builds ChickenSMPAnnounce, loads it on a Paper test server, pushes the jar to `plugin-dist` |
+| `explainroo.yml` | Renders a video project from `videos/<project>` with voice, music, captions → branch `video-out` |
 | `discord-status.yml` | Every 10 min: Discord member/online counts → `status` branch. **Currently disabled** (invite expired, see below). |
 
 Results go to branches because artifacts can't be downloaded from the cloud container.
@@ -38,13 +41,27 @@ Results go to branches because artifacts can't be downloaded from the cloud cont
 - Style: glassmorphism / liquid, dark, blue gradient (#3b7bff → #7cc4ff), Poppins. Default language English, German available.
 - OTA updates: expo-updates against `https://store.chickensmp.net/api/ota` (runtimeVersion "2"). A new APK is only needed for native changes.
 - Android home-screen widget: react-native-android-widget (`src/widget/`).
-- Server status: `https://api.mcsrvstat.us/3/mc.chickensmp.net:25577`.
+- Server status: `https://api.mcsrvstat.us/3/mc.chickensmp.net:25577`, backup `https://api.mcstatus.io/v2/status/java/mc.chickensmp.net:25577`. A MOTD/version containing "maintenance" shows a yellow **Maintenance – back soon** state (app, website, widget).
+- Tickets screen (`src/Tickets.js`): ticket list → tap opens `TicketChat` (staff messages, reply box, close). Falls back to a note when the chat backend isn't available.
 
 ## Backend (Vercel)
 - Team `team_5pxkgffktT4kPsTuSYBb8Q98`, project `chickensmp` (`prj_hIc9rrMHAdtnMky7N1hGqvWw9Qps`), domain store.chickensmp.net. Deployed with the Vercel MCP `create_deployment` (files inline or by sha).
 - Storage: **Upstash Redis** (env `KV_REST_API_URL` / `KV_REST_API_TOKEN`), players in one hash `players` (field = uuid). The old Vercel Blob store was suspended on 2026-11-10 (free quota exceeded) and its data is lost; env `MC_SERVER_IPS="208.115.203.109,208.115.203.106"` (plugin allowlist).
-- `api/app.js`: login, me, logout, online, discord, daily, tickets, ticket, leaderboard. `api/mc.js`: plugin-only endpoints (IP allowlist + TOFU secret).
+- `api/app.js`: login, me, logout, online, discord, daily, tickets, ticket (POST create / GET one with messages), reply, close, leaderboard. Tickets that couldn't be delivered to Discord don't count towards the 3-per-30-min limit. `api/mc.js`: plugin-only endpoints (IP allowlist + TOFU secret).
 - Daily rewards: 7-day streak, Europe/Berlin day boundary, delivered in game with `keymanager add {player} {key} {amount}`.
+
+## Ticket chat (website/app ↔ Discord) – code done, NOT live yet
+- Design: one **Discord forum post per ticket**, read/written by a bot via REST (no gateway). Staff answer in the post; player sees it in the app/website and replies there (bot posts an embed with footer "Reply from the website / app"). Closing the post in Discord (archive/lock) = ticket closed; player can also close.
+- Forum channel created: **`🎫・ᴛɪᴄᴋᴇᴛ-ᴄʜᴀᴛ`** (id `1570532188393312366`), category SUPPORT, private (SR Moderator, Moderator, Helper, JR. Helper), tags: Support, Bug, Player report, Purchase / rank, Ban appeal, Other (names match `CATS` labels).
+- Backend code is committed in `backend/api/app.js` but the **live deployment is older** (it has the webhook fallback, logging and the rate-limit fix, but not the chat endpoints). Deploy all backend files after setup.
+- Still to do: (1) owner says "ja" → create Discord application "ChickenSMP Tickets" + bot in the Developer Portal (accepting developer terms needs his OK); (2) **owner** resets/copies the bot token into Vercel env `DISCORD_BOT_TOKEN` (never handle it yourself); (3) owner authorizes the bot invite (scope `bot`, perms: View Channels, Send Messages, Send Messages in Threads, Create Posts, Manage Threads, Read Message History, Embed Links, Attach Files); (4) give the bot access to the private forum; (5) set Vercel env `DISCORD_TICKET_FORUM=1570532188393312366` (plain value, fine to set); (6) redeploy backend; (7) end-to-end test.
+- Without bot env vars the backend keeps using the webhook (`DISCORD_TICKET_WEBHOOK`, channel `#📱・ᴀᴘᴘ-ᴛɪᴄᴋᴇᴛꜱ`, id 1568823436720082944) – that path is **live and tested** (2026-11-12).
+
+## Social media (Metricool)
+- Metricool connector, brand id `8065935` (timezone Europe/Berlin). Connected: **TikTok @chickensmpnet**, **YouTube** channel `UCK05N8LXaqojGe14Kd0dBmw`. Instagram not connected yet (needs a Business/Creator account, added in Metricool).
+- Posting: video must be a public URL → push to branch `media`, then `createScheduledPost` a few minutes in the future (one post per network so texts can differ). Always show the owner the texts first and post only after his "ok"/"upload". TikTok posts with the AI voice are marked `isAigc: true`.
+- Posted: Social Media Manager hiring video (2026-11-12 20:28, YouTube `zmh4aHWxQvI`), Season 2 promo `videos/promo-s2` (2026-11-12 21:55, TikTok 7707391601856875798, YouTube `PQvssH2yPuI`), owner's "Stop scrolling" video (22:06, TikTok 7707394437244030230, YouTube `auQVJn-qxq0`). Scheduled: owner's "Welcome to ChickenSMP" video 2026-11-13 17:30 on both.
+- Applications for the Social Media Manager job arrive as tickets on the website.
 
 ## ChickenSMPAuth (auth-plugin/)
 - Premium Java accounts: verified with Mojang at packet level (PacketEvents), keep their Mojang UUID via `AsyncPlayerPreLoginEvent#setPlayerProfile`. Bedrock (Floodgate / Geyser local connection): no login. Cracked: `/register` + `/login`, frozen until logged in. Cracked clients using a premium name are refused.
@@ -55,8 +72,15 @@ Results go to branches because artifacts can't be downloaded from the cloud cont
 ## Open items
 1. **Discord invite `AfTVp4f88` has expired** – all "Join Discord" buttons are dead. Need a new never-expiring invite code from the owner, then replace it in `src/content.js`, `backend/api/app.js`, `.github/workflows/discord-status.yml` in the `discord` reminder of `server-config/EconomyCore/reminder.yml` (copy to the server) and in `menus/discord.yml` on the server, redeploy backend, re-enable `discord-status.yml`.
 2. Ticket webhook: env `DISCORD_TICKET_WEBHOOK` is set (production), channel `#📱・ᴀᴘᴘ-ᴛɪᴄᴋᴇᴛꜱ` (id 1568823436720082944), webhook "ChickenSMP Tickets". A real test ticket from a logged-in player is still pending.
-3. Daily reward delivery in game not yet tested with a real player.
-4. Server is in maintenance mode (owner decides when to turn it off).
+3. **Ticket chat** – see the section above (needs owner: "ja" for the Discord app, bot token into Vercel, authorize invite).
+4. **Ban/punishment logs to Discord** (asked 2026-11-13): ChickenSMPAC can send punishments via Discord webhook (it has `discord-webhook-url` for reports, line ~395 of its config; check for a punishment/log webhook field too). Ask the owner for the exact log channel name, create a webhook "ChickenSMP Logs" there, let **the owner** paste the URL into the config, then `/csac reload` and test with a warn on the owner. Also set `server-name: "ChickenSMP"` (done) and keep messages English.
+5. Daily reward delivery in game not yet tested with a real player.
+6. Server is still in **maintenance mode** (MOTD "⚠ Maintenance") – owner decides when to turn it off (`/maintenance off`). Promo videos are already live.
+7. ChickenSMPApp 1.2.2 (English-only `/app`) sits in `plugins/update/` and is applied on the next restart.
+
+## Connection notes
+- Server panel and Discord are reached through the **built-in browser of the Claude desktop app** (or Claude in Chrome). If those tools are missing, the owner's PC isn't linked to the session – ask him to start a new task in the desktop app with his PC selected.
+- Discord in the built-in browser may be signed out; the owner signs in himself.
 
 ## Rules
 - Never enter passwords, tokens, API keys or webhook URLs; the owner does that.
