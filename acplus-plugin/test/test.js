@@ -117,8 +117,10 @@ function bot(name) {
     consoleCmd(`tp NormalBot ${x} -60 ${z - 1}`);
     await sleep(900);
     const b = viewer.blockAt(new (require('vec3'))(x, -61, z));
-    if (b && b.name.includes('diamond')) { try { await viewer.dig(b, true); } catch (e) {} }
+    let err = '';
+    if (b && b.name.includes('diamond')) { try { await viewer.dig(b, true); } catch (e) { err = e.message; } }
     await sleep(300);
+    console.log('xray spot', x, z, 'before', b && b.name, 'after', viewer.blockAt(new (require('vec3'))(x, -61, z))?.name, 'pos', viewer.entity.position.toString(), err);
   }
   ok(await waitLog(/X-RAY\? NormalBot found/, 6000), 'X-ray alert after many diamond veins');
 
