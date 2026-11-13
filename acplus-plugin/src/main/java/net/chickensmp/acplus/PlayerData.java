@@ -14,13 +14,14 @@ final class PlayerData {
 
     record Flag(long time, String check, String category, double points, int vl, String info) {}
 
-    private static final int MAX_RECENT = 600;
+    private static final int MAX_RECENT = 50;
 
     final UUID uuid;
     String name;
     final Deque<Flag> recent = new ArrayDeque<>();
     final Map<String, Integer> totals = new HashMap<>();
     int totalFlags;
+    double totalPoints;
     int susTimes;
     long firstFlag;
     long lastFlag;
@@ -37,6 +38,7 @@ final class PlayerData {
         while (recent.size() > MAX_RECENT) recent.removeFirst();
         totals.merge(f.check(), 1, Integer::sum);
         totalFlags++;
+        totalPoints += f.points();
         if (firstFlag == 0) firstFlag = f.time();
         lastFlag = f.time();
     }
@@ -45,11 +47,9 @@ final class PlayerData {
         while (!recent.isEmpty() && recent.peekFirst().time() < cutoff) recent.removeFirst();
     }
 
-    synchronized double score(long cutoff) {
-        prune(cutoff);
-        double s = 0;
-        for (Flag f : recent) s += f.points();
-        return s;
+    /** All-time sus score: points never expire. */
+    synchronized double score() {
+        return totalPoints;
     }
 
     /** Checks in the window, most frequent first, e.g. {"KillAura (A)": 6}. */

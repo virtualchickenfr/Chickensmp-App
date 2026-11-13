@@ -2,10 +2,8 @@
 #  ChickenSMPSus - suspicious player tracker for Vulcan
 # ------------------------------------------------------------
 # Every Vulcan flag adds points to a player's "sus score".
-# Points older than "window-minutes" drop off again.
-
-# Time window for the sus score, in minutes.
-window-minutes: 30
+# Points never expire. An entry is deleted automatically when the player gets banned,
+# or by staff with /sus clear <player> (or the [Delete] button).
 
 # Points per flag, by Vulcan check category. Anything not listed uses "default".
 weights:
@@ -21,9 +19,9 @@ experimental-multiplier: 0.5
 ignored-checks: []
 
 # Score needed to show up as SUSPICIOUS (red) and to alert staff.
-sus-score: 15
+sus-score: 25
 # Score shown as "watch" (yellow) in /sus.
-watch-score: 6
+watch-score: 10
 
 # Minimum minutes between two staff alerts for the same player.
 alert-cooldown-minutes: 5
@@ -41,18 +39,19 @@ discord-username: "ChickenSMP Sus"
 # Messages (MiniMessage format). Placeholders are shown in {braces}.
 messages:
   prefix: "<gradient:#3b7bff:#7cc4ff><bold>SUS</bold></gradient> <dark_gray>»</dark_gray> "
-  alert: "<red><bold>{player}</bold></red> <gray>looks suspicious:</gray> <white>{score}</white> <gray>points in {window}m</gray> <dark_gray>(</dark_gray><gray>{top}</gray><dark_gray>)</dark_gray> <click:run_command:'/sus {player}'><aqua>[Info]</aqua></click> <click:run_command:'/sus tp {player}'><green>[TP]</green></click>"
-  list-header: "<gray>Most flagged players (last {window}m):</gray>"
-  list-line: "<dark_gray>{rank}.</dark_gray> <click:run_command:'/sus {player}'><hover:show_text:'<gray>Click for details'>{color}{player}</hover></click> <dark_gray>-</dark_gray> <white>{score}</white> <gray>pts</gray> <dark_gray>|</dark_gray> <gray>{top}</gray>{online}"
-  list-empty: "<green>Nobody has been flagged in the last {window} minutes.</green>"
+  alert: "<red><bold>{player}</bold></red> <gray>looks suspicious:</gray> <white>{score}</white> <gray>points</gray> <dark_gray>(</dark_gray><gray>{top}</gray><dark_gray>)</dark_gray> <click:run_command:'/sus {player}'><aqua>[Info]</aqua></click> <click:run_command:'/sus tp {player}'><green>[TP]</green></click> <click:run_command:'/sus watch {player}'><aqua>[Watch]</aqua></click>"
+  list-header: "<gray>Most flagged players:</gray>"
+  list-line: "<dark_gray>{rank}.</dark_gray> <click:run_command:'/sus {player}'><hover:show_text:'<gray>Click for details'>{color}{player}</hover></click> <dark_gray>-</dark_gray> <white>{score}</white> <gray>pts</gray> <dark_gray>|</dark_gray> <gray>{top}</gray>{online} <click:run_command:'/sus clear {player}'><hover:show_text:'<gray>Delete entry'><dark_red>[x]</dark_red></hover></click>"
+  list-empty: "<green>Nobody has been flagged yet.</green>"
   online-tag: " <green>●</green>"
   no-data: "<gray>No flags recorded for <white>{player}</white>.</gray>"
   cleared: "<green>Cleared all sus data of <white>{player}</white>.</green>"
   reloaded: "<green>Config reloaded.</green>"
   not-online: "<red>{player} is not online.</red>"
-  teleported: "<green>Teleported to <white>{player}</white>.</green>"
+  teleported: "<green>Staff mode on, teleported to <white>{player}</white>.</green> <gray>/staff to go back.</gray>"
+  watching: "<green>Staff mode on, watching <white>{player}</white>.</green> <gray>Sneak to stop, /staff to go back.</gray>"
   vulcan-missing: "<yellow>Vulcan is not installed or not loaded - no flags are being recorded.</yellow>"
-  usage: "<gray>/sus</gray> <dark_gray>-</dark_gray> list <dark_gray>|</dark_gray> <gray>/sus <player></gray> <dark_gray>|</dark_gray> <gray>/sus tp <player></gray> <dark_gray>|</dark_gray> <gray>/sus clear <player></gray> <dark_gray>|</dark_gray> <gray>/sus reload</gray>"
+  usage: "<gray>/sus</gray> <dark_gray>-</dark_gray> list <dark_gray>|</dark_gray> <gray>/sus <player></gray> <dark_gray>|</dark_gray> <gray>/sus tp|watch <player></gray> <dark_gray>|</dark_gray> <gray>/sus clear <player></gray> <dark_gray>|</dark_gray> <gray>/sus reload</gray>"
 
 # ------------------------------------------------------------
 #  Banhammer - /banhammer gives it. Right-click switches the mode,

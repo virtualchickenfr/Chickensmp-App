@@ -45,7 +45,6 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     private File dataFile;
 
     // config cache
-    private long windowMs;
     private double susScore, watchScore, expMult;
     private long alertCooldownMs;
     private int listSize;
@@ -104,12 +103,51 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         if (d != null) d.name = e.getPlayer().getName();
     }
 
+    // ------------------------------------------------------------ auto delete when banned
+
+    private static final java.util.regex.Pattern BAN_CMD =
+            java.util.regex.Pattern.compile("^/?(?:[\\w-]+:)?(?:ban|tempban|ipban|tempipban|banip)\\s+(\\S+)", java.util.regex.Pattern.CASE_INSENSITIVE);
+
+    /** Called for every command that might ban someone: removes their /sus entry. */
+    void onPossibleBan(String command) {
+        java.util.regex.Matcher m = BAN_CMD.matcher(command.trim());
+        if (!m.find()) return;
+        String name = m.group(1);
+        Bukkit.getScheduler().runTaskLater(this, () -> removeBanned(name), 2L);
+    }
+
+    void removeBanned(String name) {
+        PlayerData d = find(name);
+        if (d == null) return;
+        data.remove(d.uuid);
+        getLogger().info("Removed " + d.name + " from /sus (banned).");
+        Bukkit.getScheduler().runTaskAsynchronously(this, this::saveData);
+    }
+
+    @EventHandler(priority = org.bukkit.event.EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerCommand(org.bukkit.event.player.PlayerCommandPreprocessEvent e) {
+        onPossibleBan(e.getMessage());
+    }
+
+    @EventHandler(priority = org.bukkit.event.EventPriority.MONITOR, ignoreCancelled = true)
+    public void onConsoleCommand(org.bukkit.event.server.ServerCommandEvent e) {
+        onPossibleBan(e.getCommand());
+    }
+
+    @EventHandler(priority = org.bukkit.event.EventPriority.MONITOR, ignoreCancelled = true)
+    public void onKick(org.bukkit.event.player.PlayerKickEvent e) {
+        String reason = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(e.reason());
+        if (reason.toLowerCase(Locale.ROOT).contains("banned")) {
+            String name = e.getPlayer().getName();
+            Bukkit.getScheduler().runTaskLater(this, () -> removeBanned(name), 2L);
+        }
+    }
+
     // ------------------------------------------------------------ settings
 
     private void loadSettings() {
         reloadConfig();
         FileConfiguration c = getConfig();
-        windowMs = Math.max(1, c.getLong("window-minutes", 30)) * 60_000L;
         susScore = c.getDouble("sus-score", 15);
         watchScore = c.getDouble("watch-score", 6);
         expMult = c.getDouble("experimental-multiplier", 0.5);
@@ -168,18 +206,16 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         d.name = name;
         d.add(new PlayerData.Flag(now, check, category == null ? "?" : category, pts, vl, info == null ? "" : info));
 
-        double score = d.score(now - windowMs);
+        double score = d.score();
         boolean alert = false;
         synchronized (d) {
             if (score >= susScore) {
                 if (!d.sus) { d.sus = true; d.susTimes++; }
                 if (now - d.lastAlert >= alertCooldownMs) { d.lastAlert = now; alert = true; }
-            } else if (score < watchScore) {
-                d.sus = false;
             }
         }
         if (alert) {
-            String top = PlayerData.top(d.recentChecks(now - windowMs), 3);
+            String top = PlayerData.top(d.totalChecks(), 3);
             Bukkit.getScheduler().runTask(this, () -> alertStaff(d.name, score, top));
             postDiscord(d, score, top);
         }
@@ -187,7 +223,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
 
     private void alertStaff(String name, double score, String top) {
         Component c = mm("alert", Map.of("player", esc(name), "score", fmt(score),
-                "window", String.valueOf(windowMs / 60_000L), "top", esc(top)), true);
+                "top", esc(top)), true);
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.hasPermission("chickensmp.acplus.alerts")) continue;
             p.sendMessage(c);
@@ -202,7 +238,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
                 + "\"title\":\"Suspicious player\",\"color\":15158332,"
                 + "\"fields\":["
                 + "{\"name\":\"Player\",\"value\":" + jstr(d.name) + ",\"inline\":true},"
-                + "{\"name\":\"Score\",\"value\":" + jstr(fmt(score) + " in " + windowMs / 60_000L + "m") + ",\"inline\":true},"
+                + "{\"name\":\"Score\",\"value\":" + jstr(fmt(score) + " (" + d.totalFlags + " flags)") + ",\"inline\":true},"
                 + "{\"name\":\"Times sus\",\"value\":" + jstr(String.valueOf(d.susTimes)) + ",\"inline\":true},"
                 + "{\"name\":\"Top checks\",\"value\":" + jstr(top) + "}"
                 + "],\"footer\":{\"text\":\"ChickenSMP\"}}]}";
@@ -246,20 +282,27 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
                 hook.tryHook();
                 send(s, "reloaded", Map.of());
             }
-            case "clear" -> {
-                if (!admin(s) || a.length < 2) { if (a.length < 2) send(s, "usage", Map.of()); return true; }
+            case "clear", "delete" -> {
+                if (a.length < 2) { send(s, "usage", Map.of()); return true; }
                 PlayerData d = find(a[1]);
                 if (d == null) { send(s, "no-data", Map.of("player", esc(a[1]))); return true; }
                 data.remove(d.uuid);
                 Bukkit.getScheduler().runTaskAsynchronously(this, this::saveData);
                 send(s, "cleared", Map.of("player", esc(d.name)));
             }
-            case "tp" -> {
+            case "tp", "watch" -> {
                 if (!(s instanceof Player p) || a.length < 2) { send(s, "usage", Map.of()); return true; }
                 Player t = Bukkit.getPlayerExact(a[1]);
                 if (t == null) { send(s, "not-online", Map.of("player", esc(a[1]))); return true; }
-                p.teleportAsync(t.getLocation());
-                send(s, "teleported", Map.of("player", esc(t.getName())));
+                if (t.equals(p)) return true;
+                // Go invisible first (staff mode), then jump to them.
+                if (!staff.isActive(p)) staff.enable(p);
+                p.teleportAsync(t.getLocation()).thenRun(() -> {
+                    if (sub.equals("watch")) Bukkit.getScheduler().runTaskLater(this, () -> {
+                        if (p.isOnline() && t.isOnline()) p.setSpectatorTarget(t);
+                    }, 5L);
+                });
+                send(s, sub.equals("watch") ? "watching" : "teleported", Map.of("player", esc(t.getName())));
             }
             case "test" -> {
                 // /sus test <player> [check] [category] - simulates a Vulcan flag, for testing alerts.
@@ -289,16 +332,14 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     }
 
     private void list(CommandSender s) {
-        long cutoff = System.currentTimeMillis() - windowMs;
-        String win = String.valueOf(windowMs / 60_000L);
         if (!hook.isHooked()) send(s, "vulcan-missing", Map.of());
         List<Map.Entry<PlayerData, Double>> rows = data.values().stream()
-                .map(d -> Map.entry(d, d.score(cutoff)))
+                .map(d -> Map.entry(d, d.score()))
                 .filter(e -> e.getValue() > 0)
                 .sorted(Map.Entry.<PlayerData, Double>comparingByValue().reversed())
                 .limit(listSize).toList();
-        if (rows.isEmpty()) { send(s, "list-empty", Map.of("window", win)); return; }
-        send(s, "list-header", Map.of("window", win));
+        if (rows.isEmpty()) { send(s, "list-empty", Map.of()); return; }
+        send(s, "list-header", Map.of());
         int rank = 1;
         for (Map.Entry<PlayerData, Double> r : rows) {
             PlayerData d = r.getKey();
@@ -309,7 +350,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
                     "player", esc(d.name),
                     "color", color,
                     "score", fmt(sc),
-                    "top", esc(PlayerData.top(d.recentChecks(cutoff), 2)),
+                    "top", esc(PlayerData.top(d.totalChecks(), 2)),
                     "online", Bukkit.getPlayer(d.uuid) != null ? msg("online-tag") : ""), false));
         }
     }
@@ -318,18 +359,16 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         PlayerData d = find(name);
         if (d == null) { send(s, "no-data", Map.of("player", esc(name))); return; }
         long now = System.currentTimeMillis();
-        long cutoff = now - windowMs;
-        double sc = d.score(cutoff);
+        double sc = d.score();
         String state = sc >= susScore ? "<red><bold>SUSPICIOUS</bold></red>" : sc >= watchScore ? "<yellow>WATCH</yellow>" : "<green>OK</green>";
         SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         boolean online = Bukkit.getPlayer(d.uuid) != null;
         String n = esc(d.name);
         List<String> lines = new ArrayList<>();
         lines.add(msg("prefix") + "<white><bold>" + n + "</bold></white> " + state + (online ? " <green>● online</green>" : " <gray>offline</gray>"));
-        lines.add("<gray>Score: <white>" + fmt(sc) + "</white> / " + fmt(susScore) + " <dark_gray>(" + d.recentCount(cutoff) + " flags in " + windowMs / 60_000L + "m)</dark_gray>");
-        lines.add("<gray>Recent checks: <white>" + esc(PlayerData.top(d.recentChecks(cutoff), 5)) + "</white>");
-        lines.add("<gray>All time: <white>" + d.totalFlags + "</white> flags, sus <white>" + d.susTimes + "</white>x, first " + (d.firstFlag == 0 ? "-" : df.format(new Date(d.firstFlag))) + ", last " + (d.lastFlag == 0 ? "-" : df.format(new Date(d.lastFlag))));
-        lines.add("<gray>Top checks ever: <white>" + esc(PlayerData.top(d.totalChecks(), 5)) + "</white>");
+        lines.add("<gray>Score: <white>" + fmt(sc) + "</white> / " + fmt(susScore) + " <dark_gray>(" + d.totalFlags + " flags, never expires)</dark_gray>");
+        lines.add("<gray>Sus alerts: <white>" + d.susTimes + "</white>x, first flag " + (d.firstFlag == 0 ? "-" : df.format(new Date(d.firstFlag))) + ", last " + (d.lastFlag == 0 ? "-" : df.format(new Date(d.lastFlag))));
+        lines.add("<gray>Top checks: <white>" + esc(PlayerData.top(d.totalChecks(), 5)) + "</white>");
         List<PlayerData.Flag> last = d.lastFlags(5);
         if (!last.isEmpty()) {
             lines.add("<gray>Last flags:</gray>");
@@ -342,11 +381,13 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
             }
         }
         StringBuilder actions = new StringBuilder();
-        if (online) actions.append("<click:run_command:'/sus tp ").append(n).append("'><green>[TP]</green></click> ");
+        if (online) {
+            actions.append("<click:run_command:'/sus tp ").append(n).append("'><hover:show_text:'<gray>Staff mode + teleport'><green>[TP]</green></hover></click> ");
+            actions.append("<click:run_command:'/sus watch ").append(n).append("'><hover:show_text:'<gray>Staff mode + watch from their view'><aqua>[Watch]</aqua></hover></click> ");
+        }
         actions.append("<click:run_command:'/history ").append(n).append("'><aqua>[History]</aqua></click> ");
         actions.append("<click:suggest_command:'/punish ").append(n).append("'><red>[Punish]</red></click> ");
-        if (s.hasPermission("chickensmp.acplus.admin"))
-            actions.append("<click:suggest_command:'/sus clear ").append(n).append("'><gray>[Clear]</gray></click>");
+        actions.append("<click:run_command:'/sus clear ").append(n).append("'><hover:show_text:'<gray>Delete this entry'><gray>[Delete]</gray></hover></click>");
         lines.add(actions.toString());
         for (String l : lines) s.sendMessage(MM.deserialize(l));
     }
@@ -355,12 +396,12 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] a) {
         List<String> out = new ArrayList<>();
         if (a.length == 1) {
-            out.addAll(List.of("tp", "help"));
-            if (s.hasPermission("chickensmp.acplus.admin")) out.addAll(List.of("clear", "reload", "test"));
+            out.addAll(List.of("tp", "watch", "clear", "help"));
+            if (s.hasPermission("chickensmp.acplus.admin")) out.addAll(List.of("reload", "test"));
             for (PlayerData d : data.values()) if (d.name != null) out.add(d.name);
-        } else if (a.length == 2 && List.of("tp", "clear", "test").contains(a[0].toLowerCase(Locale.ROOT))) {
+        } else if (a.length == 2 && List.of("tp", "watch", "clear", "delete", "test").contains(a[0].toLowerCase(Locale.ROOT))) {
             for (Player p : Bukkit.getOnlinePlayers()) out.add(p.getName());
-            if (!a[0].equalsIgnoreCase("tp")) for (PlayerData d : data.values()) if (d.name != null) out.add(d.name);
+            if (!a[0].equalsIgnoreCase("tp") && !a[0].equalsIgnoreCase("watch")) for (PlayerData d : data.values()) if (d.name != null) out.add(d.name);
         }
         String pre = a[a.length - 1].toLowerCase(Locale.ROOT);
         return out.stream().distinct().filter(x -> x.toLowerCase(Locale.ROOT).startsWith(pre)).sorted().toList();
@@ -373,7 +414,6 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         YamlConfiguration y = YamlConfiguration.loadConfiguration(dataFile);
         ConfigurationSection root = y.getConfigurationSection("players");
         if (root == null) return;
-        long cutoff = System.currentTimeMillis() - windowMs;
         for (String key : root.getKeys(false)) {
             try {
                 ConfigurationSection p = root.getConfigurationSection(key);
@@ -383,11 +423,11 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
                 d.susTimes = p.getInt("sus-times");
                 d.firstFlag = p.getLong("first");
                 d.lastFlag = p.getLong("last");
+                d.totalPoints = p.getDouble("points", d.totalFlags);
                 ConfigurationSection t = p.getConfigurationSection("checks");
                 if (t != null) for (String c : t.getKeys(false)) d.totals.put(c.replace('_', '.'), t.getInt(c));
                 for (Map<?, ?> m : p.getMapList("recent")) {
                     long time = ((Number) m.get("t")).longValue();
-                    if (time < cutoff) continue;
                     d.recent.add(new PlayerData.Flag(time, String.valueOf(m.get("c")), String.valueOf(m.get("k")),
                             ((Number) m.get("p")).doubleValue(), ((Number) m.get("v")).intValue(), String.valueOf(m.get("i"))));
                 }
@@ -400,16 +440,15 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
 
     private synchronized void saveData() {
         YamlConfiguration y = new YamlConfiguration();
-        long cutoff = System.currentTimeMillis() - windowMs;
         for (PlayerData d : data.values()) {
             synchronized (d) {
-                d.prune(cutoff);
                 String base = "players." + d.uuid;
                 y.set(base + ".name", d.name);
                 y.set(base + ".total", d.totalFlags);
                 y.set(base + ".sus-times", d.susTimes);
                 y.set(base + ".first", d.firstFlag);
                 y.set(base + ".last", d.lastFlag);
+                y.set(base + ".points", d.totalPoints);
                 for (Map.Entry<String, Integer> e : d.totals.entrySet())
                     y.set(base + ".checks." + e.getKey().replace('.', '_'), e.getValue());
                 List<Map<String, Object>> rec = new ArrayList<>();

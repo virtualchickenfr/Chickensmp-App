@@ -37,12 +37,15 @@ jobs:
           (tail -f server.in | java -Xmx2G -jar paper.jar --nogui > server.log 2>&1 &)
           for i in $(seq 1 150); do grep -q 'Done (' server.log && break; sleep 2; done
           sed -i 's/^  cage-seconds: .*/  cage-seconds: 6/' plugins/ChickenSMPAC-plus/config.yml
-          for i in $(seq 1 9); do echo "sus test Steve KillAura combat" >> server.in; done
+          for i in $(seq 1 13); do echo "sus test Steve KillAura combat" >> server.in; done
           echo "sus" >> server.in; echo "sus Steve" >> server.in; echo "sus reload" >> server.in; sleep 4
           grep -q "ChickenSMPAC-plus enabled" server.log
           grep -q "Steve looks suspicious" server.log
-          grep -q "KillAura (A) x9" server.log
+          grep -q "KillAura (A) x13" server.log
           grep -q "Config reloaded" server.log
+          echo "ban Steve test" >> server.in; sleep 3; echo "sus" >> server.in; sleep 2
+          grep -q "Removed Steve from /sus (banned)" server.log
+          grep -q "Nobody has been flagged yet" server.log
       - name: Bots (Banhammer + staff mode)
         run: |
           cd srv && npm init -y >/dev/null && npm i -s mineflayer >/dev/null 2>&1

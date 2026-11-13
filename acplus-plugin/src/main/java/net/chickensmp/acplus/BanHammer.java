@@ -328,6 +328,7 @@ final class BanHammer implements Listener, CommandExecutor, TabCompleter {
         CommandSender as = staff != null ? staff : Bukkit.getConsoleSender();
         plugin.getLogger().info("Banhammer: " + as.getName() + " -> /" + cmd);
         Bukkit.dispatchCommand(as, cmd);
+        plugin.onPossibleBan(cmd);
     }
 
     /** Called on plugin disable: tear down all cages and still run their punishments. */

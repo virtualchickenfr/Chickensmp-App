@@ -43,7 +43,7 @@ final class StaffMode implements Listener, CommandExecutor {
         }, 40L, 40L);
     }
 
-    boolean isActive(Player p) {
+    public boolean isActive(Player p) {
         return active.containsKey(p.getUniqueId());
     }
 
