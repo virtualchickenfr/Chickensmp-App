@@ -13,7 +13,7 @@ import {
 } from '@expo-google-fonts/poppins';
 import {
   BEDROCK_PORT, C, DISCORD, DISCORD_INVITE_API, EXTRAS, IP, KEYS, PIXELS, RANKS, RULES,
-  STATUS_API, STRINGS, TEAM, VERSION, WEBSITE,
+  STATUS_API, STATUS_API_BACKUP, STRINGS, TEAM, VERSION, WEBSITE,
 } from './src/content';
 import ProfileScreen from './src/Profile';
 import Updater from './src/Updater';
@@ -39,9 +39,20 @@ function useLiveData() {
   const [discord, setDiscord] = useState({ members: null, online: null });
   const load = useCallback(async () => {
     try {
-      const r = await fetch(STATUS_API);
-      const d = await r.json();
-      if (d && d.online) setStatus({ state: 'online', players: d.players ? d.players.online : 0, max: d.players ? d.players.max : 0 });
+      // Two status services: a single failed lookup should not show the server as offline.
+      const isMaint = (txt) => /maintenance|ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ|wartung/i.test(String(txt || ''));
+      let res = null;
+      try {
+        const d = await (await fetch(STATUS_API)).json();
+        if (d && d.online) res = { players: d.players ? d.players.online : 0, max: d.players ? d.players.max : 0, maint: isMaint([].concat((d.motd && d.motd.clean) || []).join(' ') + ' ' + (d.version || '')) };
+      } catch (e) { /* try the backup */ }
+      if (!res) {
+        try {
+          const d = await (await fetch(STATUS_API_BACKUP)).json();
+          if (d && d.online) res = { players: d.players ? d.players.online : 0, max: d.players ? d.players.max : 0, maint: isMaint(((d.motd && d.motd.clean) || '') + ' ' + ((d.version && d.version.name_clean) || '')) };
+        } catch (e) { /* both failed */ }
+      }
+      if (res) setStatus({ state: res.maint ? 'maintenance' : 'online', players: res.players, max: res.max });
       else setStatus({ state: 'offline', players: null, max: null });
     } catch (e) {
       setStatus({ state: 'offline', players: null, max: null });
@@ -212,8 +223,8 @@ function Pixel({ name, color, size = 6 }) {
 function StatusPill() {
   const { t, live } = useApp();
   const st = live.status.state;
-  const color = st === 'online' ? C.green : st === 'offline' ? C.red : C.muted;
-  const text = st === 'loading' ? t('checking') : st === 'online' ? `${t('serverOnline')} · ${live.status.players}/${live.status.max}` : t('serverOffline');
+  const color = st === 'online' ? C.green : st === 'maintenance' ? C.gold : st === 'offline' ? C.red : C.muted;
+  const text = st === 'loading' ? t('checking') : st === 'online' ? `${t('serverOnline')} · ${live.status.players}/${live.status.max}` : st === 'maintenance' ? t('serverMaint') : t('serverOffline');
   return (
     <View style={styles.statusPill}>
       <View style={[styles.statusDot, { backgroundColor: color }]} />
@@ -254,7 +265,7 @@ function OnlineNow() {
 
 function HomeScreen({ go }) {
   const { t, live, toast, desk } = useApp();
-  const online = live.status.state === 'online' ? String(live.status.players) : live.status.state === 'offline' ? t('offline') : '–';
+  const online = live.status.state === 'online' ? String(live.status.players) : live.status.state === 'maintenance' ? t('maintShort') : live.status.state === 'offline' ? t('offline') : '–';
   const cards = [
     { title: t('cardJoin'), sub: t('cardJoinSub'), color: C.sky, icon: 'game-controller', onPress: () => go('join') },
     { title: t('cardRules'), sub: t('cardRulesSub'), color: C.green, icon: 'shield-checkmark', onPress: () => go('community') },
@@ -788,8 +799,8 @@ function Header({ lang, setLang }) {
       <Image source={require('./assets/logo.png')} style={styles.logo} resizeMode="contain" />
       <View style={{ flex: 1 }} />
       <View style={[styles.statusPill, { marginTop: 0, marginRight: 8 }]}>
-        <View style={[styles.statusDot, { backgroundColor: live.status.state === 'online' ? C.green : live.status.state === 'offline' ? C.red : C.muted }]} />
-        <Text style={styles.statusText}>{live.status.state === 'online' ? live.status.players : '–'}</Text>
+        <View style={[styles.statusDot, { backgroundColor: live.status.state === 'online' ? C.green : live.status.state === 'maintenance' ? C.gold : live.status.state === 'offline' ? C.red : C.muted }]} />
+        <Text style={styles.statusText}>{live.status.state === 'online' ? live.status.players : live.status.state === 'maintenance' ? t('maintShort') : '–'}</Text>
       </View>
       <Glass style={styles.lang} strong>
         {['de', 'en'].map((l) => (
@@ -823,8 +834,8 @@ function DeskHeader({ lang, setLang, tab, go }) {
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
         <View style={[styles.statusPill, { marginTop: 0 }]}>
-          <View style={[styles.statusDot, { backgroundColor: live.status.state === 'online' ? C.green : live.status.state === 'offline' ? C.red : C.muted }]} />
-          <Text style={styles.statusText}>{live.status.state === 'online' ? `${live.status.players} ${t('online')}` : '–'}</Text>
+          <View style={[styles.statusDot, { backgroundColor: live.status.state === 'online' ? C.green : live.status.state === 'maintenance' ? C.gold : live.status.state === 'offline' ? C.red : C.muted }]} />
+          <Text style={styles.statusText}>{live.status.state === 'online' ? `${live.status.players} ${t('online')}` : live.status.state === 'maintenance' ? t('serverMaint') : '–'}</Text>
         </View>
         <CopyBtn value={IP} label={IP} small />
         <Glass style={styles.lang} strong>

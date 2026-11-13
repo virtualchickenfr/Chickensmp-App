@@ -6,8 +6,8 @@ const time = (ms) => {
   return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 };
 
-export function ServerWidget({ online, players, max, names, updatedAt, wide }) {
-  const color = online ? '#3ddc84' : '#ff5a6a';
+export function ServerWidget({ online, maintenance, players, max, names, updatedAt, wide }) {
+  const color = maintenance ? '#f5b82e' : online ? '#3ddc84' : '#ff5a6a';
   return (
     <FlexWidget
       clickAction="OPEN_APP"
@@ -22,7 +22,7 @@ export function ServerWidget({ online, players, max, names, updatedAt, wide }) {
       <FlexWidget style={{ flexDirection: 'row', alignItems: 'center' }}>
         <FlexWidget style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: color }} />
         <TextWidget
-          text={online ? `  ${players}/${max} online` : '  Offline'}
+          text={maintenance ? '  Maintenance' : online ? `  ${players}/${max} online` : '  Offline'}
           style={{ fontSize: 20, color: '#ffffff', fontWeight: 'bold' }}
         />
       </FlexWidget>

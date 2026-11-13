@@ -4,6 +4,7 @@ export const VERSION = '1.21+';
 export const DISCORD = 'https://discord.gg/AfTVp4f88';
 export const DISCORD_INVITE_API = 'https://discord.com/api/v9/invites/AfTVp4f88?with_counts=true';
 export const STATUS_API = 'https://api.mcsrvstat.us/3/mc.chickensmp.net:25577';
+export const STATUS_API_BACKUP = 'https://api.mcstatus.io/v2/status/java/mc.chickensmp.net:25577';
 export const WEBSITE = 'https://store.chickensmp.net';
 
 export const C = {
@@ -54,7 +55,7 @@ const EN = {
   tagline: 'A survival server to play together. Build with friends, trade, explore and make the world your own.',
   copyIp: 'Copy IP', ipCopied: 'IP copied!', copied: 'Copied!', copy: 'Copy',
   online: 'Online', version: 'Version', crossplay: 'Crossplay', offline: 'Offline',
-  serverOnline: 'Server online', serverOffline: 'Server offline', checking: 'Checking…',
+  serverOnline: 'Server online', serverOffline: 'Server offline', serverMaint: 'Maintenance – back soon', maintShort: 'Maint.', checking: 'Checking…',
   seasonTitle: 'The new season is live', seasonSub: 'Fresh world, new crates and quests – join now.',
   cardJoin: 'How to join', cardJoinSub: 'Java and Bedrock, step by step',
   cardRules: 'Rules', cardRulesSub: 'Read before you play',
@@ -123,7 +124,7 @@ const DE = {
   tagline: 'Ein Survival-Server zum gemeinsamen Spielen. Bau mit Freunden, handle, erkunde und mach die Welt zu deiner.',
   copyIp: 'IP kopieren', ipCopied: 'IP kopiert!', copied: 'Kopiert!', copy: 'Kopieren',
   online: 'Online', version: 'Version', crossplay: 'Crossplay', offline: 'Offline',
-  serverOnline: 'Server online', serverOffline: 'Server offline', checking: 'Wird geprüft…',
+  serverOnline: 'Server online', serverOffline: 'Server offline', serverMaint: 'Wartung – bald zurück', maintShort: 'Wartung', checking: 'Wird geprüft…',
   seasonTitle: 'Die neue Season ist live', seasonSub: 'Frische Welt, neue Crates und Quests – jetzt joinen.',
   cardJoin: 'So joinst du', cardJoinSub: 'Java und Bedrock, Schritt für Schritt',
   cardRules: 'Regeln', cardRulesSub: 'Vor dem Spielen lesen',
