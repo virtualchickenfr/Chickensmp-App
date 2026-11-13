@@ -79,11 +79,13 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         getServer().getPluginManager().registerEvents(arena, this);
 
         // Vulcan may enable after us: try now, on its enable event, and once after startup.
-        if (!hook.tryHook()) {
-            Bukkit.getScheduler().runTask(this, () -> {
-                if (!hook.tryHook()) getLogger().warning("Vulcan is not installed or not enabled - no flags are recorded yet.");
-            });
-        }
+        hook.tryHook();
+        hook.tryHookGrim();
+        Bukkit.getScheduler().runTask(this, () -> {
+            hook.tryHook();
+            hook.tryHookGrim();
+            if (!hook.isHooked()) getLogger().warning("No anticheat (GrimAC or Vulcan) found - no flags are recorded yet.");
+        });
         // Save every 5 minutes.
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::saveData, 6000L, 6000L);
         getLogger().info("ChickenSMPAC-plus enabled (" + data.size() + " players in history).");
@@ -100,6 +102,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     @EventHandler
     public void onPluginEnable(PluginEnableEvent e) {
         if (e.getPlugin().getName().equals("Vulcan")) hook.tryHook();
+        if (e.getPlugin().getName().equals("GrimAC")) hook.tryHookGrim();
     }
 
     @EventHandler
@@ -286,6 +289,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
                 hammer.load();
                 arena.load();
                 hook.tryHook();
+                hook.tryHookGrim();
                 send(s, "reloaded", Map.of());
             }
             case "clear", "delete" -> {

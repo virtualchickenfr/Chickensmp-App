@@ -3,8 +3,8 @@ version: ${project.version}
 main: net.chickensmp.acplus.SusPlugin
 api-version: '1.21'
 author: ChickenSMP
-description: ChickenSMP anticheat extras - /sus tracker for Vulcan flags, the Banhammer and staff mode.
-softdepend: [Vulcan, ChickenSMPAC, WorldGuard]
+description: ChickenSMP anticheat extras - /sus tracker for GrimAC/Vulcan flags, the Banhammer and staff mode.
+softdepend: [GrimAC, Vulcan, ChickenSMPAC, WorldGuard]
 commands:
   sus:
     description: Show players who get flagged often by the anticheat.

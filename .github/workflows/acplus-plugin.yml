@@ -27,6 +27,7 @@ jobs:
             u=$(curl -s -H "$H" https://api.github.com/repos/$r/releases/latest | jq -r '[.assets[]|select(.name|endswith(".jar"))][0].browser_download_url')
             curl -sfLo plugins/$(basename $r).jar "$u"
           done
+          curl -sfLo plugins/grimac.jar https://cdn.modrinth.com/data/LJNGWSvH/versions/baDrVvfo/grimac-bukkit-2.3.74.jar
           cp ../acplus-plugin/target/ChickenSMPAC-plus.jar plugins/
           echo "eula=true" > eula.txt
           printf "settings:\n  connection-throttle: -1\n" > bukkit.yml
@@ -38,11 +39,12 @@ jobs:
           for i in $(seq 1 150); do grep -q 'Done (' server.log && break; sleep 2; done
           sed -i 's/^  cage-seconds: .*/  cage-seconds: 6/; s/^  world: "Spawn1"/  world: "world"\n  block-lifetime-seconds: 8/; s/^  safe-min: .*/  safe-min: [-15, -64, -15]/; s/^  safe-max: .*/  safe-max: [15, 319, 15]/' plugins/ChickenSMPAC-plus/config.yml
           grep -A6 "^arena:" plugins/ChickenSMPAC-plus/config.yml
-          for i in $(seq 1 13); do echo "sus test Steve KillAura combat" >> server.in; done
+          grep -q "Hooked into GrimAC" server.log
+          for i in $(seq 1 21); do echo "sus test Steve KillAura combat" >> server.in; done
           echo "sus" >> server.in; echo "sus Steve" >> server.in; echo "sus reload" >> server.in; sleep 4
           grep -q "ChickenSMPAC-plus enabled" server.log
           grep -q "Steve looks suspicious" server.log
-          grep -q "KillAura (A) x13" server.log
+          grep -q "KillAura (A) x21" server.log
           grep -q "Config reloaded" server.log
           echo "ban Steve test" >> server.in; sleep 3; echo "sus" >> server.in; sleep 2
           grep -q "Removed Steve from /sus (banned)" server.log
