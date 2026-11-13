@@ -1,4 +1,4 @@
-package net.chickensmp.sus;
+package net.chickensmp.acplus;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -40,6 +40,8 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     private final Map<UUID, PlayerData> data = new ConcurrentHashMap<>();
     private final HttpClient http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
     private VulcanHook hook;
+    private BanHammer hammer;
+    private StaffMode staff;
     private File dataFile;
 
     // config cache
@@ -64,6 +66,15 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         Objects.requireNonNull(getCommand("sus")).setExecutor(this);
         Objects.requireNonNull(getCommand("sus")).setTabCompleter(this);
 
+        hammer = new BanHammer(this);
+        getServer().getPluginManager().registerEvents(hammer, this);
+        Objects.requireNonNull(getCommand("banhammer")).setExecutor(hammer);
+        Objects.requireNonNull(getCommand("banhammer")).setTabCompleter(hammer);
+
+        staff = new StaffMode(this);
+        getServer().getPluginManager().registerEvents(staff, this);
+        Objects.requireNonNull(getCommand("staff")).setExecutor(staff);
+
         // Vulcan may enable after us: try now, on its enable event, and once after startup.
         if (!hook.tryHook()) {
             Bukkit.getScheduler().runTask(this, () -> {
@@ -72,11 +83,13 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         }
         // Save every 5 minutes.
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::saveData, 6000L, 6000L);
-        getLogger().info("ChickenSMPSus enabled (" + data.size() + " players in history).");
+        getLogger().info("ChickenSMPAC-plus enabled (" + data.size() + " players in history).");
     }
 
     @Override
     public void onDisable() {
+        if (hammer != null) hammer.shutdown();
+        if (staff != null) staff.shutdown();
         saveData();
     }
 
@@ -176,7 +189,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         Component c = mm("alert", Map.of("player", esc(name), "score", fmt(score),
                 "window", String.valueOf(windowMs / 60_000L), "top", esc(top)), true);
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!p.hasPermission("chickensmp.sus.alerts")) continue;
+            if (!p.hasPermission("chickensmp.acplus.alerts")) continue;
             p.sendMessage(c);
             if (alertSound != null) p.playSound(p.getLocation(), alertSound, 1f, 1.4f);
         }
@@ -229,6 +242,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
             case "reload" -> {
                 if (!admin(s)) return true;
                 loadSettings();
+                hammer.load();
                 hook.tryHook();
                 send(s, "reloaded", Map.of());
             }
@@ -262,7 +276,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     }
 
     private boolean admin(CommandSender s) {
-        if (s.hasPermission("chickensmp.sus.admin")) return true;
+        if (s.hasPermission("chickensmp.acplus.admin")) return true;
         s.sendMessage(MM.deserialize(msg("prefix") + "<red>No permission.</red>"));
         return false;
     }
@@ -331,7 +345,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         if (online) actions.append("<click:run_command:'/sus tp ").append(n).append("'><green>[TP]</green></click> ");
         actions.append("<click:run_command:'/history ").append(n).append("'><aqua>[History]</aqua></click> ");
         actions.append("<click:suggest_command:'/punish ").append(n).append("'><red>[Punish]</red></click> ");
-        if (s.hasPermission("chickensmp.sus.admin"))
+        if (s.hasPermission("chickensmp.acplus.admin"))
             actions.append("<click:suggest_command:'/sus clear ").append(n).append("'><gray>[Clear]</gray></click>");
         lines.add(actions.toString());
         for (String l : lines) s.sendMessage(MM.deserialize(l));
@@ -342,7 +356,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         List<String> out = new ArrayList<>();
         if (a.length == 1) {
             out.addAll(List.of("tp", "help"));
-            if (s.hasPermission("chickensmp.sus.admin")) out.addAll(List.of("clear", "reload", "test"));
+            if (s.hasPermission("chickensmp.acplus.admin")) out.addAll(List.of("clear", "reload", "test"));
             for (PlayerData d : data.values()) if (d.name != null) out.add(d.name);
         } else if (a.length == 2 && List.of("tp", "clear", "test").contains(a[0].toLowerCase(Locale.ROOT))) {
             for (Player p : Bukkit.getOnlinePlayers()) out.add(p.getName());

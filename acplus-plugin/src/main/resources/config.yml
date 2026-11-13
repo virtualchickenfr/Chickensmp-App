@@ -53,3 +53,58 @@ messages:
   teleported: "<green>Teleported to <white>{player}</white>.</green>"
   vulcan-missing: "<yellow>Vulcan is not installed or not loaded - no flags are being recorded.</yellow>"
   usage: "<gray>/sus</gray> <dark_gray>-</dark_gray> list <dark_gray>|</dark_gray> <gray>/sus <player></gray> <dark_gray>|</dark_gray> <gray>/sus tp <player></gray> <dark_gray>|</dark_gray> <gray>/sus clear <player></gray> <dark_gray>|</dark_gray> <gray>/sus reload</gray>"
+
+# ------------------------------------------------------------
+#  Banhammer - /banhammer gives it. Right-click switches the mode,
+#  hitting a player catches them: CAUGHT! title, cage, then the punishment.
+# ------------------------------------------------------------
+banhammer:
+  name: "<gradient:#ff3b3b:#ff9a3b><bold>BANHAMMER</bold></gradient>"
+  # Hit the same player twice within this many seconds to confirm (0 = first hit counts).
+  confirm-seconds: 4
+  # Seconds the caught player stays caged and frozen before the punishment runs.
+  cage-seconds: 60
+  # Blocks for the cage.
+  cage-bars: IRON_BARS
+  cage-floor: OBSIDIAN
+  cage-roof: RED_STAINED_GLASS
+  # Tell everyone who got caught ("" = off). {player} {staff} {mode}
+  broadcast: "<dark_red><bold>CAUGHT!</bold></dark_red> <red>{player}</red> <gray>was caught by the</gray> <gradient:#ff3b3b:#ff9a3b><bold>Banhammer</bold></gradient><gray>.</gray>"
+  title: "<dark_red><bold>CAUGHT!</bold></dark_red>"
+  subtitle: "<red>You were caught by {staff}</red>"
+  # Modes, in the order right-click cycles through them.
+  # command: run as the staff member ({player} = target, "" = none). cage: play the cage animation first.
+  modes:
+    - name: "Ban (permanent)"
+      color: "<dark_red>"
+      command: "ban {player} Caught cheating by the Banhammer"
+      cage: true
+    - name: "Ban (30 days)"
+      color: "<red>"
+      command: "ban {player} 30d Caught cheating by the Banhammer"
+      cage: true
+    - name: "Ban (7 days)"
+      color: "<gold>"
+      command: "ban {player} 7d Caught cheating by the Banhammer"
+      cage: true
+    - name: "Cage only (1 minute)"
+      color: "<yellow>"
+      command: ""
+      cage: true
+    - name: "Kick"
+      color: "<aqua>"
+      command: "kick {player} Caught by the Banhammer"
+      cage: false
+
+# ------------------------------------------------------------
+#  Staff mode - /staff: invisible for normal players, fly through blocks
+#  (spectator mode). Inventory, game mode and position come back on /staff.
+# ------------------------------------------------------------
+staff-mode:
+  actionbar: "<gradient:#3b7bff:#7cc4ff><bold>STAFF MODE</bold></gradient> <gray>- invisible, /staff to leave</gray>"
+  enabled-message: "<green>Staff mode on.</green> <gray>Only staff can see you. You can fly through blocks.</gray>"
+  disabled-message: "<red>Staff mode off.</red> <gray>Your inventory and position are back.</gray>"
+  # Fake leave/join messages for normal players when toggling.
+  fake-messages: true
+  fake-quit: "<yellow>{player} left the game</yellow>"
+  fake-join: "<yellow>{player} joined the game</yellow>"

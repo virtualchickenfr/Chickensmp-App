@@ -1,4 +1,4 @@
-package net.chickensmp.sus;
+package net.chickensmp.acplus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -1,0 +1,44 @@
+name: ChickenSMPAC-plus
+version: ${project.version}
+main: net.chickensmp.acplus.SusPlugin
+api-version: '1.21'
+author: ChickenSMP
+description: ChickenSMP anticheat extras - /sus tracker for Vulcan flags, the Banhammer and staff mode.
+softdepend: [Vulcan, ChickenSMPAC]
+commands:
+  sus:
+    description: Show players who get flagged often by the anticheat.
+    usage: /sus [player|tp|clear|reload|test]
+    permission: chickensmp.acplus.sus
+  banhammer:
+    description: Get the Banhammer or release a caged player.
+    usage: /banhammer [release <player>]
+    permission: chickensmp.acplus.banhammer
+    aliases: [bh]
+  staff:
+    description: Toggle staff mode (vanish + fly through blocks).
+    usage: /staff
+    permission: chickensmp.acplus.staff
+    aliases: [staffmode, sm]
+permissions:
+  chickensmp.acplus.sus:
+    description: Use /sus
+    default: op
+  chickensmp.acplus.alerts:
+    description: Receive suspicious player alerts
+    default: op
+  chickensmp.acplus.admin:
+    description: /sus clear, reload and test
+    default: op
+  chickensmp.acplus.banhammer:
+    description: Use the Banhammer
+    default: op
+  chickensmp.acplus.bypass:
+    description: Cannot be hit by the Banhammer
+    default: op
+  chickensmp.acplus.staff:
+    description: Use staff mode
+    default: op
+  chickensmp.acplus.see:
+    description: See players in staff mode
+    default: op

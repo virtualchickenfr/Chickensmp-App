@@ -1,4 +1,4 @@
-package net.chickensmp.sus;
+package net.chickensmp.acplus;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
