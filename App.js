@@ -793,7 +793,7 @@ function TabBar({ tab, setTab }) {
 }
 
 function Header({ lang, setLang }) {
-  const { live } = useApp();
+  const { live, t } = useApp();
   return (
     <View style={styles.header}>
       <Image source={require('./assets/logo.png')} style={styles.logo} resizeMode="contain" />
