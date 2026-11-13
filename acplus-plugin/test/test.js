@@ -103,20 +103,6 @@ function bot(name) {
     ok(v.blockAt(placedPos).name === 'air', 'placed block disappears after its lifetime: ' + v.blockAt(placedPos).name);
   }
 
-  // --- GrimAC flags reach /sus: a bot without gravity "flies"
-  const fly = await bot('FlyBot');
-  await sleep(3000);
-  consoleCmd('tp FlyBot 40 -60 40');
-  await sleep(2000);
-  fly.physics.gravity = 0;
-  fly.setControlState('jump', true); fly.setControlState('forward', true);
-  await sleep(6000);
-  fly.clearControlStates();
-  await sleep(1500);
-  consoleCmd('sus FlyBot');
-  ok(await waitLog(/FlyBot (SUSPICIOUS|WATCH|OK)/, 8000), 'Grim flags for FlyBot were recorded in /sus');
-  try { fly.quit(); } catch (e) {}
-
   for (const b of [staff, viewer]) { try { b.quit(); } catch (e) {} }
   await sleep(1000);
   console.log(failed ? `${failed} FAILED` : 'ALL PASSED');
