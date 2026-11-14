@@ -1,0 +1,25 @@
+{
+  "title": "This is ChickenSMP",
+  "language": "en",
+  "theme": "midnight",
+  "size": "tiktok",
+  "voice": "am_michael",
+  "pace": 1.18,
+  "music": true,
+  "captions": "bold",
+  "transition": "push",
+  "cover": "hook@0.6",
+  "defaults": "0.6",
+  "watermark": false,
+  "brand": {
+    "accent": "#3b7bff",
+    "background": "#0b0f1e"
+  },
+  "heard": {
+    "ChickenSMP": [
+      "chicken smp",
+      "chicken s m p",
+      "chicken sm p"
+    ]
+  }
+}
