@@ -2,24 +2,23 @@
 import { backdrop, beats, echo, fact, hookFrame, payoff, punch } from './format.js';
 
 // A framed clip from the server with a soft glow, a slow drift and a pop-in.
-function shot(s, file, { at, out, y = s.safe.y + s.safe.h * 0.47, w = s.safe.w * 0.98, rotate = 0, speed = 0.7 } = {}) {
+function shot(s, file, { at, out, y = s.full.y + s.full.h * 0.385, w = s.full.w * 0.86, rotate = 0, speed = 0.7 } = {}) {
   return s.clip(`assets/clips/${file}.mp4`, {
     x: s.cx, y, w, frame: 'card', radius: 34, at, out, speed, loop: true,
-    rotate, float: 10, enter: 'zoom', exit: 'fade', camera: false,
+    rotate, float: 10, enter: 'zoom', exit: 'fade', camera: false, overlap: true,
   });
 }
 
 // A big headline in the upper third.
-function headline(s, text, { at, out, y = s.safe.y + s.safe.h * 0.13, size = 96 } = {}) {
-  return s.text(text, { x: s.cx, y, size, font: 'display', bold: true, at, out, enter: 'pop', maxWidth: s.safe.w * 0.95 });
+function headline(s, text, { at, out, y = s.safe.y + 20, size = 74 } = {}) {
+  return s.text(text, { x: s.cx, y, size, font: 'display', bold: true, at, out, enter: 'pop', maxWidth: s.safe.w, overlap: true });
 }
 
 export default {
   intro(s) {
     s.camera(punch(s, '#joined', { zoom: 1.08 }));
     backdrop(s, { glow: '#f59f00', pattern: 'rays' });
-    s.clip('assets/clips/chicken.mp4', { x: s.cx, y: s.safe.y + s.safe.h * 0.5, w: s.safe.w * 1.02, frame: 'card', radius: 40, at: 0, enter: 'zoom', float: 8 });
-    s.text('just joined', { x: s.cx, y: s.safe.y + s.safe.h * 0.12, size: 64, font: 'display', color: 'muted', at: 0, enter: 'rise' });
+    s.clip('assets/clips/chicken.mp4', { x: s.cx, y: s.full.y + s.full.h * 0.4, w: s.full.w * 0.9, frame: 'card', radius: 40, at: 0, enter: 'zoom', dur: 0.35, float: 8, overlap: true });
   },
 
   brand(s) {
@@ -40,8 +39,8 @@ export default {
   economy(s) {
     s.camera([]);
     backdrop(s, { glow: '#f59f00' });
-    headline(s, 'Auction house', { at: '#auction', out: '#orders' });
-    shot(s, 'auction', { at: '#auction', out: '#orders', rotate: -2 });
+    headline(s, 'Auction house', { at: 0, out: '#orders' });
+    shot(s, 'auction', { at: 0, out: '#orders', rotate: -2 });
     headline(s, 'Orders = *cash*', { at: '#orders', out: '#fish' });
     shot(s, 'orders', { at: '#orders', out: '#fish', rotate: 2 });
     headline(s, 'Fish worth *millions*', { at: '#fish' });
@@ -61,8 +60,8 @@ export default {
   rewards(s) {
     s.camera([]);
     backdrop(s, { glow: '#f59f00' });
-    headline(s, 'Free *key* every hour', { at: '#key', out: '#daily' });
-    shot(s, 'crate', { at: '#key', out: '#daily', rotate: -2, speed: 0.5 });
+    headline(s, 'Free *key* every hour', { at: 0, out: '#daily' });
+    shot(s, 'crate', { at: 0, out: '#daily', rotate: -2, speed: 0.5 });
     headline(s, 'Daily rewards', { at: '#daily', out: '#quests' });
     shot(s, 'daily', { at: '#daily', out: '#quests', rotate: 1.5 });
     headline(s, '+ Quests', { at: '#quests' });
@@ -73,9 +72,9 @@ export default {
     s.camera(s.short.drift());
     backdrop(s, { glow: '#3b7bff', pattern: 'rays' });
     s.image('assets/logo.png', { w: s.safe.w * 0.8, x: s.cx, y: s.safe.y + s.safe.h * 0.17, shadow: false, at: 0, enter: 'drop' });
-    s.text('chickensmp.net', { x: s.cx, y: s.safe.y + s.safe.h * 0.42, size: 104, font: 'display', bold: true, color: '#7cc4ff',
-      bg: 'rgba(11,15,30,0.85)', padding: 36, radius: 28, border: '#3b7bff', at: '#ip', enter: 'zoom' });
-    s.text('IP', { x: s.cx, y: s.safe.y + s.safe.h * 0.34, size: 46, color: 'muted', at: '#ip', enter: 'rise' });
+    s.text('IP', { x: s.cx, y: s.safe.y + s.safe.h * 0.34, size: 44, color: 'muted', at: '#ip', enter: 'rise' });
+    s.text('chickensmp.net', { x: s.cx, y: s.safe.y + s.safe.h * 0.44, size: 76, font: 'display', bold: true, color: '#7cc4ff',
+      bg: 'rgba(11,15,30,0.85)', padding: 28, radius: 26, border: '#3b7bff', at: '#ip', enter: 'zoom' });
     s.icon('gamepad-2', { x: s.cx, y: s.safe.y + s.safe.h * 0.62, size: 180, color: 'green', label: 'See you in game', labelColor: '#ffffff', at: '#see', enter: 'pop' });
     s.burst({ x: s.cx, y: s.safe.y + s.safe.h * 0.42, at: '#ip', count: 90, colors: ['#3b7bff', '#7cc4ff', '#ffd43b'] });
   },
