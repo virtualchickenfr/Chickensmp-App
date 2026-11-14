@@ -1,0 +1,65 @@
+{
+  "hash": "d113f7f2e9f6e498",
+  "speech": "5e43cf061bbb8949",
+  "check": 5,
+  "id": "survival",
+  "duration": 2.97,
+  "words": [
+    {
+      "text": "Survival,",
+      "spoken": "Survival,",
+      "start": 0,
+      "end": 1.48,
+      "matched": true
+    },
+    {
+      "text": "but",
+      "spoken": "but",
+      "start": 1.48,
+      "end": 1.92,
+      "matched": true
+    },
+    {
+      "text": "with",
+      "spoken": "with",
+      "start": 1.92,
+      "end": 2.08,
+      "matched": true
+    },
+    {
+      "text": "its",
+      "spoken": "its",
+      "start": 2.08,
+      "end": 2.22,
+      "matched": true
+    },
+    {
+      "text": "own",
+      "spoken": "own",
+      "start": 2.22,
+      "end": 2.44,
+      "matched": true
+    },
+    {
+      "text": "economy.",
+      "spoken": "economy.",
+      "start": 2.44,
+      "end": 2.82,
+      "matched": true
+    }
+  ],
+  "marks": {
+    "surv": 0
+  },
+  "chunks": [
+    {
+      "start": 0,
+      "end": 2.97,
+      "text": "Survival, but with its own economy."
+    }
+  ],
+  "transcript": "SMP. Survival but with its own economy.",
+  "matchRate": 1,
+  "unmatched": [],
+  "nearly": []
+}

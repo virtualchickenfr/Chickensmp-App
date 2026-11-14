@@ -1,0 +1,137 @@
+{
+  "hash": "2359446f1ffbaf05",
+  "speech": "b2ffd368689b13ee",
+  "check": 5,
+  "id": "pvp",
+  "duration": 6.76,
+  "words": [
+    {
+      "text": "Right",
+      "spoken": "Right",
+      "start": 0.15,
+      "end": 0.21,
+      "matched": true
+    },
+    {
+      "text": "outside",
+      "spoken": "outside",
+      "start": 0.21,
+      "end": 0.43,
+      "matched": true
+    },
+    {
+      "text": "spawn",
+      "spoken": "spawn",
+      "start": 0.43,
+      "end": 0.97,
+      "matched": true
+    },
+    {
+      "text": "waits",
+      "spoken": "waits",
+      "start": 0.97,
+      "end": 1.37,
+      "matched": true
+    },
+    {
+      "text": "the",
+      "spoken": "the",
+      "start": 1.37,
+      "end": 1.61,
+      "matched": true
+    },
+    {
+      "text": "PvP",
+      "spoken": "PvP",
+      "start": 1.61,
+      "end": 2.09,
+      "matched": true
+    },
+    {
+      "text": "area.",
+      "spoken": "area.",
+      "start": 2.09,
+      "end": 2.63,
+      "matched": true
+    },
+    {
+      "text": "Build,",
+      "spoken": "Build,",
+      "start": 3.33,
+      "end": 3.43,
+      "matched": true
+    },
+    {
+      "text": "fight,",
+      "spoken": "fight,",
+      "start": 3.87,
+      "end": 4.05,
+      "matched": true
+    },
+    {
+      "text": "and",
+      "spoken": "and",
+      "start": 4.05,
+      "end": 4.57,
+      "matched": true
+    },
+    {
+      "text": "your",
+      "spoken": "your",
+      "start": 4.57,
+      "end": 4.69,
+      "matched": true
+    },
+    {
+      "text": "blocks",
+      "spoken": "blocks",
+      "start": 4.69,
+      "end": 4.95,
+      "matched": true
+    },
+    {
+      "text": "vanish",
+      "spoken": "vanish",
+      "start": 4.95,
+      "end": 5.39,
+      "matched": true
+    },
+    {
+      "text": "after",
+      "spoken": "after",
+      "start": 5.39,
+      "end": 5.93,
+      "matched": true
+    },
+    {
+      "text": "twenty",
+      "spoken": "twenty",
+      "start": 5.93,
+      "end": 6.29,
+      "matched": true
+    },
+    {
+      "text": "minutes.",
+      "spoken": "minutes.",
+      "start": 6.29,
+      "end": 6.61,
+      "matched": true
+    }
+  ],
+  "marks": {
+    "spawn": 0.15,
+    "build": 3.33,
+    "vanish": 4.05
+  },
+  "chunks": [
+    {
+      "start": 0,
+      "end": 6.76,
+      "text": "Right outside spawn waits the PvP area. Build, fight, and your blocks vanish after twenty minutes."
+    }
+  ],
+  "transcript": "Right outside spawn weights the PVP area. Build, fight and your blocks vanish after 20 minutes.",
+  "matchRate": 1,
+  "unmatched": [],
+  "nearly": []
+}

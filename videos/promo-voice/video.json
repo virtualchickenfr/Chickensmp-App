@@ -1,0 +1,40 @@
+{
+  "title": "Just joined ChickenSMP",
+  "language": "en",
+  "theme": "midnight",
+  "size": "tiktok",
+  "voice": {
+    "provider": "recording",
+    "src": "assets/narration.mp3"
+  },
+  "pace": 1,
+  "music": true,
+  "captions": "bold",
+  "transition": "push",
+  "defaults": "0.6",
+  "watermark": false,
+  "brand": {
+    "accent": "#3b7bff",
+    "background": "#0b0f1e"
+  },
+  "heard": {
+    "ChickenSMP": [
+      "chicken smp",
+      "chicken s m p",
+      "chicken sm p"
+    ],
+    "waits": [
+      "weights"
+    ],
+    "PvP": [
+      "pvp"
+    ],
+    "twenty": [
+      "20"
+    ],
+    "millions": [
+      "milly"
+    ]
+  },
+  "cover": "brand@0.5"
+}

@@ -1,0 +1,44 @@
+{
+  "hash": "efea455bfb59cb1d",
+  "speech": "533031646486d4c9",
+  "check": 5,
+  "id": "intro",
+  "duration": 1.63,
+  "words": [
+    {
+      "text": "Just",
+      "spoken": "Just",
+      "start": 0,
+      "end": 0.28,
+      "matched": true
+    },
+    {
+      "text": "joined",
+      "spoken": "joined",
+      "start": 0.28,
+      "end": 0.56,
+      "matched": true
+    },
+    {
+      "text": "ChickenSMP.",
+      "spoken": "ChickenSMP.",
+      "start": 0.56,
+      "end": 1.48,
+      "matched": true
+    }
+  ],
+  "marks": {
+    "joined": 0
+  },
+  "chunks": [
+    {
+      "start": 0,
+      "end": 1.63,
+      "text": "Just joined ChickenSMP."
+    }
+  ],
+  "transcript": "Just joined Chicken SMP.",
+  "matchRate": 1,
+  "unmatched": [],
+  "nearly": []
+}

@@ -1,0 +1,137 @@
+{
+  "hash": "efc538a1ccea3018",
+  "speech": "cd0162e60733bbf8",
+  "check": 5,
+  "id": "rewards",
+  "duration": 6.31,
+  "words": [
+    {
+      "text": "Every",
+      "spoken": "Every",
+      "start": 0.1,
+      "end": 0.36,
+      "matched": true
+    },
+    {
+      "text": "hour,",
+      "spoken": "hour,",
+      "start": 0.36,
+      "end": 0.64,
+      "matched": true
+    },
+    {
+      "text": "everyone",
+      "spoken": "everyone",
+      "start": 0.64,
+      "end": 1.18,
+      "matched": true
+    },
+    {
+      "text": "online",
+      "spoken": "online",
+      "start": 1.18,
+      "end": 1.66,
+      "matched": true
+    },
+    {
+      "text": "gets",
+      "spoken": "gets",
+      "start": 1.66,
+      "end": 2.04,
+      "matched": true
+    },
+    {
+      "text": "a",
+      "spoken": "a",
+      "start": 2.04,
+      "end": 2.2,
+      "matched": true
+    },
+    {
+      "text": "free",
+      "spoken": "free",
+      "start": 2.2,
+      "end": 2.46,
+      "matched": true
+    },
+    {
+      "text": "crate",
+      "spoken": "crate",
+      "start": 2.46,
+      "end": 2.72,
+      "matched": true
+    },
+    {
+      "text": "key.",
+      "spoken": "key.",
+      "start": 2.72,
+      "end": 3.12,
+      "matched": true
+    },
+    {
+      "text": "Daily",
+      "spoken": "Daily",
+      "start": 3.74,
+      "end": 3.88,
+      "matched": true
+    },
+    {
+      "text": "rewards",
+      "spoken": "rewards",
+      "start": 3.88,
+      "end": 4.3,
+      "matched": true
+    },
+    {
+      "text": "and",
+      "spoken": "and",
+      "start": 4.3,
+      "end": 4.62,
+      "matched": true
+    },
+    {
+      "text": "quests",
+      "spoken": "quests",
+      "start": 4.62,
+      "end": 4.88,
+      "matched": true
+    },
+    {
+      "text": "pay",
+      "spoken": "pay",
+      "start": 4.88,
+      "end": 5.4,
+      "matched": true
+    },
+    {
+      "text": "even",
+      "spoken": "even",
+      "start": 5.4,
+      "end": 5.82,
+      "matched": true
+    },
+    {
+      "text": "more.",
+      "spoken": "more.",
+      "start": 5.82,
+      "end": 6.16,
+      "matched": true
+    }
+  ],
+  "marks": {
+    "key": 0.1,
+    "daily": 3.74,
+    "quests": 4.3
+  },
+  "chunks": [
+    {
+      "start": 0,
+      "end": 6.31,
+      "text": "Every hour, everyone online gets a free crate key. Daily rewards and quests pay even more."
+    }
+  ],
+  "transcript": "Every hour everyone online gets a free crate key. Daily rewards and quests pay even more.",
+  "matchRate": 1,
+  "unmatched": [],
+  "nearly": []
+}

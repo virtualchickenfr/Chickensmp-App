@@ -1,0 +1,137 @@
+{
+  "hash": "7b47a3f57406b27b",
+  "speech": "5668c3edaf108c76",
+  "check": 5,
+  "id": "economy",
+  "duration": 4.94,
+  "words": [
+    {
+      "text": "Sell",
+      "spoken": "Sell",
+      "start": 0.15,
+      "end": 0.2,
+      "matched": true
+    },
+    {
+      "text": "your",
+      "spoken": "your",
+      "start": 0.17,
+      "end": 0.39,
+      "matched": true
+    },
+    {
+      "text": "loot",
+      "spoken": "loot",
+      "start": 0.39,
+      "end": 0.59,
+      "matched": true
+    },
+    {
+      "text": "on",
+      "spoken": "on",
+      "start": 0.59,
+      "end": 0.81,
+      "matched": true
+    },
+    {
+      "text": "the",
+      "spoken": "the",
+      "start": 0.81,
+      "end": 0.91,
+      "matched": true
+    },
+    {
+      "text": "auction",
+      "spoken": "auction",
+      "start": 0.91,
+      "end": 1.09,
+      "matched": true
+    },
+    {
+      "text": "house,",
+      "spoken": "house,",
+      "start": 1.09,
+      "end": 1.59,
+      "matched": true
+    },
+    {
+      "text": "fill",
+      "spoken": "fill",
+      "start": 2.01,
+      "end": 2.06,
+      "matched": true
+    },
+    {
+      "text": "orders",
+      "spoken": "orders",
+      "start": 2.05,
+      "end": 2.39,
+      "matched": true
+    },
+    {
+      "text": "for",
+      "spoken": "for",
+      "start": 2.39,
+      "end": 2.67,
+      "matched": true
+    },
+    {
+      "text": "cash,",
+      "spoken": "cash,",
+      "start": 2.67,
+      "end": 2.93,
+      "matched": true
+    },
+    {
+      "text": "and",
+      "spoken": "and",
+      "start": 2.93,
+      "end": 3.47,
+      "matched": true
+    },
+    {
+      "text": "catch",
+      "spoken": "catch",
+      "start": 3.47,
+      "end": 3.67,
+      "matched": true
+    },
+    {
+      "text": "fish",
+      "spoken": "fish",
+      "start": 3.67,
+      "end": 4.07,
+      "matched": true
+    },
+    {
+      "text": "worth",
+      "spoken": "worth",
+      "start": 4.07,
+      "end": 4.41,
+      "matched": true
+    },
+    {
+      "text": "millions.",
+      "spoken": "millions.",
+      "start": 4.41,
+      "end": 4.79,
+      "matched": true
+    }
+  ],
+  "marks": {
+    "auction": 0.15,
+    "orders": 2.01,
+    "fish": 2.93
+  },
+  "chunks": [
+    {
+      "start": 0,
+      "end": 4.94,
+      "text": "Sell your loot on the auction house, fill orders for cash, and catch fish worth millions."
+    }
+  ],
+  "transcript": "Sell your loot on the auction house, fill orders for cash and catch fish worth millions.",
+  "matchRate": 1,
+  "unmatched": [],
+  "nearly": []
+}

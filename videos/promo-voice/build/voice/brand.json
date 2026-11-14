@@ -1,0 +1,49 @@
+{
+  "hash": "458721f51a75133d",
+  "speech": "8340c8edd2a6d4d9",
+  "check": 5,
+  "id": "brand",
+  "duration": 0.73,
+  "words": [
+    {
+      "text": "This",
+      "spoken": "This",
+      "start": 0.15,
+      "end": 0.25,
+      "matched": true
+    },
+    {
+      "text": "is",
+      "spoken": "is",
+      "start": 0.25,
+      "end": 0.41,
+      "matched": true
+    },
+    {
+      "text": "ChickenSMP.",
+      "spoken": "ChickenSMP.",
+      "start": 0.41,
+      "end": 0.73,
+      "matched": true
+    }
+  ],
+  "marks": {
+    "this": 0.15
+  },
+  "chunks": [
+    {
+      "start": 0,
+      "end": 0.73,
+      "text": "This is ChickenSMP."
+    }
+  ],
+  "transcript": "This is Chicken",
+  "matchRate": 1,
+  "unmatched": [],
+  "nearly": [
+    {
+      "word": "ChickenSMP",
+      "heard": "Chicken"
+    }
+  ]
+}

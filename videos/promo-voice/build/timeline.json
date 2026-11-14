@@ -1,0 +1,538 @@
+{
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "duration": 36.63333333333333,
+  "frames": 1099,
+  "transitionSeconds": 0.7,
+  "pace": 1,
+  "scenes": [
+    {
+      "id": "intro",
+      "index": 0,
+      "start": 0,
+      "dur": 2.3333333333333335,
+      "lead": 0,
+      "text": "Just joined ChickenSMP.",
+      "transition": "none",
+      "voice": {
+        "url": "build/voice/intro.wav",
+        "start": 0,
+        "dur": 1.63
+      },
+      "words": [
+        {
+          "text": "Just",
+          "start": 0,
+          "end": 0.28
+        },
+        {
+          "text": "joined",
+          "start": 0.28,
+          "end": 0.56
+        },
+        {
+          "text": "ChickenSMP.",
+          "start": 0.56,
+          "end": 1.48,
+          "key": true
+        }
+      ],
+      "marks": {
+        "joined": 0
+      },
+      "attrs": {
+        "lead": 0
+      }
+    },
+    {
+      "id": "brand",
+      "index": 1,
+      "start": 2.3333333333333335,
+      "dur": 1.7666666666666666,
+      "lead": 0.35,
+      "text": "This is ChickenSMP.",
+      "transition": "push",
+      "voice": {
+        "url": "build/voice/brand.wav",
+        "start": 2.6833333333333336,
+        "dur": 0.73
+      },
+      "words": [
+        {
+          "text": "This",
+          "start": 0.5,
+          "end": 0.6
+        },
+        {
+          "text": "is",
+          "start": 0.6,
+          "end": 0.76
+        },
+        {
+          "text": "ChickenSMP.",
+          "start": 0.76,
+          "end": 1.08,
+          "key": true
+        }
+      ],
+      "marks": {
+        "this": 0.5
+      },
+      "attrs": {}
+    },
+    {
+      "id": "survival",
+      "index": 2,
+      "start": 4.1,
+      "dur": 4.033333333333333,
+      "lead": 0.35,
+      "text": "Survival, but with its own economy.",
+      "transition": "push",
+      "voice": {
+        "url": "build/voice/survival.wav",
+        "start": 4.449999999999999,
+        "dur": 2.97
+      },
+      "words": [
+        {
+          "text": "Survival,",
+          "start": 0.35,
+          "end": 1.83
+        },
+        {
+          "text": "but",
+          "start": 1.83,
+          "end": 2.27
+        },
+        {
+          "text": "with",
+          "start": 2.27,
+          "end": 2.43
+        },
+        {
+          "text": "its",
+          "start": 2.43,
+          "end": 2.5700000000000003
+        },
+        {
+          "text": "own",
+          "start": 2.5700000000000003,
+          "end": 2.79
+        },
+        {
+          "text": "economy.",
+          "start": 2.79,
+          "end": 3.17,
+          "key": true
+        }
+      ],
+      "marks": {
+        "surv": 0.35
+      },
+      "attrs": {}
+    },
+    {
+      "id": "economy",
+      "index": 3,
+      "start": 8.133333333333333,
+      "dur": 6,
+      "lead": 0.35,
+      "text": "Sell your loot on the auction house, fill orders for cash, and catch fish worth millions.",
+      "transition": "push",
+      "voice": {
+        "url": "build/voice/economy.wav",
+        "start": 8.483333333333333,
+        "dur": 4.94
+      },
+      "words": [
+        {
+          "text": "Sell",
+          "start": 0.5,
+          "end": 0.55
+        },
+        {
+          "text": "your",
+          "start": 0.52,
+          "end": 0.74
+        },
+        {
+          "text": "loot",
+          "start": 0.74,
+          "end": 0.94
+        },
+        {
+          "text": "on",
+          "start": 0.94,
+          "end": 1.1600000000000001
+        },
+        {
+          "text": "the",
+          "start": 1.1600000000000001,
+          "end": 1.26
+        },
+        {
+          "text": "auction",
+          "start": 1.26,
+          "end": 1.44
+        },
+        {
+          "text": "house,",
+          "start": 1.44,
+          "end": 1.94
+        },
+        {
+          "text": "fill",
+          "start": 2.36,
+          "end": 2.41
+        },
+        {
+          "text": "orders",
+          "start": 2.4,
+          "end": 2.74
+        },
+        {
+          "text": "for",
+          "start": 2.74,
+          "end": 3.02
+        },
+        {
+          "text": "cash,",
+          "start": 3.02,
+          "end": 3.2800000000000002
+        },
+        {
+          "text": "and",
+          "start": 3.2800000000000002,
+          "end": 3.8200000000000003
+        },
+        {
+          "text": "catch",
+          "start": 3.8200000000000003,
+          "end": 4.02
+        },
+        {
+          "text": "fish",
+          "start": 4.02,
+          "end": 4.42
+        },
+        {
+          "text": "worth",
+          "start": 4.42,
+          "end": 4.76
+        },
+        {
+          "text": "millions.",
+          "start": 4.76,
+          "end": 5.14,
+          "key": true
+        }
+      ],
+      "marks": {
+        "auction": 0.5,
+        "orders": 2.36,
+        "fish": 3.2800000000000002
+      },
+      "attrs": {}
+    },
+    {
+      "id": "pvp",
+      "index": 4,
+      "start": 14.133333333333333,
+      "dur": 7.8,
+      "lead": 0.35,
+      "text": "Right outside spawn waits the PvP area. Build, fight, and your blocks vanish after twenty minutes.",
+      "transition": "push",
+      "voice": {
+        "url": "build/voice/pvp.wav",
+        "start": 14.483333333333333,
+        "dur": 6.76
+      },
+      "words": [
+        {
+          "text": "Right",
+          "start": 0.5,
+          "end": 0.5599999999999999
+        },
+        {
+          "text": "outside",
+          "start": 0.5599999999999999,
+          "end": 0.78
+        },
+        {
+          "text": "spawn",
+          "start": 0.78,
+          "end": 1.3199999999999998
+        },
+        {
+          "text": "waits",
+          "start": 1.3199999999999998,
+          "end": 1.7200000000000002
+        },
+        {
+          "text": "the",
+          "start": 1.7200000000000002,
+          "end": 1.96
+        },
+        {
+          "text": "PvP",
+          "start": 1.96,
+          "end": 2.44,
+          "key": true
+        },
+        {
+          "text": "area.",
+          "start": 2.44,
+          "end": 2.98
+        },
+        {
+          "text": "Build,",
+          "start": 3.68,
+          "end": 3.7800000000000002
+        },
+        {
+          "text": "fight,",
+          "start": 4.22,
+          "end": 4.3999999999999995
+        },
+        {
+          "text": "and",
+          "start": 4.3999999999999995,
+          "end": 4.92
+        },
+        {
+          "text": "your",
+          "start": 4.92,
+          "end": 5.04
+        },
+        {
+          "text": "blocks",
+          "start": 5.04,
+          "end": 5.3
+        },
+        {
+          "text": "vanish",
+          "start": 5.3,
+          "end": 5.739999999999999
+        },
+        {
+          "text": "after",
+          "start": 5.739999999999999,
+          "end": 6.279999999999999
+        },
+        {
+          "text": "twenty",
+          "start": 6.279999999999999,
+          "end": 6.64
+        },
+        {
+          "text": "minutes.",
+          "start": 6.64,
+          "end": 6.96
+        }
+      ],
+      "marks": {
+        "spawn": 0.5,
+        "build": 3.68,
+        "vanish": 4.3999999999999995
+      },
+      "attrs": {}
+    },
+    {
+      "id": "rewards",
+      "index": 5,
+      "start": 21.933333333333334,
+      "dur": 7.366666666666666,
+      "lead": 0.35,
+      "text": "Every hour, everyone online gets a free crate key. Daily rewards and quests pay even more.",
+      "transition": "push",
+      "voice": {
+        "url": "build/voice/rewards.wav",
+        "start": 22.283333333333335,
+        "dur": 6.31
+      },
+      "words": [
+        {
+          "text": "Every",
+          "start": 0.44999999999999996,
+          "end": 0.71
+        },
+        {
+          "text": "hour,",
+          "start": 0.71,
+          "end": 0.99
+        },
+        {
+          "text": "everyone",
+          "start": 0.99,
+          "end": 1.5299999999999998
+        },
+        {
+          "text": "online",
+          "start": 1.5299999999999998,
+          "end": 2.01
+        },
+        {
+          "text": "gets",
+          "start": 2.01,
+          "end": 2.39
+        },
+        {
+          "text": "a",
+          "start": 2.39,
+          "end": 2.5500000000000003
+        },
+        {
+          "text": "free",
+          "start": 2.5500000000000003,
+          "end": 2.81
+        },
+        {
+          "text": "crate",
+          "start": 2.81,
+          "end": 3.0700000000000003
+        },
+        {
+          "text": "key.",
+          "start": 3.0700000000000003,
+          "end": 3.47,
+          "key": true
+        },
+        {
+          "text": "Daily",
+          "start": 4.09,
+          "end": 4.2299999999999995
+        },
+        {
+          "text": "rewards",
+          "start": 4.2299999999999995,
+          "end": 4.6499999999999995
+        },
+        {
+          "text": "and",
+          "start": 4.6499999999999995,
+          "end": 4.97
+        },
+        {
+          "text": "quests",
+          "start": 4.97,
+          "end": 5.2299999999999995
+        },
+        {
+          "text": "pay",
+          "start": 5.2299999999999995,
+          "end": 5.75
+        },
+        {
+          "text": "even",
+          "start": 5.75,
+          "end": 6.17
+        },
+        {
+          "text": "more.",
+          "start": 6.17,
+          "end": 6.51
+        }
+      ],
+      "marks": {
+        "key": 0.44999999999999996,
+        "daily": 4.09,
+        "quests": 4.6499999999999995
+      },
+      "attrs": {}
+    },
+    {
+      "id": "join",
+      "index": 6,
+      "start": 29.3,
+      "dur": 7.333333333333333,
+      "lead": 0.35,
+      "text": "Join now at chickensmp.net. See you in game.",
+      "transition": "push",
+      "voice": {
+        "url": "build/voice/join.wav",
+        "start": 29.650000000000002,
+        "dur": 3.97
+      },
+      "words": [
+        {
+          "text": "Join",
+          "start": 0.41,
+          "end": 0.73
+        },
+        {
+          "text": "now",
+          "start": 0.73,
+          "end": 1.0499999999999998
+        },
+        {
+          "text": "at",
+          "start": 1.0499999999999998,
+          "end": 1.37
+        },
+        {
+          "text": "chickensmp.net.",
+          "start": 1.37,
+          "end": 3.0500000000000003
+        },
+        {
+          "text": "See",
+          "start": 3.45,
+          "end": 3.67
+        },
+        {
+          "text": "you",
+          "start": 3.67,
+          "end": 3.85
+        },
+        {
+          "text": "in",
+          "start": 3.85,
+          "end": 3.99
+        },
+        {
+          "text": "game.",
+          "start": 3.99,
+          "end": 4.17
+        }
+      ],
+      "marks": {
+        "ip": 0.41,
+        "see": 3.45
+      },
+      "attrs": {
+        "hold": 1.6
+      }
+    }
+  ],
+  "voiceSpans": [
+    {
+      "start": 0,
+      "end": 1.63
+    },
+    {
+      "start": 2.6833333333333336,
+      "end": 3.4133333333333336
+    },
+    {
+      "start": 4.449999999999999,
+      "end": 7.42
+    },
+    {
+      "start": 8.483333333333333,
+      "end": 13.423333333333332
+    },
+    {
+      "start": 14.483333333333333,
+      "end": 21.243333333333332
+    },
+    {
+      "start": 22.283333333333335,
+      "end": 28.593333333333334
+    },
+    {
+      "start": 29.650000000000002,
+      "end": 33.620000000000005
+    }
+  ]
+}

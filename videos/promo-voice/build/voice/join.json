@@ -1,0 +1,80 @@
+{
+  "hash": "36a0fb14cc8660b4",
+  "speech": "8bc6f9f2fa23624a",
+  "check": 5,
+  "id": "join",
+  "duration": 3.97,
+  "words": [
+    {
+      "text": "Join",
+      "spoken": "Join",
+      "start": 0.06,
+      "end": 0.38,
+      "matched": true
+    },
+    {
+      "text": "now",
+      "spoken": "now",
+      "start": 0.38,
+      "end": 0.7,
+      "matched": true
+    },
+    {
+      "text": "at",
+      "spoken": "at",
+      "start": 0.7,
+      "end": 1.02,
+      "matched": true
+    },
+    {
+      "text": "chickensmp.net.",
+      "spoken": "chicken S M P dot net.",
+      "start": 1.02,
+      "end": 2.7,
+      "matched": true
+    },
+    {
+      "text": "See",
+      "spoken": "See",
+      "start": 3.1,
+      "end": 3.32,
+      "matched": true
+    },
+    {
+      "text": "you",
+      "spoken": "you",
+      "start": 3.32,
+      "end": 3.5,
+      "matched": true
+    },
+    {
+      "text": "in",
+      "spoken": "in",
+      "start": 3.5,
+      "end": 3.64,
+      "matched": true
+    },
+    {
+      "text": "game.",
+      "spoken": "game.",
+      "start": 3.64,
+      "end": 3.82,
+      "matched": true
+    }
+  ],
+  "marks": {
+    "ip": 0.06,
+    "see": 3.1
+  },
+  "chunks": [
+    {
+      "start": 0,
+      "end": 3.97,
+      "text": "Join now at chicken S M P dot net. See you in game."
+    }
+  ],
+  "transcript": "Join now at chickensmp .net. See you in game.",
+  "matchRate": 1,
+  "unmatched": [],
+  "nearly": []
+}

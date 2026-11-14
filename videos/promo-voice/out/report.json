@@ -1,0 +1,96 @@
+{
+  "file": "/home/runner/work/Chickensmp-App/Chickensmp-App/videos/promo-voice/out/video-no-watermark.mp4",
+  "sha256": "3c00000becdd593915ed6365ec5bb33ef7aaa2144ca8c05b85a2baad1c3b7bb4",
+  "duration": 36.63,
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": "30/1",
+    "codec": "h264"
+  },
+  "audio": {
+    "codec": "aac",
+    "sampleRate": 48000,
+    "channels": 2
+  },
+  "loudness": {
+    "integrated": -14,
+    "range": 2.6,
+    "truePeak": -1.5
+  },
+  "blackSegments": [],
+  "silences": [],
+  "speech": {
+    "matchRate": 1,
+    "transcript": "Just joined Chicken SMP. This is chicken In SMP, Survival but with its own economy. Sell your loot on the auction house, fill orders for cash and catch fish worth Milly. Right outside spawn waits the PvP area. Build, fight, and your blocks vanish after 20 minutes. Every hour everyone online gets a free crate key. Daily rewards and quests pay even more. Join now at chickensmp.net. See you in game.",
+    "scenes": [
+      {
+        "id": "intro",
+        "matchRate": 1,
+        "nearly": []
+      },
+      {
+        "id": "brand",
+        "matchRate": 1,
+        "nearly": [
+          {
+            "word": "ChickenSMP",
+            "heard": "chicken",
+            "time": 3.1
+          }
+        ]
+      },
+      {
+        "id": "survival",
+        "matchRate": 1,
+        "nearly": []
+      },
+      {
+        "id": "economy",
+        "matchRate": 1,
+        "nearly": []
+      },
+      {
+        "id": "pvp",
+        "matchRate": 1,
+        "nearly": []
+      },
+      {
+        "id": "rewards",
+        "matchRate": 1,
+        "nearly": []
+      },
+      {
+        "id": "join",
+        "matchRate": 1,
+        "nearly": []
+      }
+    ],
+    "nearly": [
+      {
+        "scene": "brand",
+        "word": "ChickenSMP",
+        "heard": "chicken",
+        "time": 3.1
+      }
+    ],
+    "unconfirmed": [],
+    "together": [],
+    "heard": {
+      "ChickenSMP": [
+        "chicken",
+        "chicken smp",
+        "chicken s m p",
+        "chicken sm p"
+      ]
+    }
+  },
+  "music": {
+    "heard": true,
+    "pauses": -32,
+    "under": 15
+  },
+  "issues": [],
+  "passed": true,
+  "verdict": "passed"
+}
