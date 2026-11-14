@@ -2,7 +2,7 @@
 import { backdrop, beats, echo, fact, hookFrame, payoff, punch } from './format.js';
 
 // A framed clip from the server with a soft glow, a slow drift and a pop-in.
-function shot(s, file, { at, out, y = s.full.y + s.full.h * 0.385, w = s.full.w * 0.86, rotate = 0, speed = 0.7 } = {}) {
+function shot(s, file, { at, out, y = s.full.y + s.full.h * 0.43, w = s.full.w * 0.84, rotate = 0, speed = 0.7 } = {}) {
   return s.clip(`assets/clips/${file}.mp4`, {
     x: s.cx, y, w, frame: 'card', radius: 34, at, out, speed, loop: true,
     rotate, float: 10, enter: 'zoom', exit: 'fade', camera: false, overlap: true,
@@ -10,7 +10,7 @@ function shot(s, file, { at, out, y = s.full.y + s.full.h * 0.385, w = s.full.w 
 }
 
 // A big headline in the upper third.
-function headline(s, text, { at, out, y = s.safe.y + 20, size = 74 } = {}) {
+function headline(s, text, { at, out, y = s.safe.y + 70, size = 84 } = {}) {
   return s.text(text, { x: s.cx, y, size, font: 'display', bold: true, at, out, enter: 'pop', maxWidth: s.safe.w, overlap: true });
 }
 
@@ -62,10 +62,9 @@ export default {
     backdrop(s, { glow: '#f59f00' });
     headline(s, 'Free *key* every hour', { at: 0, out: '#daily' });
     shot(s, 'crate', { at: 0, out: '#daily', rotate: -2, speed: 0.5 });
-    headline(s, 'Daily rewards', { at: '#daily', out: '#quests' });
-    shot(s, 'daily', { at: '#daily', out: '#quests', rotate: 1.5 });
-    headline(s, '+ Quests', { at: '#quests' });
-    shot(s, 'quests', { at: '#quests', rotate: -1, speed: 0.6 });
+    headline(s, 'Daily rewards + *quests*', { at: '#daily' });
+    shot(s, 'daily', { at: '#daily', out: 'pay', rotate: 1.5 });
+    shot(s, 'quests', { at: 'pay', rotate: -1, speed: 0.6 });
   },
 
   join(s) {
