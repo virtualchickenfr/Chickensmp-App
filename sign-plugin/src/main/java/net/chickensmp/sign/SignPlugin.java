@@ -31,7 +31,7 @@ import java.util.Map;
 public final class SignPlugin extends JavaPlugin {
     private static final String LIMIT_PREFIX = "chickensmp.sign.limit.";
     private final MiniMessage mm = MiniMessage.miniMessage();
-    private NamespacedKey keyBy, keyName, keyLines;
+    private NamespacedKey keyBy, keyName, keyLines, keySigs;
     private File usesFile;
     private YamlConfiguration uses;
 
@@ -41,6 +41,7 @@ public final class SignPlugin extends JavaPlugin {
         keyBy = new NamespacedKey(this, "signed_by");
         keyName = new NamespacedKey(this, "signed_name");
         keyLines = new NamespacedKey(this, "sign_lines");
+        keySigs = new NamespacedKey(this, "signatures");
         usesFile = new File(getDataFolder(), "uses.yml");
         uses = YamlConfiguration.loadConfiguration(usesFile);
         getLogger().info("ChickenSMPSign enabled");
@@ -74,8 +75,12 @@ public final class SignPlugin extends JavaPlugin {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) { send(p, "no-item"); return; }
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        if (pdc.has(keyBy, PersistentDataType.STRING)) {
-            send(p, "already-signed", Placeholder.unparsed("player", pdc.getOrDefault(keyName, PersistentDataType.STRING, "?")));
+        List<Sig> sigs = sigs(pdc);
+        String uuid = p.getUniqueId().toString();
+        if (sigs.stream().anyMatch(x -> x.uuid().equals(uuid))) { send(p, "already-signed"); return; }
+        int maxSigs = getConfig().getInt("max-signatures-per-item", 2);
+        if (sigs.size() >= maxSigs && !p.hasPermission("chickensmp.sign.bypass")) {
+            send(p, "max-signatures", Placeholder.unparsed("max", String.valueOf(maxSigs)));
             return;
         }
         String text = clean(rawText);
@@ -103,9 +108,8 @@ public final class SignPlugin extends JavaPlugin {
         List<Component> lore = meta.lore() == null ? new ArrayList<>() : new ArrayList<>(meta.lore());
         lore.addAll(added);
         meta.lore(lore);
-        pdc.set(keyBy, PersistentDataType.STRING, p.getUniqueId().toString());
-        pdc.set(keyName, PersistentDataType.STRING, p.getName());
-        pdc.set(keyLines, PersistentDataType.INTEGER, added.size());
+        sigs.add(new Sig(uuid, p.getName(), added.size()));
+        saveSigs(pdc, sigs);
         item.setItemMeta(meta);
         p.getInventory().setItemInMainHand(item);
 
@@ -116,29 +120,62 @@ public final class SignPlugin extends JavaPlugin {
             send(p, "signed-unlimited");
         }
         p.playSound(p.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
-        getLogger().info(p.getName() + " signed " + item.getType() + " [" + rankGroup(p) + "]" + (text.isEmpty() ? "" : " (\"" + text + "\")"));
+        getLogger().info(p.getName() + " signed " + item.getType() + " [" + rankGroup(p) + "] #" + sigs.size() + (text.isEmpty() ? "" : " (\"" + text + "\")"));
     }
 
     private void doUnsign(Player p) {
         ItemStack item = p.getInventory().getItemInMainHand();
         ItemMeta meta = item.getType().isAir() ? null : item.getItemMeta();
-        if (meta == null || !meta.getPersistentDataContainer().has(keyBy, PersistentDataType.STRING)) { send(p, "not-signed"); return; }
+        List<Sig> sigs = meta == null ? List.of() : sigs(meta.getPersistentDataContainer());
+        if (sigs.isEmpty()) { send(p, "not-signed"); return; }
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        String by = pdc.get(keyBy, PersistentDataType.STRING);
-        if (!p.getUniqueId().toString().equals(by) && !p.hasPermission("chickensmp.sign.admin")) {
-            send(p, "not-yours", Placeholder.unparsed("player", pdc.getOrDefault(keyName, PersistentDataType.STRING, "?")));
-            return;
+        sigs = new ArrayList<>(sigs);
+        int idx = -1;
+        for (int i = 0; i < sigs.size(); i++) if (sigs.get(i).uuid().equals(p.getUniqueId().toString())) idx = i;
+        if (idx < 0) {
+            if (!p.hasPermission("chickensmp.sign.admin")) { send(p, "not-yours"); return; }
+            idx = sigs.size() - 1; // admins remove the newest signature
         }
-        int n = pdc.getOrDefault(keyLines, PersistentDataType.INTEGER, 0);
+        // Signature blocks are appended in order at the end of the lore.
         List<Component> lore = meta.lore() == null ? new ArrayList<>() : new ArrayList<>(meta.lore());
-        for (int i = 0; i < n && !lore.isEmpty(); i++) lore.remove(lore.size() - 1);
+        int after = 0;
+        for (int i = idx + 1; i < sigs.size(); i++) after += sigs.get(i).lines();
+        int end = Math.max(0, lore.size() - after);
+        int start = Math.max(0, end - sigs.get(idx).lines());
+        lore.subList(start, end).clear();
         meta.lore(lore.isEmpty() ? null : lore);
-        pdc.remove(keyBy);
-        pdc.remove(keyName);
-        pdc.remove(keyLines);
+        sigs.remove(idx);
+        saveSigs(pdc, sigs);
         item.setItemMeta(meta);
         p.getInventory().setItemInMainHand(item);
         send(p, "unsigned");
+    }
+
+    record Sig(String uuid, String name, int lines) { }
+
+    /** All signatures on an item, oldest first (also reads items signed by v1.0/1.1). */
+    private List<Sig> sigs(PersistentDataContainer pdc) {
+        List<Sig> out = new ArrayList<>();
+        List<String> raw = pdc.get(keySigs, PersistentDataType.LIST.strings());
+        if (raw != null) {
+            for (String r : raw) {
+                String[] a = r.split(";", 3);
+                if (a.length == 3) try { out.add(new Sig(a[0], a[1], Integer.parseInt(a[2]))); } catch (NumberFormatException ignored) { }
+            }
+        } else if (pdc.has(keyBy, PersistentDataType.STRING)) {
+            out.add(new Sig(pdc.get(keyBy, PersistentDataType.STRING),
+                    pdc.getOrDefault(keyName, PersistentDataType.STRING, "?"),
+                    pdc.getOrDefault(keyLines, PersistentDataType.INTEGER, 0)));
+        }
+        return out;
+    }
+
+    private void saveSigs(PersistentDataContainer pdc, List<Sig> sigs) {
+        pdc.remove(keyBy);
+        pdc.remove(keyName);
+        pdc.remove(keyLines);
+        if (sigs.isEmpty()) pdc.remove(keySigs);
+        else pdc.set(keySigs, PersistentDataType.LIST.strings(), sigs.stream().map(x -> x.uuid() + ";" + x.name() + ";" + x.lines()).toList());
     }
 
     /** -1 = unlimited, otherwise the highest chickensmp.sign.limit.N (at least default-limit). */
@@ -176,6 +213,7 @@ public final class SignPlugin extends JavaPlugin {
         }
         try {
             String prefix = LpHook.rankPrefix(p);
+            if (getConfig().getBoolean("debug", false)) getLogger().info("rank prefix of " + p.getName() + ": " + prefix);
             if (prefix == null) return Component.empty();
             prefix = prefix.replace('\u00a7', '&').stripTrailing();
             return Component.empty().append(LEGACY.deserialize(prefix)).append(Component.text(" "));

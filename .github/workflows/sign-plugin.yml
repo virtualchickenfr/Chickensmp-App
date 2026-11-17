@@ -38,6 +38,7 @@ jobs:
           (tail -f server.in | java -Xmx2G -jar paper.jar --nogui > server.log 2>&1 &)
           for i in $(seq 1 150); do grep -q 'Done (' server.log && break; sleep 2; done
           grep -q "ChickenSMPSign enabled" server.log
+          sed -i 's/^debug: false/debug: true/' plugins/ChickenSMPSign/config.yml && echo "sign reload" >> server.in
       - name: Bot test
         run: |
           cd srv && npm init -y >/dev/null && npm i -s mineflayer >/dev/null 2>&1
@@ -47,7 +48,7 @@ jobs:
         if: always()
         run: |
           cd srv && echo "stop" >> server.in; sleep 8
-          grep -vE "^\s*at " server.log | grep -iE "sign|exception|error" | head -60
+          grep -vE "^\s*at " server.log | grep -iE "sign|prefix|\[LP\]|exception|error" | head -60
           ! grep -q "Exception" server.log
       - name: Publish jar
         run: |

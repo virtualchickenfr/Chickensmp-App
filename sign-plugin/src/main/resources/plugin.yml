@@ -21,6 +21,9 @@ permissions:
   chickensmp.sign.unlimited:
     description: No daily /sign limit
     default: op
+  chickensmp.sign.bypass:
+    description: Sign items that already have the maximum number of signatures
+    default: op
   chickensmp.sign.admin:
     description: Remove anyone's signature, /sign reload
     default: op

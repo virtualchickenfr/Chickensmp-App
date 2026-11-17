@@ -5,9 +5,13 @@
 default-limit: 1
 timezone: Europe/Berlin
 max-message-length: 40
+# How many players can sign the same item (each player once).
+# chickensmp.sign.bypass (ops / admins) can go over this.
+max-signatures-per-item: 2
 date-format: "dd.MM.yyyy"
 # Show the signer's rank prefix in front of the name.
 show-rank: true
+debug: false
 
 # Lines added to the item. <rank>, <player>, <message>, <date> are replaced.
 # <rank> = the LuckPerms prefix of the signer's top group (same colours as in chat), or nothing.
@@ -44,11 +48,12 @@ messages:
   signed: "<gray>Item signed! <dark_gray>(<white><left></white> left today)"
   signed-unlimited: "<gray>Item signed!"
   no-item: "<red>Hold the item you want to sign in your main hand."
-  already-signed: "<red>This item is already signed by <white><player></white>."
+  already-signed: "<red>You already signed this item."
+  max-signatures: "<red>This item already has <white><max></white> signatures."
   limit-reached: "<red>You used all your signs for today (<white><limit></white>). <gray>More signs with a rank: <white>/rank"
   too-long: "<red>Your message is too long (max <white><max></white> characters)."
   not-signed: "<red>This item is not signed."
-  not-yours: "<red>Only <white><player></white> can remove this signature."
+  not-yours: "<red>You have not signed this item."
   unsigned: "<gray>Signature removed."
   players-only: "<red>Only players can sign items."
   reloaded: "<gray>Config reloaded."
