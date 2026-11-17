@@ -49,7 +49,7 @@ async function held(name) {
   ok(/Item signed!/.test(r) && /0 left today/.test(r), 'default player signs once, 0 left: ' + r);
   let h = await held('SignBot');
   ok(/Signed by/.test(h) && /SignBot/.test(h) && /Hello world/.test(h), 'lore has signer + message');
-  ok(/▬/.test(h) && /┃/.test(h), 'lore has the frame');
+  ok(/▬/.test(h) && (h.match(/┃/g) || []).length === 3, 'lore has the frame, 3 inner lines with a message');
 
   r = await run(b, '/sign again');
   ok(/already signed by SignBot/.test(r), 'cannot sign twice: ' + r);
@@ -106,6 +106,7 @@ async function held(name) {
   ok(/Item signed!/.test(r) && /9 left today/.test(r), 'supreme has 10 per day: ' + r);
   h = await held('RankBot');
   ok(/ff9900/i.test(h), 'supreme frame uses the supreme colours');
+  ok((h.match(/┃/g) || []).length === 2 && /Signed by/.test(h), 'no message = no message line (2 inner lines): ' + (h.match(/┃/g) || []).length);
   ok(/RankBot signed GOLDEN_APPLE \[supreme\]/.test(serverLog()), 'rank detected from LuckPerms');
   rb.quit();
   console.log(failed ? `${failed} FAILED` : 'ALL PASSED');
