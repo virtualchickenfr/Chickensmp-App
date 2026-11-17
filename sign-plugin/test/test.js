@@ -82,7 +82,7 @@ async function held(name) {
   await sleep(500);
   r = await run(b, '/sign ' + 'x'.repeat(41));
   ok(/too long/.test(r), 'message length limit: ' + r);
-  r = await run(b, '/sign &cred §lbold');
+  r = await run(b, '/sign &cred &lbold');
   h = await held('SignBot');
   ok(/Item signed!/.test(r) && /red bold/.test(h), 'colour codes stripped');
 
