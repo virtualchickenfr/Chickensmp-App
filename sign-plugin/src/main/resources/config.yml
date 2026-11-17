@@ -1,0 +1,30 @@
+# ChickenSMPSign
+# How often a player can use /sign per day. The day resets at midnight in "timezone".
+# Ranks get more uses with the permission chickensmp.sign.limit.<number> (the highest one wins).
+# chickensmp.sign.unlimited (ops by default) = no limit.
+default-limit: 1
+timezone: Europe/Berlin
+max-message-length: 40
+date-format: "dd.MM.yyyy"
+
+# Lines added to the item. <player>, <message>, <date> are replaced.
+# A line with <message> is skipped when the player gives no message.
+lore:
+  - ""
+  - "<gray>✎ Signed by <gold><player>"
+  - "<gray>\"<white><message></white>\""
+  - "<dark_gray><date>"
+
+prefix: "<gradient:#3b7bff:#7cc4ff><b>SIGN</b></gradient> <dark_gray>» "
+messages:
+  signed: "<gray>Item signed! <dark_gray>(<white><left></white> left today)"
+  signed-unlimited: "<gray>Item signed!"
+  no-item: "<red>Hold the item you want to sign in your main hand."
+  already-signed: "<red>This item is already signed by <white><player></white>."
+  limit-reached: "<red>You used all your signs for today (<white><limit></white>). <gray>More signs with a rank: <white>/rank"
+  too-long: "<red>Your message is too long (max <white><max></white> characters)."
+  not-signed: "<red>This item is not signed."
+  not-yours: "<red>Only <white><player></white> can remove this signature."
+  unsigned: "<gray>Signature removed."
+  players-only: "<red>Only players can sign items."
+  reloaded: "<gray>Config reloaded."

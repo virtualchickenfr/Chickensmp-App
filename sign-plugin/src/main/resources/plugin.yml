@@ -1,0 +1,25 @@
+name: ChickenSMPSign
+version: ${project.version}
+main: net.chickensmp.sign.SignPlugin
+api-version: '1.21'
+author: ChickenSMP
+description: Sign the item in your hand with /sign. Daily limit per rank.
+commands:
+  sign:
+    description: Sign the item in your hand.
+    usage: /sign [message]
+    permission: chickensmp.sign.use
+  unsign:
+    description: Remove your signature from the item in your hand.
+    usage: /unsign
+    permission: chickensmp.sign.use
+permissions:
+  chickensmp.sign.use:
+    description: Use /sign and /unsign
+    default: true
+  chickensmp.sign.unlimited:
+    description: No daily /sign limit
+    default: op
+  chickensmp.sign.admin:
+    description: Remove anyone's signature, /sign reload
+    default: op
