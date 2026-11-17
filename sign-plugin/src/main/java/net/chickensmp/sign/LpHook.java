@@ -35,16 +35,6 @@ final class LpHook {
      * Skips prefixes with placeholders (TAB animations) and colour-only prefixes,
      * so e.g. the owner gets his static "OWNER" prefix.
      */
-    static String debug(Player p) {
-        Group g = top(p);
-        if (g == null) return "no group";
-        StringBuilder sb = new StringBuilder(g.getName() + " all=" + g.getNodes().size() + " prefix=[");
-        for (PrefixNode n : g.getNodes(NodeType.PREFIX)) sb.append(n.getPriority()).append(':').append(n.getMetaValue()).append(" v=").append(n.getValue()).append(", ");
-        sb.append("] keys=");
-        g.getNodes().forEach(n -> sb.append(n.getKey()).append(" | "));
-        return sb.toString();
-    }
-
     static String rankPrefix(Player p) {
         Group g = top(p);
         if (g == null) return null;

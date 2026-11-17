@@ -213,7 +213,7 @@ public final class SignPlugin extends JavaPlugin {
         }
         try {
             String prefix = LpHook.rankPrefix(p);
-            if (getConfig().getBoolean("debug", false)) getLogger().info("rank prefix of " + p.getName() + ": " + prefix + " / " + LpHook.debug(p));
+            if (getConfig().getBoolean("debug", false)) getLogger().info("rank prefix of " + p.getName() + ": " + prefix));
             if (prefix == null) return Component.empty();
             prefix = prefix.replace('\u00a7', '&').stripTrailing();
             return Component.empty().append(LEGACY.deserialize(prefix)).append(Component.text(" "));

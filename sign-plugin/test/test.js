@@ -88,7 +88,7 @@ async function held(name) {
   h = await held('SignBot');
   ok(/Item signed!/.test(r) && /red bold/.test(h), 'colour codes stripped');
 
-  ok(/SignBot signed DIAMOND_SWORD \[default\] \("Hello world"\)/.test(serverLog()), 'console log line');
+  ok(/SignBot signed DIAMOND_SWORD \[default\] #1 \("Hello world"\)/.test(serverLog()), 'console log line');
 
   // --- rank: LuckPerms group with a higher limit and a gradient frame
   const rb = await bot('RankBot');
@@ -98,8 +98,8 @@ async function held(name) {
   consoleCmd('lp group supreme setweight 5');
   consoleCmd('lp group supreme permission set chickensmp.sign.limit.10 true');
   await sleep(800);
-  consoleCmd('lp group supreme meta setprefix 5 "&#ffffff&lSUP&#ff9900&lREME &f☄ "');
-  consoleCmd('lp group supreme meta setprefix 99 "%animation:supreme% "');
+  consoleCmd('lp group supreme meta addprefix 5 "&#ffffff&lSUP&#ff9900&lREME &f☄ "');
+  consoleCmd('lp group supreme meta addprefix 99 "%animation:supreme% "');
   await sleep(800);
   consoleCmd('lp user RankBot parent add supreme');
   consoleCmd('give RankBot golden_apple');
