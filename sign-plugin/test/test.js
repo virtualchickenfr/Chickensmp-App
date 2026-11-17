@@ -97,6 +97,9 @@ async function held(name) {
   consoleCmd('lp group supreme setweight 5');
   consoleCmd('lp group supreme permission set chickensmp.sign.limit.10 true');
   await sleep(800);
+  consoleCmd('lp group supreme meta setprefix 5 "&#ffffff&lSUP&#ff9900&lREME &f☄ "');
+  consoleCmd('lp group supreme meta setprefix 99 "%animation:supreme% "');
+  await sleep(800);
   consoleCmd('lp user RankBot parent add supreme');
   consoleCmd('give RankBot golden_apple');
   await sleep(2500);
@@ -108,6 +111,7 @@ async function held(name) {
   ok(/ff9900/i.test(h), 'supreme frame uses the supreme colours');
   ok((h.match(/┃/g) || []).length === 2 && /Signed by/.test(h), 'no message = no message line (2 inner lines): ' + (h.match(/┃/g) || []).length);
   ok(/RankBot signed GOLDEN_APPLE \[supreme\]/.test(serverLog()), 'rank detected from LuckPerms');
+  ok(/SUP/.test(h) && /REME/.test(h) && !/animation/.test(h), 'rank prefix shown, placeholder prefix skipped');
   rb.quit();
   console.log(failed ? `${failed} FAILED` : 'ALL PASSED');
   b.quit();

@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -88,6 +89,7 @@ public final class SignPlugin extends JavaPlugin {
 
         String date = LocalDate.now(zone()).format(DateTimeFormatter.ofPattern(getConfig().getString("date-format", "dd.MM.yyyy")));
         TagResolver tags = TagResolver.resolver(
+                Placeholder.component("rank", rankComponent(p)),
                 Placeholder.unparsed("player", p.getName()),
                 Placeholder.unparsed("message", text),
                 Placeholder.unparsed("date", date));
@@ -162,6 +164,25 @@ public final class SignPlugin extends JavaPlugin {
             }
         }
         return "default";
+    }
+
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
+            .character('&').hexColors().build();
+
+    /** The signer's rank prefix from LuckPerms plus a space, or nothing. */
+    private Component rankComponent(Player p) {
+        if (!getConfig().getBoolean("show-rank", true) || !getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
+            return Component.empty();
+        }
+        try {
+            String prefix = LpHook.rankPrefix(p);
+            if (prefix == null) return Component.empty();
+            prefix = prefix.replace('\u00a7', '&').stripTrailing();
+            return Component.empty().append(LEGACY.deserialize(prefix)).append(Component.text(" "));
+        } catch (Throwable t) {
+            getLogger().warning("LuckPerms prefix lookup failed: " + t);
+            return Component.empty();
+        }
     }
 
     /** Opening and closing MiniMessage tag for the frame colour of a group. */

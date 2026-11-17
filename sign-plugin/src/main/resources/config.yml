@@ -6,14 +6,17 @@ default-limit: 1
 timezone: Europe/Berlin
 max-message-length: 40
 date-format: "dd.MM.yyyy"
+# Show the signer's rank prefix in front of the name.
+show-rank: true
 
-# Lines added to the item. <player>, <message>, <date> are replaced.
+# Lines added to the item. <rank>, <player>, <message>, <date> are replaced.
+# <rank> = the LuckPerms prefix of the signer's top group (same colours as in chat), or nothing.
 # A line with <message> is skipped when the player gives no message.
 # <frame>...</frame> is drawn in the colour of the signer's rank (see frame-colors).
 lore:
   - ""
   - "<frame>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</frame>"
-  - "<frame>┃</frame> <gray>✎ Signed by <frame><player></frame>"
+  - "<frame>┃</frame> <gray>✎ Signed by <rank><frame><player></frame>"
   - "<frame>┃</frame> <gray>\"<white><message></white>\""
   - "<frame>┃</frame> <dark_gray><date>"
   - "<frame>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</frame>"
