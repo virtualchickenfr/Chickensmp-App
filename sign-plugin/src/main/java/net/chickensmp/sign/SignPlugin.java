@@ -25,6 +25,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public final class SignPlugin extends JavaPlugin {
     private static final String LIMIT_PREFIX = "chickensmp.sign.limit.";
@@ -90,9 +91,11 @@ public final class SignPlugin extends JavaPlugin {
                 Placeholder.unparsed("player", p.getName()),
                 Placeholder.unparsed("message", text),
                 Placeholder.unparsed("date", date));
+        String[] frame = frame(rankGroup(p));
         List<Component> added = new ArrayList<>();
         for (String line : getConfig().getStringList("lore")) {
             if (line.contains("<message>") && text.isEmpty()) continue;
+            line = line.replace("<frame>", frame[0]).replace("</frame>", frame[1]);
             added.add(mm.deserialize(line, tags).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE));
         }
         List<Component> lore = meta.lore() == null ? new ArrayList<>() : new ArrayList<>(meta.lore());
@@ -111,7 +114,7 @@ public final class SignPlugin extends JavaPlugin {
             send(p, "signed-unlimited");
         }
         p.playSound(p.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
-        getLogger().info(p.getName() + " signed " + item.getType() + (text.isEmpty() ? "" : " (\"" + text + "\")"));
+        getLogger().info(p.getName() + " signed " + item.getType() + " [" + rankGroup(p) + "]" + (text.isEmpty() ? "" : " (\"" + text + "\")"));
     }
 
     private void doUnsign(Player p) {
@@ -146,6 +149,34 @@ public final class SignPlugin extends JavaPlugin {
             try { best = Math.max(best, Integer.parseInt(n.substring(LIMIT_PREFIX.length()))); } catch (NumberFormatException ignored) { }
         }
         return best;
+    }
+
+    /** The signer's LuckPerms group with the highest weight, or "default" without LuckPerms. */
+    private String rankGroup(Player p) {
+        if (getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
+            try {
+                String g = LpHook.topGroup(p);
+                if (g != null) return g;
+            } catch (Throwable t) {
+                getLogger().warning("LuckPerms lookup failed: " + t);
+            }
+        }
+        return "default";
+    }
+
+    /** Opening and closing MiniMessage tag for the frame colour of a group. */
+    private String[] frame(String group) {
+        String colors = null, fallback = "#aaaaaa";
+        for (Map<?, ?> m : getConfig().getMapList("frame-colors")) {
+            String g = String.valueOf(m.get("group"));
+            String c = String.valueOf(m.get("colors"));
+            if (g.equalsIgnoreCase(group)) colors = c;
+            if (g.equalsIgnoreCase("default")) fallback = c;
+        }
+        if (colors == null) colors = fallback;
+        String[] stops = colors.split(":");
+        if (stops.length < 2) return new String[]{"<color:" + stops[0] + ">", "</color>"};
+        return new String[]{"<gradient:" + colors + ">", "</gradient>"};
     }
 
     private ZoneId zone() {

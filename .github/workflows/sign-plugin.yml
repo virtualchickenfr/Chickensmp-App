@@ -27,6 +27,7 @@ jobs:
             u=$(curl -s -H "$H" https://api.github.com/repos/$r/releases/latest | jq -r '[.assets[]|select(.name|endswith(".jar"))][0].browser_download_url')
             curl -sfLo plugins/$(basename $r).jar "$u"
           done
+          curl -sfLo plugins/LuckPerms.jar "$(curl -s 'https://api.modrinth.com/v2/project/luckperms/version?loaders=%5B%22bukkit%22%5D' | jq -r '.[0].files[0].url')"
           cp ../sign-plugin/target/ChickenSMPSign.jar plugins/
           echo "eula=true" > eula.txt
           printf "settings:\n  connection-throttle: -1\n" > bukkit.yml
@@ -41,7 +42,7 @@ jobs:
         run: |
           cd srv && npm init -y >/dev/null && npm i -s mineflayer >/dev/null 2>&1
           cp ../sign-plugin/test/test.js .
-          BOT_HOST=$(hostname -I | awk '{print $1}') timeout 180 node test.js
+          BOT_HOST=$(hostname -I | awk '{print $1}') timeout 240 node test.js
       - name: Server log
         if: always()
         run: |

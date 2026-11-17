@@ -49,6 +49,7 @@ async function held(name) {
   ok(/Item signed!/.test(r) && /0 left today/.test(r), 'default player signs once, 0 left: ' + r);
   let h = await held('SignBot');
   ok(/Signed by/.test(h) && /SignBot/.test(h) && /Hello world/.test(h), 'lore has signer + message');
+  ok(/▬/.test(h) && /┃/.test(h), 'lore has the frame');
 
   r = await run(b, '/sign again');
   ok(/already signed by SignBot/.test(r), 'cannot sign twice: ' + r);
@@ -86,7 +87,27 @@ async function held(name) {
   h = await held('SignBot');
   ok(/Item signed!/.test(r) && /red bold/.test(h), 'colour codes stripped');
 
-  ok(/SignBot signed DIAMOND_SWORD \("Hello world"\)/.test(serverLog()), 'console log line');
+  ok(/SignBot signed DIAMOND_SWORD \[default\] \("Hello world"\)/.test(serverLog()), 'console log line');
+
+  // --- rank: LuckPerms group with a higher limit and a gradient frame
+  const rb = await bot('RankBot');
+  await sleep(1500);
+  consoleCmd('lp creategroup supreme');
+  await sleep(800);
+  consoleCmd('lp group supreme setweight 5');
+  consoleCmd('lp group supreme permission set chickensmp.sign.limit.10 true');
+  await sleep(800);
+  consoleCmd('lp user RankBot parent add supreme');
+  consoleCmd('give RankBot golden_apple');
+  await sleep(2500);
+  rb.setQuickBarSlot(0);
+  await sleep(500);
+  r = await run(rb, '/sign');
+  ok(/Item signed!/.test(r) && /9 left today/.test(r), 'supreme has 10 per day: ' + r);
+  h = await held('RankBot');
+  ok(/ff9900/i.test(h), 'supreme frame uses the supreme colours');
+  ok(/RankBot signed GOLDEN_APPLE \[supreme\]/.test(serverLog()), 'rank detected from LuckPerms');
+  rb.quit();
   console.log(failed ? `${failed} FAILED` : 'ALL PASSED');
   b.quit();
   process.exit(failed ? 1 : 0);

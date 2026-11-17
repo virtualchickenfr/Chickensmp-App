@@ -9,11 +9,32 @@ date-format: "dd.MM.yyyy"
 
 # Lines added to the item. <player>, <message>, <date> are replaced.
 # A line with <message> is skipped when the player gives no message.
+# <frame>...</frame> is drawn in the colour of the signer's rank (see frame-colors).
 lore:
   - ""
-  - "<gray>✎ Signed by <gold><player>"
-  - "<gray>\"<white><message></white>\""
-  - "<dark_gray><date>"
+  - "<frame>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</frame>"
+  - "<frame>┃</frame> <gray>✎ Signed by <frame><player></frame>"
+  - "<frame>┃</frame> <gray>\"<white><message></white>\""
+  - "<frame>┃</frame> <dark_gray><date>"
+  - "<frame>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</frame>"
+
+# Frame colour per rank = the signer's LuckPerms group with the highest weight.
+# One colour = plain colour, several (separated by ":") = gradient. Unknown groups use "default".
+frame-colors:
+  - {group: owner, colors: "#55ffff"}
+  - {group: manager, colors: "#aa0000"}
+  - {group: dev, colors: "#5555ff"}
+  - {group: admin, colors: "#ff5555"}
+  - {group: sr.mod, colors: "#5555ff"}
+  - {group: mod, colors: "#5555ff"}
+  - {group: helper, colors: "#55ff55"}
+  - {group: jr.helper, colors: "#55ff55"}
+  - {group: media, colors: "#ff55ff"}
+  - {group: booster, colors: "#ff55ff"}
+  - {group: supreme, colors: "#ffffff:#ffc31c:#ff9900"}
+  - {group: core, colors: "#ffffff:#8c8c8c"}
+  - {group: "+", colors: "#ffffff:#99daed"}
+  - {group: default, colors: "#aaaaaa"}
 
 prefix: "<gradient:#3b7bff:#7cc4ff><b>SIGN</b></gradient> <dark_gray>» "
 messages:

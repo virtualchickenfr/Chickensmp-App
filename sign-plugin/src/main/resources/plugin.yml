@@ -4,6 +4,7 @@ main: net.chickensmp.sign.SignPlugin
 api-version: '1.21'
 author: ChickenSMP
 description: Sign the item in your hand with /sign. Daily limit per rank.
+softdepend: [LuckPerms]
 commands:
   sign:
     description: Sign the item in your hand.
