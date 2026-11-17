@@ -32,7 +32,8 @@ async function held(name) {
   const n = serverLog().length;
   consoleCmd(`data get entity ${name} SelectedItem`);
   await sleep(1200);
-  return serverLog().slice(n);
+  const out = serverLog().slice(n);
+  return out.includes('entity data:') ? out.slice(out.indexOf('entity data:')) : out;
 }
 
 (async () => {
