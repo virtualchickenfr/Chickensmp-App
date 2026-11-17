@@ -19,7 +19,7 @@
 #  Reminders are staggered so two never send at the same moment
 #  (see reminders.stagger-seconds in config.yml).
 #
-#  ChickenSMP: 11 reminders, each every 44 minutes, staggered by 4 minutes
+#  ChickenSMP: 12 reminders, each every 48 minutes, staggered by 4 minutes
 #  -> one reminder every 4 minutes.
 #  Discord: the old invite expired. When there is a new one, replace
 #  https://store.chickensmp.net in the "discord" reminder with it.
@@ -28,7 +28,7 @@
 reminders:
 
   discord:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "           &#5865F2&lDISCORD"
@@ -40,7 +40,7 @@ reminders:
       - "        <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to join our Discord'>&#5865F2▶ Click to join ◀</hover></click>"
 
   store:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "             &#00FC00&lSTORE"
@@ -52,7 +52,7 @@ reminders:
       - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to open the store'>&#00FC00▶ store.chickensmp.net ◀</hover></click>"
 
   rules:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "             &#FCE300&lRULES"
@@ -64,7 +64,7 @@ reminders:
       - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to read all rules'>&#FCE300▶ /rules ◀ &7or &#FCE300store.chickensmp.net</hover></click>"
 
   app:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "          &#3B7BFF&lCHICKENSMP APP"
@@ -76,7 +76,7 @@ reminders:
       - "      <click:open_url:'https://github.com/virtualchickenfr/Chickensmp-App/releases/latest/download/ChickenSMP.apk'><hover:show_text:'&7Click to download the Android app'>&#3B7BFF▶ Download the app ◀</hover></click>"
 
   website:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "            &#7CC4FF&lWEBSITE"
@@ -87,7 +87,7 @@ reminders:
       - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to open the website'>&#7CC4FF▶ store.chickensmp.net ◀</hover></click>"
 
   daily:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "          &#FFB347&lDAILY REWARD"
@@ -99,7 +99,7 @@ reminders:
       - "             <click:run_command:'/daily'><hover:show_text:'&7Click to claim'>&#FFB347▶ /daily ◀</hover></click>"
 
   tickets:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "            &#FF3B6B&lNEED HELP?"
@@ -111,7 +111,7 @@ reminders:
       - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Click to open a ticket'>&#FF3B6B▶ Open a ticket ◀</hover></click>"
 
   keyall:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "             &#FCE300&lKEY ALL"
@@ -122,7 +122,7 @@ reminders:
       - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7See all crates and keys'>&#FCE300▶ See all keys ◀</hover></click>"
 
   referral:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "          &#FFB347&lINVITE FRIENDS"
@@ -134,7 +134,7 @@ reminders:
       - "      <click:open_url:'https://store.chickensmp.net'><hover:show_text:'&7Share our website with your friends'>&#FFB347▶ chickensmp.net ◀</hover></click>"
 
   quests:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "             &#3DDC84&lQUESTS"
@@ -144,8 +144,20 @@ reminders:
       - ""
       - "             <click:run_command:'/quests'><hover:show_text:'&7Click to open your quests'>&#3DDC84▶ /quests ◀</hover></click>"
 
+  sign:
+    interval-minutes: 48
+    sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
+    lines:
+      - "           &#FFC31C&lSIGN YOUR ITEMS"
+      - ""
+      - "&fPut your &#FFC31Cname &fon the item in your hand with &#FFC31C/sign&f."
+      - "&fAdd a message: &#FFC31C/sign <text>&f. Remove it with &#FFC31C/unsign&f."
+      - "&fSigns per day: &7Member &f1, &#99DAEDPlus &f3, &#D9D9D9Core &f5, &#FFC31CSupreme &f10."
+      - ""
+      - "      <click:suggest_command:'/sign '><hover:show_text:'&7Click, then add a message or just press enter'>&#FFC31C▶ /sign ◀</hover></click>"
+
   bedrock:
-    interval-minutes: 44
+    interval-minutes: 48
     sound: "minecraft:entity.experience_orb.pickup|0.6|1.4"
     lines:
       - "            &#B98CFF&lBEDROCK"
