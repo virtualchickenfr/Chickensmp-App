@@ -36,6 +36,7 @@ frame-colors:
   - {group: mod, colors: "#5555ff"}
   - {group: helper, colors: "#55ff55"}
   - {group: jr.helper, colors: "#55ff55"}
+  - {group: servermedia, colors: "#ff6ed8:#8a5cff"}
   - {group: media, colors: "#ff55ff"}
   - {group: booster, colors: "#ff55ff"}
   - {group: supreme, colors: "#ffffff:#ffc31c:#ff9900"}
