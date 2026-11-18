@@ -32,6 +32,7 @@ frame-colors:
   - {group: manager, colors: "#aa0000"}
   - {group: dev, colors: "#5555ff"}
   - {group: admin, colors: "#ff5555"}
+  - {group: socialmedia, colors: "#ff5fa2:#ffaf8e"}
   - {group: sr.mod, colors: "#5555ff"}
   - {group: mod, colors: "#5555ff"}
   - {group: helper, colors: "#55ff55"}
