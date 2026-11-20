@@ -45,7 +45,7 @@ frame-colors:
   - {group: "+", colors: "#ffffff:#99daed"}
   - {group: default, colors: "#aaaaaa"}
 
-prefix: "<gradient:#3b7bff:#7cc4ff><b>SIGN</b></gradient> <dark_gray>» "
+prefix: "<color:#00A4FC><bold>SIGN</bold></color> <gray>»</gray> "
 messages:
   signed: "<gray>Item signed! <dark_gray>(<white><left></white> left today)"
   signed-unlimited: "<gray>Item signed!"

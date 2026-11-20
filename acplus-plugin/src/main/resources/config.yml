@@ -40,19 +40,19 @@ discord-username: "ChickenSMP Sus"
 
 # Messages (MiniMessage format). Placeholders are shown in {braces}.
 messages:
-  prefix: "<gradient:#3b7bff:#7cc4ff><bold>SUS</bold></gradient> <dark_gray>»</dark_gray> "
-  alert: "<red><bold>{player}</bold></red> <gray>looks suspicious:</gray> <white>{score}</white> <gray>points</gray> <dark_gray>(</dark_gray><gray>{top}</gray><dark_gray>)</dark_gray> <click:run_command:'/sus {player}'><aqua>[Info]</aqua></click> <click:run_command:'/sus tp {player}'><green>[TP]</green></click> <click:run_command:'/sus watch {player}'><aqua>[Watch]</aqua></click>"
+  prefix: "<color:#00A4FC><bold>SUS</bold></color> <gray>»</gray> "
+  alert: "<red><bold>{player}</bold></red> <gray>looks suspicious:</gray> <white>{score}</white> <gray>points</gray> <dark_gray>(</dark_gray><gray>{top}</gray><dark_gray>)</dark_gray> <click:run_command:'/sus {player}'><color:#00A4FC>[Info]</color></click> <click:run_command:'/sus tp {player}'><color:#00FC00>[TP]</color></click> <click:run_command:'/sus watch {player}'><color:#00A4FC>[Watch]</color></click>"
   list-header: "<gray>Most flagged players:</gray>"
   list-line: "<dark_gray>{rank}.</dark_gray> <click:run_command:'/sus {player}'><hover:show_text:'<gray>Click for details'>{color}{player}</hover></click> <dark_gray>-</dark_gray> <white>{score}</white> <gray>pts</gray> <dark_gray>|</dark_gray> <gray>{top}</gray>{online} <click:run_command:'/sus clear {player}'><hover:show_text:'<gray>Delete entry'><dark_red>[x]</dark_red></hover></click>"
-  list-empty: "<green>Nobody has been flagged yet.</green>"
-  online-tag: " <green>●</green>"
+  list-empty: "<color:#00FC00>Nobody has been flagged yet.</color>"
+  online-tag: " <color:#00FC00>●</color>"
   no-data: "<gray>No flags recorded for <white>{player}</white>.</gray>"
-  cleared: "<green>Cleared all sus data of <white>{player}</white>.</green>"
-  reloaded: "<green>Config reloaded.</green>"
+  cleared: "<color:#00FC00>Cleared all sus data of <white>{player}</white>.</color>"
+  reloaded: "<color:#00FC00>Config reloaded.</color>"
   not-online: "<red>{player} is not online.</red>"
-  teleported: "<green>Staff mode on, teleported to <white>{player}</white>.</green> <gray>/staff to go back.</gray>"
-  watching: "<green>Staff mode on, watching <white>{player}</white>.</green> <gray>Sneak to stop, /staff to go back.</gray>"
-  vulcan-missing: "<yellow>No anticheat (GrimAC) is loaded - no flags are being recorded.</yellow>"
+  teleported: "<color:#00FC00>Staff mode on, teleported to <white>{player}</white>.</color> <gray>/staff to go back.</gray>"
+  watching: "<color:#00FC00>Staff mode on, watching <white>{player}</white>.</color> <gray>Sneak to stop, /staff to go back.</gray>"
+  vulcan-missing: "<color:#FCE300>No anticheat (GrimAC) is loaded - no flags are being recorded.</color>"
   usage: "<gray>/sus</gray> <dark_gray>-</dark_gray> list <dark_gray>|</dark_gray> <gray>/sus <player></gray> <dark_gray>|</dark_gray> <gray>/sus tp|watch <player></gray> <dark_gray>|</dark_gray> <gray>/sus clear <player></gray> <dark_gray>|</dark_gray> <gray>/sus reload</gray>"
 
 # ------------------------------------------------------------
@@ -89,11 +89,11 @@ banhammer:
       command: "ban {player} 7d Caught cheating by the Banhammer"
       cage: true
     - name: "Cage only (1 minute)"
-      color: "<yellow>"
+      color: "<color:#FCE300>"
       command: ""
       cage: true
     - name: "Kick"
-      color: "<aqua>"
+      color: "<color:#00A4FC>"
       command: "kick {player} Caught by the Banhammer"
       cage: false
 
@@ -103,12 +103,12 @@ banhammer:
 # ------------------------------------------------------------
 staff-mode:
   actionbar: "<gradient:#3b7bff:#7cc4ff><bold>STAFF MODE</bold></gradient> <gray>- invisible, /staff to leave</gray>"
-  enabled-message: "<green>Staff mode on.</green> <gray>Only staff can see you. You can fly through blocks.</gray>"
+  enabled-message: "<color:#00FC00>Staff mode on.</color> <gray>Only staff can see you. You can fly through blocks.</gray>"
   disabled-message: "<red>Staff mode off.</red> <gray>Your inventory and position are back.</gray>"
   # Fake leave/join messages for normal players when toggling.
   fake-messages: true
-  fake-quit: "<yellow>{player} left the game</yellow>"
-  fake-join: "<yellow>{player} joined the game</yellow>"
+  fake-quit: "<color:#FCE300>{player} left the game</color>"
+  fake-join: "<color:#FCE300>{player} joined the game</color>"
 
 # ------------------------------------------------------------
 #  PvP area - everything in "world" outside the WorldGuard region
@@ -128,7 +128,7 @@ arena:
   vanish-effect: true
   enter-title: "<red><bold>PVP AREA</bold></red>"
   enter-subtitle: "<gray>Blocks you place disappear after {minutes} minutes</gray>"
-  leave-title: "<green><bold>SAFE ZONE</bold></green>"
+  leave-title: "<color:#00FC00><bold>SAFE ZONE</bold></color>"
   leave-subtitle: "<gray>No PvP at spawn</gray>"
   cant-break: "<red>You can only break blocks that players placed here.</red>"
 
