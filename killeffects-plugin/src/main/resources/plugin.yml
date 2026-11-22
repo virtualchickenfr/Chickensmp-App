@@ -48,7 +48,6 @@ permissions:
     children:
       killeffects.effect.ice_cube: true
       killeffects.effect.tnt: true
-      killeffects.effect.coconut: true
       killeffects.effect.slime_bounce: true
       killeffects.effect.pumpkin: true
   killeffects.rarity.rare:
@@ -56,15 +55,19 @@ permissions:
     default: false
     children:
       killeffects.effect.balloon: true
+      killeffects.effect.coconut: true
       killeffects.effect.rocket: true
-      killeffects.effect.ez: true
       killeffects.effect.slot_machine: true
   killeffects.rarity.epic:
     description: Owns every epic kill effect
     default: false
     children:
-      killeffects.effect.helicopter: true
-      killeffects.effect.meteor: true
+      killeffects.effect.ez: true
+      killeffects.effect.explode: true
+      killeffects.effect.awoooga: true
+      killeffects.effect.i_love_you: true
+      killeffects.effect.tick_tock: true
+      killeffects.effect.heart_attack: true
       killeffects.effect.piano: true
       killeffects.effect.ufo: true
   killeffects.rarity.legendary:
@@ -74,11 +77,15 @@ permissions:
       killeffects.effect.royal_crown: true
       killeffects.effect.volcano: true
       killeffects.effect.tornado: true
+      killeffects.effect.meteor: true
+      killeffects.effect.bike: true
   killeffects.rarity.mythic:
     description: Owns every mythic kill effect
     default: false
     children:
       killeffects.effect.chicken_god: true
+      killeffects.effect.helicopter: true
+      killeffects.effect.dismantle: true
       killeffects.effect.black_hole_x: true
   killeffects.effect.tombstone:
     description: Kill effect Tombstone (common)
@@ -104,9 +111,6 @@ permissions:
   killeffects.effect.tnt:
     description: Kill effect TNT (uncommon)
     default: false
-  killeffects.effect.coconut:
-    description: Kill effect Coconut (uncommon)
-    default: false
   killeffects.effect.slime_bounce:
     description: Kill effect Slime Bounce (uncommon)
     default: false
@@ -116,20 +120,32 @@ permissions:
   killeffects.effect.balloon:
     description: Kill effect Balloon (rare)
     default: false
+  killeffects.effect.coconut:
+    description: Kill effect Coconut (rare)
+    default: false
   killeffects.effect.rocket:
     description: Kill effect Rocket (rare)
-    default: false
-  killeffects.effect.ez:
-    description: Kill effect EZ (rare)
     default: false
   killeffects.effect.slot_machine:
     description: Kill effect Slot Machine (rare)
     default: false
-  killeffects.effect.helicopter:
-    description: Kill effect Helicopter (epic)
+  killeffects.effect.ez:
+    description: Kill effect EZ (epic)
     default: false
-  killeffects.effect.meteor:
-    description: Kill effect Meteor (epic)
+  killeffects.effect.explode:
+    description: Kill effect Explode 'em (epic)
+    default: false
+  killeffects.effect.awoooga:
+    description: Kill effect AWOOOGA (epic)
+    default: false
+  killeffects.effect.i_love_you:
+    description: Kill effect I Love You (epic)
+    default: false
+  killeffects.effect.tick_tock:
+    description: Kill effect Tick, Tock (epic)
+    default: false
+  killeffects.effect.heart_attack:
+    description: Kill effect Heart Attack (epic)
     default: false
   killeffects.effect.piano:
     description: Kill effect Piano Drop (epic)
@@ -146,8 +162,20 @@ permissions:
   killeffects.effect.tornado:
     description: Kill effect Tornado (legendary)
     default: false
+  killeffects.effect.meteor:
+    description: Kill effect Meteor (legendary)
+    default: false
+  killeffects.effect.bike:
+    description: Kill effect Bike (legendary)
+    default: false
   killeffects.effect.chicken_god:
     description: Kill effect Chicken God (mythic)
+    default: false
+  killeffects.effect.helicopter:
+    description: Kill effect Helicopter (mythic)
+    default: false
+  killeffects.effect.dismantle:
+    description: Kill effect Dismantle (mythic)
     default: false
   killeffects.effect.black_hole_x:
     description: Kill effect Black Hole (mythic)

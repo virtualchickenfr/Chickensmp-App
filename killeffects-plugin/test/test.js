@@ -34,7 +34,7 @@ async function count(type) {
   await sleep(1500);
   const ids = [...log().matchAll(/EFFECT_ID (\w+)/g)].map(m => m[1]);
   const all = ids.length ? ids : process.argv.slice(2);
-  check(all.length === 24, 'found 24 effect ids (' + all.length + ')');
+  check(all.length === 31, 'found 31 effect ids (' + all.length + ')');
   for (const id of all) {
     const before = log().length;
     a.chat('/ke play ' + id);
@@ -42,7 +42,7 @@ async function count(type) {
     const n = await count('block_display') + await count('item_display');
     const failed = / failed: |Exception/.test(log().slice(before));
     check(n > 0 && !failed, `play ${id}: ${n} displays`);
-    await sleep(5500);
+    await sleep(4500);
   }
   await sleep(4000);
   check(await count('block_display') === 0, 'all displays removed afterwards');

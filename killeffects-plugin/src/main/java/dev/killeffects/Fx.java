@@ -326,6 +326,10 @@ final class Fx {
         return sprite;
     }
 
+    Rig rig(double x, double y, double z) {
+        return new Rig(this, x, y, z);
+    }
+
     Model model(double x, double y, double z) {
         return new Model(this, x, y, z);
     }

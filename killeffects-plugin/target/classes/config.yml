@@ -1,6 +1,6 @@
 # ============================================================
 #  ChickenSMPKillEffects
-#  24 block kill effects (little animated block models) in 6 rarities. Players unlock them by:
+#  31 block kill effects (animated block models, many with a blocky copy of the victim) in 6 rarities. Players unlock them by:
 #    - permission:  killeffects.effect.<id>   (or killeffects.rarity.<rarity>, killeffects.effect.*)
 #    - crates:      gamble with money (Vault) or keys
 #    Duplicates from crates give part of the crate price back (duplicate-refund-percent).

@@ -1,9 +1,11 @@
 dev/killeffects/KillEffectsExpansion.class
+dev/killeffects/Skin$Part.class
 dev/killeffects/Fx$Sprite.class
 dev/killeffects/KillEffects.class
 dev/killeffects/CratesMenu.class
 dev/killeffects/Model$Part.class
 dev/killeffects/Gui.class
+dev/killeffects/Skin.class
 dev/killeffects/Rarity.class
 dev/killeffects/KillEffects$Prize.class
 dev/killeffects/RollMenu.class
@@ -11,6 +13,7 @@ dev/killeffects/CollectionMenu.class
 dev/killeffects/Fx.class
 dev/killeffects/Store.class
 dev/killeffects/Effects.class
+dev/killeffects/Rig.class
 dev/killeffects/Crate.class
 dev/killeffects/Store$Profile.class
 dev/killeffects/Model.class

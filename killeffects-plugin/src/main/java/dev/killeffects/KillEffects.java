@@ -90,7 +90,7 @@ public final class KillEffects
 extends JavaPlugin
 implements Listener,
 TabExecutor {
-    static final String VERSION = "2.0.0";
+    static final String VERSION = "2.1.0";
     static final UUID PACK_ID = UUID.nameUUIDFromBytes("ChickenSMPKillEffects".getBytes(StandardCharsets.UTF_8));
     final SecureRandom random = new SecureRandom();
     private final Map<UUID, Store.Profile> profiles = new ConcurrentHashMap<UUID, Store.Profile>();
@@ -432,6 +432,7 @@ TabExecutor {
     public void onJoin(PlayerJoinEvent playerJoinEvent) {
         Player player = playerJoinEvent.getPlayer();
         this.profileOrCreate(player.getUniqueId(), player.getName());
+        Skin.load(this, player);
         String string = this.getConfig().getString("resource-pack.url");
         if (string != null && !string.isBlank()) {
             byte[] byArray = null;
