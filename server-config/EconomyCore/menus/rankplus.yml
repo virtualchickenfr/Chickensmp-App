@@ -1,7 +1,7 @@
 # Rank preview: PLUS (opened by the rank NPC at spawn). One item, perks stack with the ranks below. Format: see discord.yml.
 command:
   - rankplus
-title: "&8ʜᴇʀᴏ ʀᴀɴᴋ"
+title: "&8ᴘʟᴜꜱ ʀᴀɴᴋ"
 rows: 3
 open-sound: "minecraft:block.note_block.pling|0.7|1.2"
 

@@ -1,7 +1,7 @@
 # Rank preview: SUPREME (opened by the rank NPC at spawn). One item, perks stack with the ranks below. Format: see discord.yml.
 command:
   - ranksupreme
-title: "&8ᴛɪᴛᴀɴ ʀᴀɴᴋ"
+title: "&8ꜱᴜᴘʀᴇᴍᴇ ʀᴀɴᴋ"
 rows: 3
 open-sound: "minecraft:block.note_block.pling|0.7|1.2"
 
