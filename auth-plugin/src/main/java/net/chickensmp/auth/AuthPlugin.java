@@ -138,7 +138,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
                 && System.currentTimeMillis() - store.lastLogout(p.getName()) < session) {
             authed.add(p.getUniqueId());
             store.loggedIn(p.getName(), ip);
-            Bukkit.getScheduler().runTaskLater(this, () -> { if (p.isOnline()) msg.send(p, "sessionResumed"); }, 20L);
+            Bukkit.getScheduler().runTaskLater(this, () -> { if (p.isOnline()) { p.updateCommands(); msg.send(p, "sessionResumed"); } }, 20L);
             return;
         }
         waitingSince.put(p.getUniqueId(), System.currentTimeMillis());
@@ -193,6 +193,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         attempts.remove(u);
         p.removePotionEffect(PotionEffectType.BLINDNESS);
         p.clearTitle();
+        p.updateCommands(); // the command list was trimmed to /login + /register at join
         store.loggedIn(p.getName(), ip(p));
         store.setClient(p.getName(), client(p));
         int fails = store.failsSinceLogin(p.getName());

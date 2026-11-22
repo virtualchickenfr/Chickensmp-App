@@ -8,38 +8,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 final class Msg {
-    private static final String P = "<gradient:#3b7bff:#7cc4ff><bold>ChickenSMP</bold></gradient> <dark_gray>»</dark_gray> ";
+    private static final String P = "<color:#00A4FC><bold>AUTH</bold></color> <gray>»</gray> <white>";
     private final Map<String, String> de = new HashMap<>(), en = new HashMap<>();
 
     Msg() {
-        put("register", "<gray>Willkommen! Registriere dich mit <aqua>/register <Passwort> <Passwort></aqua>",
-                "<gray>Welcome! Register with <aqua>/register <password> <password></aqua>");
-        put("login", "<gray>Willkommen zurück! Melde dich an mit <aqua>/login <Passwort></aqua>",
-                "<gray>Welcome back! Log in with <aqua>/login <password></aqua>");
-        put("titleRegister", "<aqua><bold>REGISTRIEREN", "<aqua><bold>REGISTER");
-        put("titleLogin", "<aqua><bold>ANMELDEN", "<aqua><bold>LOG IN");
-        put("subRegister", "<gray>/register <Passwort> <Passwort>", "<gray>/register <password> <password>");
-        put("subLogin", "<gray>/login <Passwort>", "<gray>/login <password>");
-        put("registered", "<green>Account erstellt – viel Spaß auf ChickenSMP!", "<green>Account created – have fun on ChickenSMP!");
-        put("loggedIn", "<green>Erfolgreich angemeldet. Viel Spaß!", "<green>Logged in. Have fun!");
-        put("sessionResumed", "<green>Automatisch angemeldet (gleiche IP).", "<green>Logged in automatically (same IP).");
-        put("wrongPw", "<red>Falsches Passwort. Noch <yellow>{n}</yellow> Versuche.", "<red>Wrong password. <yellow>{n}</yellow> tries left.");
-        put("notRegistered", "<red>Du bist noch nicht registriert. Nutze <aqua>/register <Passwort> <Passwort>", "<red>You are not registered yet. Use <aqua>/register <password> <password>");
-        put("alreadyRegistered", "<red>Du bist schon registriert. Nutze <aqua>/login <Passwort>", "<red>You are already registered. Use <aqua>/login <password>");
-        put("alreadyIn", "<gray>Du bist bereits angemeldet.", "<gray>You are already logged in.");
-        put("pwShort", "<red>Das Passwort muss mindestens <yellow>{n}</yellow> Zeichen lang sein.", "<red>Your password needs at least <yellow>{n}</yellow> characters.");
-        put("pwMismatch", "<red>Die Passwörter stimmen nicht überein.", "<red>The passwords don't match.");
-        put("pwName", "<red>Dein Passwort darf nicht dein Name sein.", "<red>Your password can't be your name.");
-        put("pwWeak", "<red>Dieses Passwort ist zu leicht zu erraten. Nimm ein anderes.", "<red>That password is too easy to guess. Pick another one.");
-        put("failsWarning", "<yellow>Achtung: <white>{n}</white> falsche Anmeldeversuche seit deinem letzten Login. Ändere dein Passwort mit /changepassword, wenn du das nicht warst.",
-                "<yellow>Heads up: <white>{n}</white> wrong login attempts on your account since your last login. If that wasn't you, use <aqua>/changepassword</aqua>.");
-        put("pwChanged", "<green>Passwort geändert.", "<green>Password changed.");
-        put("noPremiumPw", "<gray>Du spielst mit einem gekauften Account oder über Bedrock – du brauchst kein Passwort.", "<gray>You play with a paid account or on Bedrock – you don't need a password.");
-        put("mustLogin", "<red>Bitte melde dich zuerst an.", "<red>Please log in first.");
-        put("tooManyAccounts", "<red>Von deiner Verbindung wurden schon zu viele Accounts registriert.", "<red>Too many accounts were registered from your connection.");
-        put("usage.register", "<red>Nutze: /register <Passwort> <Passwort>", "<red>Usage: /register <password> <password>");
-        put("usage.login", "<red>Nutze: /login <Passwort>", "<red>Usage: /login <password>");
-        put("usage.change", "<red>Nutze: /changepassword <altes> <neues>", "<red>Usage: /changepassword <old> <new>");
+        put("register", "<white>Willkommen! Registriere dich mit <color:#FCE300>/register <Passwort> <Passwort></color>",
+                "<white>Welcome! Register with <color:#FCE300>/register <password> <password></color>");
+        put("login", "<white>Willkommen zurück! Melde dich an mit <color:#FCE300>/login <Passwort></color>",
+                "<white>Welcome back! Log in with <color:#FCE300>/login <password></color>");
+        put("titleRegister", "<color:#FCE300><bold>REGISTRIEREN", "<color:#FCE300><bold>REGISTER");
+        put("titleLogin", "<color:#FCE300><bold>ANMELDEN", "<color:#FCE300><bold>LOG IN");
+        put("subRegister", "<white>/register <Passwort> <Passwort>", "<white>/register <password> <password>");
+        put("subLogin", "<white>/login <Passwort>", "<white>/login <password>");
+        put("registered", "<color:#00FC00>Account erstellt – viel Spaß auf ChickenSMP!", "<color:#00FC00>Account created – have fun on ChickenSMP!");
+        put("loggedIn", "<color:#00FC00>Erfolgreich angemeldet. Viel Spaß!", "<color:#00FC00>Logged in. Have fun!");
+        put("sessionResumed", "<color:#00FC00>Automatisch angemeldet (gleiche IP).", "<color:#00FC00>Logged in automatically (same IP).");
+        put("wrongPw", "<color:#FC0000>Falsches Passwort. Noch <color:#FCE300>{n}</color> Versuche.", "<color:#FC0000>Wrong password. <color:#FCE300>{n}</color> tries left.");
+        put("notRegistered", "<color:#FC0000>Du bist noch nicht registriert. Nutze <color:#FCE300>/register <Passwort> <Passwort>", "<color:#FC0000>You are not registered yet. Use <color:#FCE300>/register <password> <password>");
+        put("alreadyRegistered", "<color:#FC0000>Du bist schon registriert. Nutze <color:#FCE300>/login <Passwort>", "<color:#FC0000>You are already registered. Use <color:#FCE300>/login <password>");
+        put("alreadyIn", "<white>Du bist bereits angemeldet.", "<white>You are already logged in.");
+        put("pwShort", "<color:#FC0000>Das Passwort muss mindestens <color:#FCE300>{n}</color> Zeichen lang sein.", "<color:#FC0000>Your password needs at least <color:#FCE300>{n}</color> characters.");
+        put("pwMismatch", "<color:#FC0000>Die Passwörter stimmen nicht überein.", "<color:#FC0000>The passwords don't match.");
+        put("pwName", "<color:#FC0000>Dein Passwort darf nicht dein Name sein.", "<color:#FC0000>Your password can't be your name.");
+        put("pwWeak", "<color:#FC0000>Dieses Passwort ist zu leicht zu erraten. Nimm ein anderes.", "<color:#FC0000>That password is too easy to guess. Pick another one.");
+        put("failsWarning", "<color:#FCE300>Achtung: <color:#FCE300>{n}</color> falsche Anmeldeversuche seit deinem letzten Login. Ändere dein Passwort mit /changepassword, wenn du das nicht warst.",
+                "<color:#FCE300>Heads up: <color:#FCE300>{n}</color> wrong login attempts on your account since your last login. If that wasn't you, use <color:#FCE300>/changepassword</color>.");
+        put("pwChanged", "<color:#00FC00>Passwort geändert.", "<color:#00FC00>Password changed.");
+        put("noPremiumPw", "<white>Du spielst mit einem gekauften Account oder über Bedrock – du brauchst kein Passwort.", "<white>You play with a paid account or on Bedrock – you don't need a password.");
+        put("mustLogin", "<color:#FC0000>Bitte melde dich zuerst an.", "<color:#FC0000>Please log in first.");
+        put("tooManyAccounts", "<color:#FC0000>Von deiner Verbindung wurden schon zu viele Accounts registriert.", "<color:#FC0000>Too many accounts were registered from your connection.");
+        put("usage.register", "<color:#FC0000>Nutze: /register <Passwort> <Passwort>", "<color:#FC0000>Usage: /register <password> <password>");
+        put("usage.login", "<color:#FC0000>Nutze: /login <Passwort>", "<color:#FC0000>Usage: /login <password>");
+        put("usage.change", "<color:#FC0000>Nutze: /changepassword <altes> <neues>", "<color:#FC0000>Usage: /changepassword <old> <new>");
         // Kick / disconnect messages (shown in both languages, client language unknown at that point)
         put("timeout", "Zeit abgelaufen – bitte erneut verbinden und anmelden.", "Time ran out – please reconnect and log in.");
         put("tooMany", "Zu viele falsche Passwörter.", "Too many wrong passwords.");
@@ -73,6 +73,6 @@ final class Msg {
     void send(Player p, String key, Object... n) { p.sendMessage(MiniMessage.miniMessage().deserialize(P).append(c(p, key, n))); }
 
     Component kick(String key) {
-        return MiniMessage.miniMessage().deserialize("<gradient:#3b7bff:#7cc4ff><bold>ChickenSMP</bold></gradient>\n\n<red>" + en.get(key));
+        return MiniMessage.miniMessage().deserialize("<color:#00A4FC><bold>ChickenSMP</bold></color>\n\n<color:#FC0000>" + en.get(key));
     }
 }
