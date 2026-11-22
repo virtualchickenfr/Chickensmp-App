@@ -569,7 +569,7 @@ function StoreScreen() {
       <Segmented items={[{ id: 'ranks', label: t('catRanks') }, { id: 'keys', label: t('catKeys') }, { id: 'extras', label: t('catExtras') }]} value={cat} onChange={setCat} />
       <Text style={[styles.body, { textAlign: 'center', marginVertical: 14 }]}>{desc}</Text>
       <View style={desk ? styles.dGrid : { gap: 14 }}>
-        {data.map((it) => <View key={it.name} style={desk ? styles.dGrid3 : null}><PackageCard it={it} /></View>)}
+        {data.map((it) => <View key={it.name} style={desk ? (data.length === 4 ? styles.dGrid4 : styles.dGrid3) : null}><PackageCard it={it} /></View>)}
       </View>
       <Glass style={{ padding: 20, marginTop: 16 }}>
         <View style={[styles.tab, { backgroundColor: C.blue }]} />
@@ -981,6 +981,7 @@ const styles = StyleSheet.create({
   dTile: { padding: 22, height: 200, borderRadius: 24 },
   dGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 20 },
   dGrid3: { width: '31.8%' },
+  dGrid4: { width: '23.4%' },
   dSection: { color: '#fff', fontFamily: F.x, fontSize: 30, marginTop: 40, marginBottom: 16 },
   dFooter: { flexDirection: 'row', gap: 32, marginTop: 56, paddingTop: 28, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.08)' },
   dFootLink: { color: C.soft, fontFamily: F.m, fontSize: 14 },
