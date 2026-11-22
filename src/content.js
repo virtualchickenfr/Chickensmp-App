@@ -179,8 +179,8 @@ export const STRINGS = { en: EN, de: DE };
 export const RANKS = [
   { name: 'Hero', tag: '[HERO]', color: '#3b9bff', price: '€1.99', per: 'once', desc: 'pHero', perks: ['hPrefix', 'hHomes', 'hRtp', 'hShards', 'hKit', 'hSign', 'hFx'], art: 'crown' },
   { name: 'Elite', tag: '[ELITE]', color: '#1fd37c', price: '€3.99', per: 'once', desc: 'pElite', perks: ['eAll', 'ePrefix', 'eHomes', 'eCraft', 'eTags', 'eKit', 'eSign', 'eFx'], art: 'crown' },
-  { name: 'Titan', tag: '[TITAN]', color: '#a058ff', price: '€5.99', per: 'once', desc: 'pTitan', popular: true, perks: ['tAll', 'tPrefix', 'tHomes', 'tGlow', 'tEc', 'tTags', 'tKit', 'tSign', 'tFx'], art: 'crown' },
-  { name: 'Prestige', tag: '[PRESTIGE]', color: '#ffc21a', price: '€9.99', per: 'once', desc: 'pPrestige', perks: ['xAll', 'xPrefix', 'xHomes', 'xTags', 'xUtil', 'xSign', 'xFx'], art: 'crown' },
+  { name: 'Titan', tag: '[TITAN]', color: '#ff6943', price: '€5.99', per: 'once', desc: 'pTitan', popular: true, perks: ['tAll', 'tPrefix', 'tHomes', 'tGlow', 'tEc', 'tTags', 'tKit', 'tSign', 'tFx'], art: 'crown' },
+  { name: 'Prestige', tag: '[PRESTIGE]', color: '#a058ff', price: '€9.99', per: 'once', desc: 'pPrestige', perks: ['xAll', 'xPrefix', 'xHomes', 'xTags', 'xUtil', 'xSign', 'xFx'], art: 'crown' },
 ];
 
 export const KEYS = [

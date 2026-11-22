@@ -9,8 +9,8 @@ items:
 
   rank:
     SLOT: 13
-    MATERIAL: AMETHYST_SHARD
-    TITLE: "&#A058FF&lTITAN RANK"
+    MATERIAL: BLAZE_POWDER
+    TITLE: "&#FF6943&lTITAN RANK"
     LORE:
       - "&7Rank"
       - ""
@@ -32,24 +32,24 @@ items:
       - "&#1FD37C▪ &f4 item signatures a day"
       - "&#1FD37C▪ &fAll uncommon kill effects"
       - ""
-      - "&#A058FF&lTITAN PERKS"
-      - "&#A058FF▪ &fTITAN ❖ prefix in chat and tab"
-      - "&#A058FF▪ &f8 homes"
-      - "&#A058FF▪ &f/glow"
-      - "&#A058FF▪ &fEnder chest anywhere"
-      - "&#A058FF▪ &f4 more tags: King, Legend, Dragon, Galaxy"
-      - "&#A058FF▪ &fTitan kit every 24h"
-      - "&#A058FF▪ &f6 item signatures a day"
-      - "&#A058FF▪ &fAll rare kill effects"
+      - "&#FF6943&lTITAN PERKS"
+      - "&#FF6943▪ &fTITAN ❖ prefix in chat and tab"
+      - "&#FF6943▪ &f8 homes"
+      - "&#FF6943▪ &f/glow"
+      - "&#FF6943▪ &fEnder chest anywhere"
+      - "&#FF6943▪ &f4 more tags: King, Legend, Dragon, Galaxy"
+      - "&#FF6943▪ &fTitan kit every 24h"
+      - "&#FF6943▪ &f6 item signatures a day"
+      - "&#FF6943▪ &fAll rare kill effects"
       - ""
       - "&fPrice: &#00FC00€5.99 &7(one-time, keep forever)"
       - ""
-      - "&#A058FF▶ &#A058FF&l&nCLICK&r &#A058FFto get the link"
+      - "&#FF6943▶ &#FF6943&l&nCLICK&r &#FF6943to get the link"
     ACTIONS:
       - "[sound] minecraft:ui.button.click volume=1 pitch=1"
       - "[close]"
-      - "[msg]              &#A058FF&lTITAN RANK"
+      - "[msg]              &#FF6943&lTITAN RANK"
       - "[msg] "
-      - "[msg] &fGet &#A058FFTitan &ffor &#00FC00€5.99 &fand keep it forever."
+      - "[msg] &fGet &#FF6943Titan &ffor &#00FC00€5.99 &fand keep it forever."
       - "[msg] "
       - "[msg]       &#00FC00<click:open_url:'https://store.chickensmp.net'><hover:show_text:'&fClick to open the &#00FC00store'>▶ store.chickensmp.net ◀</hover></click>  "
