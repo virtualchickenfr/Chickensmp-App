@@ -39,17 +39,17 @@ async function count(type) {
     const before = log().length;
     a.chat('/ke play ' + id);
     await sleep(1500);
-    const n = await count('block_display') + await count('item_display');
+    const n = await count('block_display') + await count('item_display') + await count('mannequin');
     const failed = / failed: |Exception/.test(log().slice(before));
     check(n > 0 && !failed, `play ${id}: ${n} displays`);
     await sleep(4500);
   }
   await sleep(4000);
-  check(await count('block_display') === 0, 'all displays removed afterwards');
+  check(await count('block_display') + await count('mannequin') === 0, 'all displays removed afterwards');
   // preview (only the viewer)
   a.chat('/ke preview helicopter');
   await sleep(1500);
-  check(await count('block_display') > 0, 'preview spawns displays');
+  check(await count('block_display') + await count('mannequin') > 0, 'preview spawns displays');
   await sleep(9000);
   // real kill with a selected effect
   cmd('ke give Killer all');
@@ -58,7 +58,7 @@ async function count(type) {
   await sleep(800);
   cmd('damage Victim 1000 minecraft:player_attack by Killer');
   await sleep(2500);
-  check(await count('block_display') > 0, 'kill plays the selected effect');
+  check(await count('block_display') + await count('mannequin') > 0, 'kill plays the selected effect');
   check(/Killer/.test(log()) && !/Exception/.test(log().slice(startLen)), 'no exceptions in the log');
   console.log(fails ? `${fails} FAILED` : 'ALL PASSED');
   a.quit(); v.quit();

@@ -8,6 +8,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.Pose;
+import io.papermc.paper.entity.TeleportFlag;
 
 /**
  * Kill effects built from block displays: little animated block models (helicopter, balloon, piano ...).
@@ -875,29 +878,63 @@ final class Effects {
         return Math.toRadians(fx.face() + deg);
     }
 
+    // ==================================================================== exact player copy (Doll = mannequin with the victim's skin)
+
+    private static Location rel(Fx fx, Location l) {
+        return new Location(l.getWorld(), l.getX() - fx.base.getX(), l.getY() - fx.base.getY(), l.getZ() - fx.base.getZ());
+    }
+
+    /** A big copy of the victim's head that sits on (and hides) the doll's head. */
+    private static Model bigHead(Fx fx, Doll d, double size) {
+        Location h = rel(fx, d.headLoc());
+        Model m = fx.model(h.getX(), h.getY(), h.getZ()).rot(fx.face(), 0, 0);
+        m.head(0, 0, 0, 1.0);
+        m.size(size).show(0);
+        return m;
+    }
+
+    /** Swap the doll for a block copy that can come apart (only for the moment it breaks). */
+    private static Rig toRig(Fx fx, Doll d) {
+        Rig r = fx.rig(d.x, d.y, d.z);
+        r.root.rot(fx.face(), 0, 0).apply(0);
+        d.remove();
+        return r;
+    }
+
+    /** Flying copies of the victim's head (for explosions). */
+    private static void headBurst(Fx fx, Location at, int n, double power) {
+        Location r = rel(fx, at);
+        Model heads = fx.model(r.getX(), r.getY(), r.getZ());
+        for (int i = 0; i < n; i++) heads.head(fx.rand(0.3), fx.rand(0.3), fx.rand(0.3), 0.35);
+        heads.apply(0);
+        heads.shatter(1, 18, power, 0.8);
+    }
+
+    private static float mcYaw(Fx fx) {
+        return (float) -fx.face();
+    }
+
     private static void helicopter(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         fx.sound("minecraft:entity.player.hurt", 1f, 0.8f);
         fx.later(8, () -> {
-            r.tpose().apply(5);
+            d.pose(Pose.SWIMMING);
             fx.sound("minecraft:item.armor.equip_iron", 1f, 0.6f);
         });
-        final double[] spin = {fx.face()};
+        final float[] spin = {mcYaw(fx)};
         double dir = yawOff(fx, 90);
-        fx.anim(16, 44, 2, t -> {
-            double sp = Math.min(1, t * 3);
-            spin[0] += 25 + 70 * sp;
-            double lie = Math.min(1, t * 4);
-            double rise = Math.max(0, t - 0.3);
-            double up = 1.0 + 0.4 * lie + 22 * rise * rise;
+        fx.anim(14, 46, 2, t -> {
+            spin[0] += 25 + 70 * Math.min(1, t * 3);
+            double rise = Math.max(0, t - 0.25);
+            double up = 0.6 * Math.min(1, t * 4) + 24 * rise * rise;
             double drift = 16 * Math.pow(Math.max(0, t - 0.5) / 0.5, 2);
-            r.place(Math.sin(dir) * drift, up, Math.cos(dir) * drift, spin[0], -90 * lie, 0, 0.85).apply(2);
-            if (t < 0.5) fx.p(Particle.CLOUD, fx.loc(0, 0.1, 0), 4, 0.9, 0.05);
+            d.at(Math.sin(dir) * drift, up, Math.cos(dir) * drift).look(spin[0], 0);
+            if (t < 0.45) fx.p(Particle.CLOUD, fx.loc(0, 0.1, 0), 4, 0.9, 0.05);
         });
-        fx.repeat(22, 4, i -> fx.sound("minecraft:entity.phantom.flap", 1.3f, 0.7f + Math.min(0.6f, i * 0.03f)));
-        fx.later(106, () -> {
-            fx.p(Particle.POOF, r.root.where(0, 0.8, 0), 25, 0.5, 0.05);
-            r.root.remove();
+        fx.repeat(23, 4, i -> fx.sound("minecraft:entity.phantom.flap", 1.3f, 0.7f + Math.min(0.6f, i * 0.03f)));
+        fx.later(108, () -> {
+            fx.p(Particle.POOF, d.loc().add(0, 0.5, 0), 25, 0.5, 0.05);
+            d.remove();
         });
     }
 
@@ -917,22 +954,26 @@ final class Effects {
         b.boxC(Material.RED_CONCRETE, 0, 0.5, -0.6, 0.08, 0.35, 0.08);
         b.boxC(Material.GRAY_CONCRETE, 0, 0.98, 0.7, 0.08, 0.5, 0.08);
         b.boxC(Material.BLACK_CONCRETE, 0, 1.22, 0.7, 0.6, 0.06, 0.06);
-        b.boxC(Material.BLACK_CONCRETE, 0, 0.78, -0.35, 0.22, 0.06, 0.3);
+        b.boxC(Material.BLACK_CONCRETE, 0, 0.78, -0.3, 0.22, 0.06, 0.3);
         b.size(0.01).show(0);
         fx.later(2, () -> b.size(1).apply(5));
-        Rig r = fx.rig(0, 0, 0);
-        r.root.at(0, 0.05, -0.45).rot(yaw, 0, 0);
-        r.body.rot(0, 30, 0);
-        r.rarm.rot(0, -60, 0);
-        r.larm.rot(0, -60, 0);
-        r.rleg.rot(0, -70, 0);
-        r.lleg.rot(0, -40, 0);
-        r.show(5);
+        double dir = Math.toRadians(yaw);
+        // the doll sits on an invisible seat that drives with the bike
+        double seatBack = -0.3, seatY = 0.82;
+        Location sl = fx.base.clone().add(Math.sin(dir) * seatBack, seatY, Math.cos(dir) * seatBack);
+        sl.setYaw((float) -yaw);
+        ItemDisplay seat = fx.world.spawn(sl, ItemDisplay.class, e -> {
+            fx.prepareDisplay(e);
+            e.setTeleportDuration(2);
+        });
+        fx.trackEntity(seat);
+        Doll d = new Doll(fx, sl.getX() - fx.base.getX(), seatY, sl.getZ() - fx.base.getZ());
+        d.look((float) -yaw, 0);
+        fx.later(1, () -> d.ride(seat));
         fx.sound("minecraft:entity.player.hurt", 1f, 0.8f);
         fx.repeat(6, 3, i -> fx.p(Particle.CLOUD, fx.loc(fx.rand(0.6), 0.6, fx.rand(0.6)), 6, 0.3, 0.03));
         fx.later(14, () -> fx.sound("minecraft:block.note_block.bell", 1f, 1.5f));
         fx.later(20, () -> fx.sound("minecraft:block.note_block.bell", 1f, 1.5f));
-        double dir = Math.toRadians(yaw);
         final double[] wheel = {0};
         fx.anim(26, 30, 2, t -> {
             double dist = 22 * t * t;
@@ -941,45 +982,59 @@ final class Effects {
             fw.rot(0, wheel[0], 0);
             bw.rot(0, wheel[0], 0);
             b.at(x, 0, z).apply(2);
-            double ped = wheel[0] * Math.PI / 180;
-            r.rleg.rot(0, -55 + Math.sin(ped) * 25, 0);
-            r.lleg.rot(0, -55 - Math.sin(ped) * 25, 0);
-            r.root.at(x - Math.sin(dir) * 0.45, 0.05, z - Math.cos(dir) * 0.45);
-            r.apply(2);
+            if (seat.isValid()) {
+                Location l = fx.base.clone().add(x + Math.sin(dir) * seatBack, seatY, z + Math.cos(dir) * seatBack);
+                l.setYaw((float) -yaw);
+                seat.teleport(l, TeleportFlag.EntityState.RETAIN_PASSENGERS);
+                d.e.setRotation((float) -yaw, 0);
+                d.e.setBodyYaw((float) -yaw);
+            }
             fx.p(Particle.CLOUD, b.where(0, 0.3, -1.0), 2, 0.1, 0.02);
         });
         fx.repeat(8, 6, i -> fx.sound(26, "minecraft:entity.minecart.riding", 0.6f, 1.2f + i * 0.05f));
         fx.later(88, () -> {
             fx.p(Particle.POOF, b.where(0, 0.8, 0), 25, 0.6, 0.05);
             b.remove();
-            r.root.remove();
+            d.remove();
+            if (seat.isValid()) seat.remove();
         });
     }
 
     private static void balloon(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         fx.sound("minecraft:entity.player.hurt", 1f, 0.9f);
+        final Model[] head = new Model[1];
+        fx.later(8, () -> head[0] = bigHead(fx, d, 0.6));
         fx.anim(10, 20, 2, t -> {
-            double s = 1 + 3.2 * t;
-            r.head.size(s);
-            r.root.at(0, 0.6 * t, 0);
-            r.rarm.rot(0, 0, -25 * t);
-            r.larm.rot(0, 0, 25 * t);
-            r.apply(2);
+            d.at(0, 0.6 * t, 0);
+            if (head[0] != null) {
+                Location h = rel(fx, d.headLoc());
+                head[0].at(h.getX(), h.getY() + 0.75 * t, h.getZ()).size(0.6 + 1.9 * t).apply(2);
+            }
             if ((int) (t * 20) % 4 == 0) fx.sound("minecraft:entity.breeze.inhale", 1f, 0.6f + (float) t);
         });
-        fx.anim(50, 10, 2, t -> r.root.at(fx.rand(0.05), 0.6 + Math.sin(t * Math.PI * 4) * 0.1, fx.rand(0.05)).apply(2));
+        fx.anim(50, 10, 2, t -> {
+            d.at(fx.rand(0.05), 0.6 + Math.sin(t * Math.PI * 4) * 0.1, fx.rand(0.05));
+            if (head[0] != null) head[0].by(0, Math.sin(t * Math.PI * 4) * 0.02, 0).apply(2);
+        });
         fx.later(72, () -> {
-            Location at = r.head.where(0, 4 * Rig.PX, 0);
-            r.head.shatter(0, 8, 2.5, 0.2);
+            if (head[0] == null) return;
+            Location at = head[0].where(0, 0, 0);
+            head[0].shatter(0, 8, 2.5, 0.2);
             fx.p(Particle.POOF, at, 30, 1.0, 0.05);
             fx.p(Particle.EXPLOSION, at, 2, 0.4, 0);
-            fx.dust(at, 0xC8946A, 1.6f, 40, 1.0);
             fx.sound("minecraft:entity.firework_rocket.blast", 1.5f, 0.8f);
             fx.sound("minecraft:entity.generic.explode", 0.6f, 1.6f);
         });
-        fx.anim(76, 10, 1, t -> r.root.at(0, 0.6 * (1 - t), 0).rot(fx.face(), -90 * t * t, 0).apply(1));
-        fx.later(100, () -> r.root.shatter(0, 8, 0.8, 0.3));
+        fx.anim(74, 6, 1, t -> d.at(0, 0.6 * (1 - t), 0));
+        fx.later(80, () -> {
+            d.pose(Pose.SLEEPING);
+            fx.sound("minecraft:entity.player.attack.knockback", 1f, 0.6f);
+        });
+        fx.later(100, () -> {
+            fx.p(Particle.POOF, d.loc().add(0, 0.3, 0), 20, 0.6, 0.03);
+            d.remove();
+        });
     }
 
     private static void coconut(Fx fx) {
@@ -998,8 +1053,8 @@ final class Effects {
         tree.size(0.01).show(1);
         fx.later(2, () -> tree.size(1).apply(12));
         fx.sound("minecraft:block.bamboo.place", 1f, 0.6f);
-        Rig r = fx.rig(0, 0, 0).show(4);
-        fx.later(10, () -> r.head.rot(0, -35, 0).apply(4));
+        Doll d = new Doll(fx, 0, 0, 0);
+        fx.later(10, () -> d.look(mcYaw(fx), -40));
         Model nut = fx.model(0, 6, 0);
         nut.cube(Material.BROWN_TERRACOTTA, 0, 0, 0, 0.4);
         nut.cube(Material.BROWN_CONCRETE, 0, 0.12, 0.14, 0.13);
@@ -1007,97 +1062,95 @@ final class Effects {
             nut.show(0);
             fx.sound("minecraft:block.azalea_leaves.break", 1f, 0.8f);
         });
-        fx.anim(24, 9, 1, t -> nut.at(0, 6 - 4.0 * t * t, 0).rot(0, 0, 300 * t).apply(1));
+        fx.anim(24, 9, 1, t -> nut.at(0, 6 - 3.9 * t * t, 0).rot(0, 0, 300 * t).apply(1));
         fx.later(33, () -> {
             fx.sound("minecraft:block.wood.hit", 1.5f, 1.4f);
             fx.sound("minecraft:block.note_block.bass", 1.5f, 1.9f);
             fx.p(Particle.CRIT, fx.loc(0, 2, 0), 20, 0.3, 0.2);
-            r.head.rot(0, 30, 0).apply(2);
+            d.look(mcYaw(fx), 40);
         });
         double away = yawOff(fx, 120);
-        fx.anim(33, 10, 1, t -> nut.at(Math.sin(away) * 2 * t, 2 + Math.sin(t * Math.PI) * 1.2 - 1.8 * t, Math.cos(away) * 2 * t).rot(0, 0, 300 + 400 * t).apply(1));
-        fx.anim(36, 8, 1, t -> {
-            r.root.rot(fx.face(), -90 * t * t, 0);
-            r.rarm.rot(0, 0, -60 * t);
-            r.larm.rot(0, 0, 60 * t);
-            r.apply(1);
-        });
-        fx.later(44, () -> {
+        fx.anim(33, 10, 1, t -> nut.at(Math.sin(away) * 2 * t, 2.1 + Math.sin(t * Math.PI) * 1.2 - 1.9 * t, Math.cos(away) * 2 * t).rot(0, 0, 300 + 400 * t).apply(1));
+        fx.later(38, () -> {
+            d.pose(Pose.SLEEPING);
             fx.sound("minecraft:entity.player.attack.knockback", 1f, 0.6f);
             fx.block(fx.loc(0, 0.1, 0), fx.groundBlock(), 25, 0.6, 0.1);
         });
-        fx.repeat(12, 3, i -> {
-            Location h = r.head.where(0, 4 * Rig.PX, 0);
+        fx.repeat(14, 3, i -> {
             double a = i * 0.9;
-            fx.p(Particle.WAX_ON, h.clone().add(Math.cos(a) * 0.4, 0.4, Math.sin(a) * 0.4), 1, 0, 0);
+            fx.p(Particle.WAX_ON, d.loc().add(Math.cos(a) * 0.4, 0.6, Math.sin(a) * 0.4), 1, 0, 0);
         });
         nut.vanish(70, 4);
         fx.later(76, () -> tree.size(0.01).apply(10));
-        fx.later(80, () -> r.root.shatter(0, 8, 0.6, 0.3));
+        fx.later(84, () -> {
+            fx.p(Particle.POOF, d.loc().add(0, 0.3, 0), 20, 0.6, 0.03);
+            d.remove();
+        });
         fx.later(90, tree::remove);
     }
 
+    private static final String[] EZ_PIX = {
+            "#####.#####",
+            "#.........#",
+            "#........#.",
+            "####....#..",
+            "#......#...",
+            "#.....#....",
+            "#####.#####"};
+
     private static void ez(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         fx.sound("minecraft:entity.player.hurt", 1f, 0.8f);
-        fx.later(10, () -> {
-            r.root.shatter(0, 6, 0.4, 0.2);
-            fx.p(Particle.POOF, fx.loc(0, 1, 0), 15, 0.3, 0.05);
-            fx.sound("minecraft:entity.item.pickup", 1f, 0.6f);
-        });
-        Skin s = r.skin;
-        double t0 = 0.24;
-        // bar: material, x, y (centre), length, roll (0 = horizontal)
-        Object[][] bars = {
-                {s.get(Skin.Part.RLEG, 1), -1.15, 1.1, 1.3, 90.0},
-                {s.get(Skin.Part.RARM, 0), -0.8, 1.7, 0.75, 0.0},
-                {s.get(Skin.Part.TORSO, 1), -0.85, 1.1, 0.6, 0.0},
-                {s.get(Skin.Part.LARM, 0), -0.8, 0.5, 0.75, 0.0},
-                {s.get(Skin.Part.LLEG, 1), 0.75, 1.7, 0.9, 0.0},
-                {s.get(Skin.Part.TORSO, 2), 0.75, 1.1, 1.35, 52.0},
-                {s.get(Skin.Part.RLEG, 2), 0.75, 0.5, 0.9, 0.0}};
         Model letters = fx.model(0, 0, 0).rot(fx.face(), 0, 0);
-        List<Model> parts = new ArrayList<>();
-        for (Object[] bar : bars) {
-            Model m = letters.child(0, 1.0, 0);
-            double len = (Double) bar[3];
-            m.boxC(bar[0], 0, 0, 0, len, t0, t0);
-            parts.add(m);
+        List<Model> px = new ArrayList<>();
+        List<double[]> target = new ArrayList<>();
+        double s = 0.3;
+        double w = EZ_PIX[0].length() * s;
+        for (int r = 0; r < EZ_PIX.length; r++) {
+            for (int c = 0; c < EZ_PIX[r].length(); c++) {
+                if (EZ_PIX[r].charAt(c) != '#') continue;
+                Model m = letters.child(0, 1.0, 0);
+                m.head(0, 0, 0, s);
+                px.add(m);
+                target.add(new double[]{-w / 2 + (c + 0.5) * s, 0.5 + (EZ_PIX.length - 1 - r) * s});
+            }
         }
-        Model head = letters.child(0, 1.0, 0);
-        head.head(0, 0, 0, 0.5);
-        letters.show(0);
-        for (int i = 0; i < parts.size(); i++) {
-            Model m = parts.get(i);
-            Object[] bar = bars[i];
-            double x = (Double) bar[1], y = (Double) bar[2], roll = (Double) bar[4];
-            fx.anim(12 + i, 10, 1, t -> m.at(x * Fx.ease(t), 1.0 + (y - 1.0) * Fx.ease(t), 0).rot(0, 360 * (1 - t), roll * t).apply(1));
+        fx.later(10, () -> {
+            fx.p(Particle.POOF, d.loc().add(0, 1, 0), 20, 0.3, 0.05);
+            fx.sound("minecraft:entity.item.pickup", 1f, 0.6f);
+            d.remove();
+            letters.size(1).show(0);
+        });
+        for (int i = 0; i < px.size(); i++) {
+            Model m = px.get(i);
+            double[] tg = target.get(i);
+            fx.anim(12 + i / 3, 10, 1, t -> m.at(tg[0] * Fx.ease(t), 1.0 + (tg[1] - 1.0) * Fx.ease(t), 0).rot(360 * (1 - t), 0, 0).apply(1));
+            if (i % 4 == 0) fx.sound(12 + i / 3, "minecraft:block.note_block.hat", 0.6f, 1.2f + i * 0.02f);
         }
-        fx.anim(14, 12, 1, t -> head.at(0, 1.0 + 1.4 * Fx.ease(t), 0).rot(360 * t, 0, 0).apply(1));
-        fx.later(26, () -> {
+        fx.later(36, () -> {
             fx.sound("minecraft:entity.player.levelup", 1f, 1.3f);
             fx.sound("minecraft:entity.villager.yes", 1f, 1f);
-            fx.p(Particle.HAPPY_VILLAGER, fx.loc(0, 1.2, 0), 25, 1.2, 0.1);
+            fx.p(Particle.HAPPY_VILLAGER, fx.loc(0, 1.5, 0), 25, 1.4, 0.1);
         });
-        fx.anim(30, 25, 2, t -> letters.at(0, Math.sin(t * Math.PI * 3) * 0.12, 0).apply(2));
-        fx.later(85, () -> {
+        fx.anim(40, 22, 2, t -> letters.at(0, Math.sin(t * Math.PI * 3) * 0.12, 0).apply(2));
+        fx.later(88, () -> {
             letters.shatter(0, 10, 2.0, 0.6);
-            fx.sound("minecraft:block.glass.break", 1f, 1.2f);
+            fx.sound("minecraft:entity.item.pickup", 1f, 0.8f);
         });
     }
 
     private static void explode(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         fx.sound("minecraft:entity.tnt.primed", 1f, 1f);
         fx.anim(6, 24, 1, t -> {
-            r.root.at(fx.rand(0.04 * t), 0, fx.rand(0.04 * t)).size(1 + 0.15 * t);
-            r.rarm.rot(0, 0, -20 * t);
-            r.larm.rot(0, 0, 20 * t);
-            r.apply(1);
+            d.scale(1 + 0.25 * t).at(fx.rand(0.05 * t), 0, fx.rand(0.05 * t));
             fx.p(Particle.SMOKE, fx.loc(0, 1.0, 0), 2, 0.25, 0.01);
         });
         fx.later(31, () -> {
-            r.root.shatter(0, 16, 3.5, 0.9);
+            Rig r = toRig(fx, d);
+            r.root.size(1.25).apply(0);
+            r.root.shatter(1, 16, 3.5, 0.9);
+            headBurst(fx, fx.loc(0, 1.7, 0), 3, 3.0);
             fx.p(Particle.EXPLOSION_EMITTER, fx.loc(0, 1, 0), 1, 0, 0);
             fx.p(Particle.FLAME, fx.loc(0, 1, 0), 50, 0.6, 0.15);
             fx.p(Particle.LARGE_SMOKE, fx.loc(0, 1, 0), 30, 0.6, 0.08);
@@ -1108,57 +1161,57 @@ final class Effects {
     }
 
     private static void dismantle(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         fx.sound("minecraft:entity.player.hurt", 1f, 0.7f);
-        double p = Rig.PX, aw = r.skin.slim ? 3 : 4;
-        fx.anim(8, 8, 1, t -> r.root.at(0, 0.3 * Fx.ease(t), 0).apply(1));
+        fx.anim(6, 10, 1, t -> d.at(0, 0.3 * Fx.ease(t), 0));
+        fx.anim(16, 8, 1, t -> d.at(fx.rand(0.06), 0.3, fx.rand(0.06)));
         fx.later(10, () -> fx.sound("minecraft:block.chain.place", 1f, 0.6f));
-        fx.anim(18, 24, 1, t -> {
-            double e = Fx.ease(t);
-            r.head.at(0, 12 * p + 0.7 * e, 0).rot(25 * e, 0, 0);
-            r.rarm.at(-(4 + aw / 2) * p - 0.75 * e, 12 * p + 0.15 * e, 0).rot(0, 0, -50 * e);
-            r.larm.at((4 + aw / 2) * p + 0.75 * e, 12 * p + 0.15 * e, 0).rot(0, 0, 50 * e);
-            r.rleg.at(-2 * p - 0.45 * e, 12 * p - 0.55 * e, 0).rot(0, 0, -25 * e);
-            r.lleg.at(2 * p + 0.45 * e, 12 * p - 0.55 * e, 0).rot(0, 0, 25 * e);
-            r.apply(1);
-            if ((int) (t * 24) % 6 == 0) fx.sound("minecraft:block.chain.break", 0.8f, 0.6f + (float) t);
-        });
-        Model[] order = {r.lleg, r.rleg, r.larm, r.rarm, r.head, r.body};
-        for (int i = 0; i < order.length; i++) {
-            Model m = order[i];
-            int at = 50 + i * 7;
-            fx.later(at, () -> {
-                Location c = m.where(0, m == r.head ? 4 * p : -6 * p, 0);
-                fx.p(Particle.END_ROD, c, 12, 0.15, 0.06);
-                fx.p(Particle.FIREWORK, c, 6, 0.1, 0.05);
-                fx.sound("minecraft:block.amethyst_block.break", 1f, 0.8f + 0.1f * order.length);
-                m.shatter(0, 6, 0.6, 0.4);
+        fx.later(24, () -> {
+            Rig r = toRig(fx, d);
+            r.root.at(0, 0.3, 0).apply(0);
+            double p = Rig.PX, aw = r.skin.slim ? 3 : 4;
+            fx.anim(1, 14, 1, t -> {
+                double e = Fx.ease(t);
+                r.head.at(0, 12 * p + 0.7 * e, 0).rot(25 * e, 0, 0);
+                r.rarm.at(-(4 + aw / 2) * p - 0.75 * e, 12 * p + 0.15 * e, 0).rot(0, 0, -50 * e);
+                r.larm.at((4 + aw / 2) * p + 0.75 * e, 12 * p + 0.15 * e, 0).rot(0, 0, 50 * e);
+                r.rleg.at(-2 * p - 0.45 * e, 12 * p - 0.55 * e, 0).rot(0, 0, -25 * e);
+                r.lleg.at(2 * p + 0.45 * e, 12 * p - 0.55 * e, 0).rot(0, 0, 25 * e);
+                r.apply(1);
+                if ((int) (t * 14) % 5 == 0) fx.sound("minecraft:block.chain.break", 0.8f, 0.6f + (float) t);
             });
-        }
+            Model[] order = {r.lleg, r.rleg, r.larm, r.rarm, r.body, r.head};
+            for (int i = 0; i < order.length; i++) {
+                Model m = order[i];
+                fx.later(17 + i * 5, () -> {
+                    Location c = m.where(0, m == r.head ? 4 * p : -6 * p, 0);
+                    fx.p(Particle.END_ROD, c, 12, 0.15, 0.06);
+                    fx.p(Particle.FIREWORK, c, 6, 0.1, 0.05);
+                    fx.sound("minecraft:block.amethyst_block.break", 1f, 1.2f);
+                    m.shatter(0, 5, 0.6, 0.4);
+                });
+            }
+        });
     }
 
     private static void awoooga(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         for (int hop = 0; hop < 2; hop++) {
-            int at = 8 + hop * 14;
-            fx.anim(at, 6, 1, t -> {
-                r.root.at(0, Math.sin(t * Math.PI) * 0.7, 0);
-                r.armsUp();
-                r.rleg.rot(0, -25 * Math.sin(t * Math.PI), 0);
-                r.lleg.rot(0, 25 * Math.sin(t * Math.PI), 0);
-                r.apply(1);
-            });
+            int at = 6 + hop * 12;
+            fx.anim(at, 8, 1, t -> d.at(0, Math.sin(t * Math.PI) * 0.8, 0));
             fx.later(at, () -> fx.sound("minecraft:item.goat_horn.sound.1", 1.5f, 1.4f));
-            fx.later(at + 7, () -> r.stand().apply(3));
         }
-        fx.anim(36, 12, 1, t -> r.head.size(1 + 0.8 * Math.abs(Math.sin(t * Math.PI * 3))).apply(1));
-        fx.later(36, () -> fx.sound("minecraft:item.goat_horn.sound.1", 2f, 1.0f));
+        final Model[] head = new Model[1];
+        fx.later(30, () -> head[0] = bigHead(fx, d, 0.6));
+        fx.anim(31, 14, 1, t -> {
+            if (head[0] != null) head[0].size(0.6 + 0.5 * Math.abs(Math.sin(t * Math.PI * 3))).apply(1);
+        });
+        fx.later(31, () -> fx.sound("minecraft:item.goat_horn.sound.1", 2f, 1.0f));
         for (int i = 0; i < 4; i++) {
             int k = i;
-            fx.later(38 + i * 4, () -> {
-                Location h = r.head.where(0, 4 * Rig.PX, 0);
-                Location b = fx.base;
-                Model ht = heart(fx, h.getX() - b.getX(), h.getY() - b.getY(), h.getZ() - b.getZ(), 0.09);
+            fx.later(34 + i * 4, () -> {
+                Location h = rel(fx, d.headLoc());
+                Model ht = heart(fx, h.getX(), h.getY(), h.getZ(), 0.09);
                 ht.size(0.3).show(0);
                 double ang = yawOff(fx, -60 + k * 40);
                 double sx = ht.lpos.x, sy = ht.lpos.y, sz = ht.lpos.z;
@@ -1167,27 +1220,31 @@ final class Effects {
                 fx.sound("minecraft:entity.experience_orb.pickup", 1f, 1.2f + k * 0.1f);
             });
         }
-        fx.anim(60, 8, 1, t -> r.root.rot(fx.face(), -90 * t * t, 0).apply(1));
-        fx.later(68, () -> {
-            fx.p(Particle.HEART, r.root.where(0, 0.9, 0), 10, 0.5, 0.05);
+        fx.later(56, () -> {
+            if (head[0] != null) head[0].vanish(0, 3);
+            d.pose(Pose.SLEEPING);
+            fx.p(Particle.HEART, d.loc().add(0, 0.6, 0), 10, 0.5, 0.05);
             fx.sound("minecraft:entity.player.attack.knockback", 1f, 0.6f);
         });
-        fx.later(90, () -> r.root.shatter(0, 8, 0.6, 0.3));
+        fx.later(88, () -> {
+            fx.p(Particle.POOF, d.loc().add(0, 0.3, 0), 20, 0.6, 0.03);
+            d.remove();
+        });
     }
 
     private static void iLoveYou(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         fx.sound("minecraft:block.amethyst_block.chime", 1f, 0.8f);
         Model h = heart(fx, 0, 1.0, 0, 0.26);
         h.size(0.01).show(0);
-        final double[] spin = {fx.face()};
+        final float[] spin = {mcYaw(fx)};
         fx.anim(10, 14, 1, t -> {
             spin[0] += 20 + 40 * t;
-            r.root.rot(spin[0], 0, 0).size(1 - 0.99 * t).at(0, 0.6 * t, 0).apply(1);
+            d.scale(1 - 0.93 * t).at(0, 0.8 * t, 0).look(spin[0], 0);
             h.size(1.0 * t).apply(1);
             fx.p(Particle.HEART, fx.loc(fx.rand(0.6), 1 + fx.rand(0.6), fx.rand(0.6)), 1, 0, 0);
         });
-        fx.later(25, r.root::remove);
+        fx.later(25, d::remove);
         for (int b = 0; b < 3; b++) {
             int at = 28 + b * 9;
             fx.later(at, () -> {
@@ -1211,7 +1268,7 @@ final class Effects {
     }
 
     private static void tickTock(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         Model clock = fx.model(0, 3.0, 0).rot(fx.face(), 0, 0);
         clock.boxC(Material.QUARTZ_BLOCK, 0, 0, 0, 1.5, 1.5, 0.12);
         clock.boxC(Material.QUARTZ_BLOCK, 0, 0, 0, 1.8, 1.0, 0.12);
@@ -1239,36 +1296,37 @@ final class Effects {
             minute.rot(0, 0, m[0]);
             hour.rot(0, 0, hr[0]);
             clock.apply(2);
-            double sag = t;
-            r.body.rot(0, 25 * sag, 0);
-            r.head.rot(0, 30 * sag, 0);
-            r.rarm.rot(0, -15 * sag, 0);
-            r.larm.rot(0, -15 * sag, 0);
-            r.root.at(0, -0.1 * sag, 0);
-            r.apply(2);
             fx.sound("minecraft:block.note_block.hat", 0.8f, (int) (t * 30) % 2 == 0 ? 1.4f : 1.1f);
         });
-        fx.later(42, () -> {
+        fx.later(26, () -> {
+            d.pose(Pose.SNEAKING);
+            d.look(mcYaw(fx), 35);
+        });
+        fx.anim(30, 12, 2, t -> d.scale(1 - 0.15 * t));
+        fx.later(56, () -> {
+            Rig r = toRig(fx, d);
+            r.root.size(0.85);
+            r.body.rot(0, 25, 0);
+            r.head.rot(0, 30, 0);
+            r.apply(0);
             r.recolor(Material.LIGHT_GRAY_CONCRETE);
             fx.sound("minecraft:block.sand.break", 1f, 0.6f);
-        });
-        fx.later(58, () -> r.recolor(Material.GRAY_CONCRETE_POWDER));
-        fx.later(72, () -> {
-            r.root.shatter(0, 12, 0.7, -0.6);
-            fx.block(fx.loc(0, 1.0, 0), Material.GRAVEL, 60, 0.4, 0.05);
-            fx.p(Particle.ASH, fx.loc(0, 1.2, 0), 40, 0.5, 0.05);
-            fx.sound("minecraft:block.gravel.break", 1.5f, 0.6f);
-            fx.sound("minecraft:block.bell.resonate", 1f, 0.6f);
-            clock.shatter(4, 10, 1.6, 0.4);
+            fx.later(8, () -> r.recolor(Material.GRAY_CONCRETE_POWDER));
+            fx.later(16, () -> {
+                r.root.shatter(0, 12, 0.7, -0.6);
+                fx.block(fx.loc(0, 1.0, 0), Material.GRAVEL, 60, 0.4, 0.05);
+                fx.p(Particle.ASH, fx.loc(0, 1.2, 0), 40, 0.5, 0.05);
+                fx.sound("minecraft:block.gravel.break", 1.5f, 0.6f);
+                fx.sound("minecraft:block.bell.resonate", 1f, 0.6f);
+                clock.shatter(4, 10, 1.6, 0.4);
+            });
         });
     }
 
     private static void meteor(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         fx.later(8, () -> {
-            r.head.rot(0, -40, 0);
-            r.armsUp();
-            r.apply(4);
+            d.look(mcYaw(fx), -50);
             fx.sound("minecraft:entity.villager.no", 1f, 0.7f);
         });
         double back = 14, high = 22;
@@ -1288,7 +1346,9 @@ final class Effects {
             fx.p(Particle.LARGE_SMOKE, c, 4, 0.4, 0.02);
         });
         fx.later(30, () -> {
-            r.root.shatter(0, 12, 2.5, 0.5);
+            Rig r = toRig(fx, d);
+            r.root.shatter(1, 12, 2.5, 0.5);
+            headBurst(fx, fx.loc(0, 1.6, 0), 1, 2.5);
             fx.flash(0xFF8A30);
             fx.p(Particle.EXPLOSION_EMITTER, fx.loc(0, 0.6, 0), 1, 0, 0);
             for (int i = 0; i < 4; i++) fx.p(Particle.CLOUD, fx.loc(0, 0.5 + i * 0.4, 0), 40, 1.2 + i * 0.3, 0.06);
@@ -1310,29 +1370,26 @@ final class Effects {
     }
 
     private static void heartAttack(Fx fx) {
-        Rig r = fx.rig(0, 0, 0).show(4);
+        Doll d = new Doll(fx, 0, 0, 0);
         fx.later(6, () -> {
-            r.rarm.rot(0, -80, 35);
-            r.larm.rot(0, -80, -35);
-            r.head.rot(0, 20, 0);
-            r.body.rot(0, 15, 0);
-            r.apply(4);
+            d.pose(Pose.SNEAKING);
+            d.look(mcYaw(fx), 30);
         });
         int[] beats = {8, 18, 26, 32, 37, 41};
         for (int i = 0; i < beats.length; i++) {
             float pitch = 0.6f + i * 0.08f;
             fx.later(beats[i], () -> {
                 fx.sound("minecraft:block.note_block.basedrum", 1.5f, pitch);
-                fx.p(Particle.HEART, r.body.where(0, 8 * Rig.PX, 3 * Rig.PX), 2, 0.1, 0.02);
-                r.root.size(1.04).apply(1);
+                fx.p(Particle.HEART, d.loc().add(0, 1.1, 0), 2, 0.1, 0.02);
+                d.scale(1.05);
             });
-            fx.later(beats[i] + 2, () -> r.root.size(1).apply(2));
+            fx.later(beats[i] + 2, () -> d.scale(1));
         }
-        Model h = heart(fx, 0, 1.2, 0, 0.11);
+        Model h = heart(fx, 0, 1.1, 0, 0.11);
         fx.later(44, () -> {
-            Location c = r.body.where(0, 8 * Rig.PX, 3 * Rig.PX);
-            Location b = fx.base;
-            h.at(c.getX() - b.getX(), c.getY() - b.getY(), c.getZ() - b.getZ());
+            double fz = 0.3;
+            double yr = Math.toRadians(fx.face());
+            h.at(Math.sin(yr) * fz, 1.1, Math.cos(yr) * fz);
             h.size(0.3).show(0);
             fx.sound("minecraft:entity.player.hurt", 1f, 0.6f);
         });
@@ -1342,12 +1399,15 @@ final class Effects {
             fx.sound("minecraft:block.glass.break", 1f, 0.8f);
             fx.dust(fx.loc(0, 1.6, 0), 0xC0262B, 1.5f, 30, 0.5);
         });
-        fx.later(60, () -> fx.sound("minecraft:block.note_block.basedrum", 1f, 0.5f));
-        fx.anim(62, 8, 1, t -> r.root.rot(fx.face(), 90 * t * t, 0).apply(1));
-        fx.later(70, () -> {
+        fx.later(62, () -> {
+            d.pose(Pose.SLEEPING);
+            fx.sound("minecraft:block.note_block.basedrum", 1f, 0.5f);
             fx.sound("minecraft:entity.player.attack.knockback", 1f, 0.5f);
             fx.block(fx.loc(0, 0.1, 0), fx.groundBlock(), 25, 0.6, 0.1);
         });
-        fx.later(92, () -> r.root.shatter(0, 8, 0.6, 0.3));
+        fx.later(92, () -> {
+            fx.p(Particle.POOF, d.loc().add(0, 0.3, 0), 20, 0.6, 0.03);
+            d.remove();
+        });
     }
 }
