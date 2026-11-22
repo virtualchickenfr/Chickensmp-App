@@ -1,0 +1,15 @@
+name: ChickenSMPEnderchest
+version: 1.0.0
+main: net.chickensmp.enderchest.EnderchestPlugin
+api-version: '1.21'
+author: ChickenSMP
+description: Bigger ender chest for everyone (vanilla 27 slots + extra rows), also at spawn.
+softdepend: [EconomyCore, WorldGuard]
+commands:
+  ecsee:
+    description: Look into another player's ender chest
+    usage: /ecsee <player>
+    permission: chickensmp.enderchest.see
+permissions:
+  chickensmp.enderchest.see:
+    default: op

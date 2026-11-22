@@ -1,0 +1,11 @@
+# ChickenSMPEnderchest – bigger ender chest for everyone.
+# The first 27 slots ARE the vanilla ender chest (so nothing is lost if this plugin is removed),
+# the extra slots are stored in plugins/ChickenSMPEnderchest/data/<uuid>.dat
+rows: 6
+title: "&8ᴇɴᴅᴇʀ ᴄʜᴇꜱᴛ"
+# Open the ender chest block even where other plugins block clicks (e.g. the spawn region)
+open-blocks-everywhere: true
+prefix: "&#A303F9&lENDER CHEST &r&7» &f"
+messages:
+  usage: "Usage: &#FCE300/ecsee <player>"
+  not-online: "&#FCE300%player% &fis not online."
