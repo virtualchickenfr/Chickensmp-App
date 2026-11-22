@@ -1,0 +1,9 @@
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/AuthPlugin.java
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/CipherCodec.java
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/FloodgateHook.java
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/LogFilter.java
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/Mojang.java
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/Msg.java
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/Passwords.java
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/PremiumHandshake.java
+/home/claude/chickensmp-app/auth-plugin/src/main/java/net/chickensmp/auth/UserStore.java

@@ -26,6 +26,10 @@ final class Mojang {
     record Prop(String name, String value, String signature) {}
     record Verified(UUID uuid, String name, List<Prop> props) {}
 
+    // Test hook only: -Dchickenauth.mojang=http://127.0.0.1:PORT points every Mojang call at a mock.
+    private static final String MOCK = System.getProperty("chickenauth.mojang", "");
+    private static String u(String real) { return MOCK.isEmpty() ? real : MOCK + URI.create(real).getRawPath() + (URI.create(real).getRawQuery() == null ? "" : "?" + URI.create(real).getRawQuery()); }
+
     private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
     private record Cached(Lookup l, long until) {}
     private final ConcurrentHashMap<String, Cached> cache = new ConcurrentHashMap<>();
@@ -48,7 +52,7 @@ final class Mojang {
 
     private Lookup query(String url) {
         try {
-            HttpResponse<String> r = HTTP.send(HttpRequest.newBuilder(URI.create(url)).timeout(Duration.ofSeconds(6))
+            HttpResponse<String> r = HTTP.send(HttpRequest.newBuilder(URI.create(u(url))).timeout(Duration.ofSeconds(6))
                     .header("User-Agent", "ChickenSMPAuth/1.0").GET().build(), HttpResponse.BodyHandlers.ofString());
             if (r.statusCode() == 204 || r.statusCode() == 404) return new Lookup(Kind.CRACKED, null);
             if (r.statusCode() == 200) {
@@ -63,7 +67,7 @@ final class Mojang {
     /** Ask Mojang's session server whether this client really authenticated for our server hash. */
     Verified hasJoined(String name, String serverHash) throws Exception {
         String url = "https://sessionserver.mojang.com/session/minecraft/hasJoined?username=" + enc(name) + "&serverId=" + enc(serverHash);
-        HttpResponse<String> r = HTTP.send(HttpRequest.newBuilder(URI.create(url)).timeout(Duration.ofSeconds(8))
+        HttpResponse<String> r = HTTP.send(HttpRequest.newBuilder(URI.create(u(url))).timeout(Duration.ofSeconds(8))
                 .header("User-Agent", "ChickenSMPAuth/1.0").GET().build(), HttpResponse.BodyHandlers.ofString());
         if (r.statusCode() != 200 || r.body().isBlank()) return null;
         JsonObject o = JsonParser.parseString(r.body()).getAsJsonObject();
