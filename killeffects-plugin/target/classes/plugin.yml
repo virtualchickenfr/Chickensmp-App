@@ -1,0 +1,154 @@
+name: ChickenSMPKillEffects
+version: '2.0.0'
+main: dev.killeffects.KillEffects
+api-version: '1.21'
+author: ChickenSMP
+description: Block kill effects with rarities and crates
+softdepend: [Vault, PlaceholderAPI]
+
+commands:
+  killeffects:
+    description: Kill effects menu, crates and admin commands
+    aliases: [ke, killeffect, kfx]
+    usage: /<command> [crates|select|preview|help]
+
+permissions:
+  killeffects.use:
+    description: Use /ke and play your selected effect on kills
+    default: true
+  killeffects.preview:
+    description: Preview effects (only you see them)
+    default: true
+  killeffects.admin:
+    description: give/take/keys/shards/open/play/info/reload
+    default: op
+  killeffects.effect.*:
+    description: Owns every kill effect
+    default: false
+    children:
+      killeffects.rarity.common: true
+      killeffects.rarity.uncommon: true
+      killeffects.rarity.rare: true
+      killeffects.rarity.epic: true
+      killeffects.rarity.legendary: true
+      killeffects.rarity.mythic: true
+  killeffects.rarity.common:
+    description: Owns every common kill effect
+    default: false
+    children:
+      killeffects.effect.tombstone: true
+      killeffects.effect.coffin: true
+      killeffects.effect.cake: true
+      killeffects.effect.anvil: true
+      killeffects.effect.bone_pile: true
+      killeffects.effect.gift: true
+  killeffects.rarity.uncommon:
+    description: Owns every uncommon kill effect
+    default: false
+    children:
+      killeffects.effect.ice_cube: true
+      killeffects.effect.tnt: true
+      killeffects.effect.coconut: true
+      killeffects.effect.slime_bounce: true
+      killeffects.effect.pumpkin: true
+  killeffects.rarity.rare:
+    description: Owns every rare kill effect
+    default: false
+    children:
+      killeffects.effect.balloon: true
+      killeffects.effect.rocket: true
+      killeffects.effect.ez: true
+      killeffects.effect.slot_machine: true
+  killeffects.rarity.epic:
+    description: Owns every epic kill effect
+    default: false
+    children:
+      killeffects.effect.helicopter: true
+      killeffects.effect.meteor: true
+      killeffects.effect.piano: true
+      killeffects.effect.ufo: true
+  killeffects.rarity.legendary:
+    description: Owns every legendary kill effect
+    default: false
+    children:
+      killeffects.effect.royal_crown: true
+      killeffects.effect.volcano: true
+      killeffects.effect.tornado: true
+  killeffects.rarity.mythic:
+    description: Owns every mythic kill effect
+    default: false
+    children:
+      killeffects.effect.chicken_god: true
+      killeffects.effect.black_hole_x: true
+  killeffects.effect.tombstone:
+    description: Kill effect Tombstone (common)
+    default: false
+  killeffects.effect.coffin:
+    description: Kill effect Coffin (common)
+    default: false
+  killeffects.effect.cake:
+    description: Kill effect Party Cake (common)
+    default: false
+  killeffects.effect.anvil:
+    description: Kill effect Anvil Drop (common)
+    default: false
+  killeffects.effect.bone_pile:
+    description: Kill effect Bone Pile (common)
+    default: false
+  killeffects.effect.gift:
+    description: Kill effect Surprise Gift (common)
+    default: false
+  killeffects.effect.ice_cube:
+    description: Kill effect Ice Cube (uncommon)
+    default: false
+  killeffects.effect.tnt:
+    description: Kill effect TNT (uncommon)
+    default: false
+  killeffects.effect.coconut:
+    description: Kill effect Coconut (uncommon)
+    default: false
+  killeffects.effect.slime_bounce:
+    description: Kill effect Slime Bounce (uncommon)
+    default: false
+  killeffects.effect.pumpkin:
+    description: Kill effect Pumpkin Head (uncommon)
+    default: false
+  killeffects.effect.balloon:
+    description: Kill effect Balloon (rare)
+    default: false
+  killeffects.effect.rocket:
+    description: Kill effect Rocket (rare)
+    default: false
+  killeffects.effect.ez:
+    description: Kill effect EZ (rare)
+    default: false
+  killeffects.effect.slot_machine:
+    description: Kill effect Slot Machine (rare)
+    default: false
+  killeffects.effect.helicopter:
+    description: Kill effect Helicopter (epic)
+    default: false
+  killeffects.effect.meteor:
+    description: Kill effect Meteor (epic)
+    default: false
+  killeffects.effect.piano:
+    description: Kill effect Piano Drop (epic)
+    default: false
+  killeffects.effect.ufo:
+    description: Kill effect UFO (epic)
+    default: false
+  killeffects.effect.royal_crown:
+    description: Kill effect Royal Crown (legendary)
+    default: false
+  killeffects.effect.volcano:
+    description: Kill effect Volcano (legendary)
+    default: false
+  killeffects.effect.tornado:
+    description: Kill effect Tornado (legendary)
+    default: false
+  killeffects.effect.chicken_god:
+    description: Kill effect Chicken God (mythic)
+    default: false
+  killeffects.effect.black_hole_x:
+    description: Kill effect Black Hole (mythic)
+    default: false

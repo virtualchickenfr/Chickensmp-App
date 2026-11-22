@@ -1,0 +1,235 @@
+# ============================================================
+#  ChickenSMPKillEffects
+#  24 block kill effects (little animated block models) in 6 rarities. Players unlock them by:
+#    - permission:  killeffects.effect.<id>   (or killeffects.rarity.<rarity>, killeffects.effect.*)
+#    - crates:      gamble with money (Vault) or keys
+#    Duplicates from crates give part of the crate price back (duplicate-refund-percent).
+#  Admin: /ke give <player|*> <effect|rarity|all>   /ke keys <player|*> <crate|all> <amount>
+#  Colours: &a  &#55FF55  <gradient:#FF4D6D:#FFB020>text</gradient>
+# ============================================================
+
+# true = the crate icons use the textures from the resource pack.
+# The effects themselves are built from blocks and need no resource pack.
+custom-models: true
+
+# Seconds between two previews for one player
+preview-cooldown-seconds: 4
+# Two kills in a short time only play one effect
+kill-cooldown-millis: 500
+
+money-format: "{amount}$"
+# true = use the formatting of your economy plugin instead
+use-economy-format: false
+
+# Chat message to everyone when someone wins this rarity or better from a crate
+broadcast-from: LEGENDARY
+
+# ------------------------------------------------------------ crates
+# price = money per opening (0 = keys only). Keys (from /ke keys) are used first.
+# chances = weight per rarity (shown as % in the menu)
+crates:
+  basic:
+    name: "&7&lBasic Crate"
+    texture: basic
+    price: 50000
+    lore:
+      - "&8Good for starting out."
+      - ""
+    chances:
+      common: 60
+      uncommon: 28
+      rare: 10
+      epic: 1.8
+      legendary: 0.2
+  epic:
+    name: "&#B565FF&lEpic Crate"
+    texture: epic
+    price: 250000
+    lore:
+      - "&8Better odds, cooler effects."
+      - ""
+    chances:
+      uncommon: 35
+      rare: 38
+      epic: 20
+      legendary: 6
+      mythic: 1
+  mythic:
+    name: "<gradient:#FF4D6D:#FFB020>&lMythic Crate</gradient>"
+    texture: mythic
+    price: 1000000
+    lore:
+      - "&8Only the best."
+      - ""
+    chances:
+      rare: 30
+      epic: 40
+      legendary: 24
+      mythic: 6
+
+# ------------------------------------------------------------ duplicates
+# Win an effect you already own -> get this % of the crate price back (0 = nothing)
+duplicate-refund-percent: 25
+
+# ------------------------------------------------------------ resource pack
+# The textures are in ChickenSMP-ResourcePack.zip (together with Tidal & Transition).
+# Only fill this in if you use KillEffects-ResourcePack.zip on its own; it is sent in addition to your server pack.
+resource-pack:
+  url: ""
+  sha1: ""
+  required: false
+  prompt: "&7Kill effect textures"
+
+# ------------------------------------------------------------ change single effects (optional)
+# effects:
+#   chicken_god:
+#     name: "Chicken God"
+#     rarity: MYTHIC
+#     description: "The almighty Golden Chicken judges them."
+#     enabled: true
+
+sounds:
+  open: "minecraft:block.ender_chest.open|0.5|1.4"
+  click: "minecraft:ui.button.click|0.5|1.2"
+  select: "minecraft:entity.experience_orb.pickup|0.7|1.3"
+  unlock: "minecraft:entity.player.levelup|0.7|1.2"
+  error: "minecraft:entity.villager.no|0.7|1"
+  crate-open: "minecraft:block.chest.open|0.8|0.8"
+  roll-tick: "minecraft:block.note_block.hat|0.6|0.8"
+  win-common: "minecraft:entity.experience_orb.pickup|1|1"
+  win-uncommon: "minecraft:entity.player.levelup|0.7|1.4"
+  win-rare: "minecraft:block.note_block.chime|1|1"
+  win-epic: "minecraft:ui.toast.challenge_complete|0.8|1.2"
+  win-legendary: "minecraft:ui.toast.challenge_complete|1|0.9"
+  win-mythic: "minecraft:item.totem.use|1|1.1"
+
+# ============================================================ texts
+messages:
+  prefix: "<gradient:#FF4D6D:#FFB020>&lKillFX</gradient> &8» &7"
+  none: "&7None"
+  selected: "{prefix}Kill effect set to {effect}&7."
+  deselected: "{prefix}Kill effect turned off."
+  preview: "{prefix}Preview of {effect} &8(only you can see it)"
+  won: "{prefix}You won {effect} &8({rarity}&8)&7!"
+  won-duplicate: "{prefix}{effect} &7was a duplicate: &a+{money} &7back"
+  won-duplicate-nothing: "{prefix}{effect} &7was a duplicate."
+  broadcast-win: "<gradient:#FF4D6D:#FFB020>&lKillFX</gradient> &8» &f{player} &7unboxed {rarity} {effect} &7from {crate}&7!"
+  received: "{prefix}&aYou received {what}&a! &8({amount} effect(s))"
+  keys-received: "{prefix}&aYou received &f{amount}x &akey(s) for {crate}&a!"
+  admin-given: "{prefix}Gave &f{amount} &7effect(s) to &f{player}&7."
+  admin-taken: "{prefix}Took &f{amount} &7effect(s) from &f{player}&7."
+  admin-keys: "{prefix}Gave &f{amount} &7key(s) to &f{player}&7."
+  admin-info: "{prefix}&f{player}&7: {owned}/{total} effects, selected &f{selected}&7, {kills} kills, {opened} crates opened, keys: &f{keys}"
+  reloaded: "{prefix}&aReloaded &8({effects} effects, {crates} crates)"
+  usage: "{prefix}Usage: &f{usage}"
+  help:
+    - "&8&m                                              "
+    - " <gradient:#FF4D6D:#FFB020>&lKill Effects</gradient>"
+    - " &f/{label} &8- &7your collection (select, preview)"
+    - " &f/{label} crates &8- &7open crates"
+    - " &f/{label} select <effect|none> &8- &7choose an effect"
+    - " &f/{label} preview <effect> &8- &7see an effect (only you)"
+  help-admin:
+    - " &c/{label} give <player|*> <effect|rarity|all>"
+    - " &c/{label} take <player|*> <effect|rarity|all>"
+    - " &c/{label} keys <player|*> <crate|all> <amount>"
+    - " &c/{label} open <player> <crate> &8- &7free crate"
+    - " &c/{label} play <effect> &8- &7play for everyone"
+    - " &c/{label} info <player>  &c/{label} reload"
+  error:
+    no-permission: "{prefix}&cYou don't have permission to do that."
+    players-only: "{prefix}&cOnly players can do that."
+    unknown-command: "{prefix}&cUnknown sub-command &f{input}&c. Use &f/ke help"
+    unknown-effect: "{prefix}&cThere is no kill effect called &f{input}&c."
+    unknown-crate: "{prefix}&cThere is no crate called &f{input}&c."
+    player-not-found: "{prefix}&cPlayer &f{player} &cnot found."
+    locked: "{prefix}&cYou don't own {effect} &cyet. Win it in a crate: &f/ke crates"
+    already-owned: "{prefix}&cYou already own this effect."
+    not-enough-money: "{prefix}&cYou need &f{amount} &cfor that."
+    economy: "{prefix}&cThe payment failed. Please try again."
+    no-key: "{prefix}&cYou need a key for {crate}&c."
+    crate-empty: "{prefix}&cThis crate has no effects."
+    preview-cooldown: "{prefix}&cWait {seconds}s before the next preview."
+
+# ============================================================ menus
+gui:
+  back: "&7« Back"
+  close: "&cClose"
+  previous-page: "&f« Page {page}"
+  next-page: "&fPage {page} »"
+  effect-lore:
+    - "{rarity}"
+    - "&8&o{description}"
+    - ""
+
+  collection:
+    title: "&8Kill Effects"
+    name: "{effect}"
+    locked-name: "&8{effect}"
+    owned-lore:
+      - "&aOwned"
+      - ""
+      - "&eClick: &7select"
+      - "&eRight-click: &7preview"
+    selected-lore:
+      - "&a&l✔ SELECTED"
+      - ""
+      - "&eClick: &7turn off"
+      - "&eRight-click: &7preview"
+    locked-lore:
+      - "&c&lLOCKED"
+      - "&7Win it in a crate!"
+      - ""
+      - "&eRight-click: &7preview"
+    current: "&7Selected: {effect}"
+    current-lore:
+      - ""
+      - "&eClick: &7turn off"
+    none-selected: "&7No kill effect selected"
+    none-selected-lore:
+      - "&7Click an effect you own."
+    crates: "<gradient:#FF4D6D:#FFB020>&lCrates</gradient>"
+    crates-lore:
+      - "&7Gamble for new kill effects!"
+      - ""
+      - "&eClick to open"
+    profile: "&f&l{player}"
+    profile-lore:
+      - "&7Effects: &f{owned}&7/&f{total} &8({percent}%)"
+      - "&7Kills: &f{kills}"
+      - "&7Crates opened: &f{opened}"
+    filter: "&e&lFilter"
+    filter-all: "&fAll"
+    filter-lore:
+      - ""
+      - "&eLeft-click: &7next  &8|  &eRight-click: &7back"
+
+  crates:
+    title: "&8Kill Effect Crates"
+    chances-header:
+      - "&7Chances:"
+    chance-line: "&8» {rarity} &f{chance}% &8({have}/{total} owned)"
+    price-lore:
+      - ""
+      - "&7Your keys: &f{keys}"
+      - "&7Price: &f{price}"
+    keys-only: "keys only"
+    open-key:
+      - ""
+      - "&a&lClick to open with a key"
+    open-money:
+      - ""
+      - "&eClick to open for &f{price}"
+    confirm:
+      - ""
+      - "&a&lClick again to pay {price}"
+    no-key:
+      - ""
+      - "&cYou need a key"
+
+  roll:
+    title: "&8Opening {crate}"
+    pointer: "&f▼"
+    item: "{effect}"
+    duplicate-suffix: " &8(duplicate: &a+{money} &8back)"
+    duplicate-suffix-nothing: " &8(duplicate)"
