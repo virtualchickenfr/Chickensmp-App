@@ -20,3 +20,5 @@ allowed-names: '^[a-zA-Z0-9_]{3,16}$'
 fail-closed: true
 # Max accounts a single IP may register
 max-accounts-per-ip: 3
+# Wrong passwords on one account (from any IP) within 15 minutes before it is locked for 15 minutes
+account-fail-limit: 10

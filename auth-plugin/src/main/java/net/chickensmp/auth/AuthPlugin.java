@@ -46,6 +46,13 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     private final Set<UUID> busy = ConcurrentHashMap.newKeySet();
     private final Map<String, Deque<Long>> ipFails = new ConcurrentHashMap<>();
     private final Map<String, Long> ipBlocked = new ConcurrentHashMap<>();
+    /** Failed logins per account (any IP) and accounts locked after too many. */
+    private final Map<String, Deque<Long>> accFails = new ConcurrentHashMap<>();
+    private final Map<String, Long> accLocked = new ConcurrentHashMap<>();
+    private static final Set<String> COMMON = Set.of("123456","1234567","12345678","123456789","1234567890","111111","000000","123123",
+            "654321","666666","121212","112233","password","passwort","qwerty","qwertz","qwerty123","abc123","abcdef","asdfgh","asdasd",
+            "minecraft","minecraft1","minecraft123","iloveyou","dragon","monkey","letmein","football","fussball","killer","master",
+            "hallo123","hello123","test123","test1234","passwort1","password1","geheim","chicken","chickensmp","admin","admin123");
 
     Msg msg() { return msg; }
     boolean failClosed() { return getConfig().getBoolean("fail-closed", true); }
@@ -106,6 +113,8 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         if (floodgate && FloodgateHook.isBedrock(e.getUniqueId())) { trusted.add(e.getUniqueId()); return; }
 
         if (!name.matches(getConfig().getString("allowed-names", "^[a-zA-Z0-9_]{3,16}$"))) { deny(e, "invalidName"); return; }
+        Long lockedUntil = accLocked.get(name.toLowerCase());
+        if (lockedUntil != null && lockedUntil > System.currentTimeMillis()) { deny(e, "accountLocked"); return; }
         Player online = Bukkit.getPlayerExact(name);
         if (online != null) { deny(e, "alreadyOnline"); return; }
         Mojang.Lookup l = mojang.lookup(name);
@@ -125,6 +134,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         String ip = ip(p);
         long session = getConfig().getLong("session-minutes", 30) * 60_000L;
         if (session > 0 && store.registered(p.getName()) && ip.equals(store.lastIp(p.getName()))
+                && client(p).equals(store.lastClient(p.getName()))
                 && System.currentTimeMillis() - store.lastLogout(p.getName()) < session) {
             authed.add(p.getUniqueId());
             store.loggedIn(p.getName(), ip);
@@ -134,6 +144,15 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         waitingSince.put(p.getUniqueId(), System.currentTimeMillis());
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, PotionEffect.INFINITE_DURATION, 0, false, false, false));
         Bukkit.getScheduler().runTaskLater(this, () -> prompt(p), 10L);
+    }
+
+    @EventHandler
+    public void onKick(PlayerKickEvent e) {
+        // A kicked/banned player must type the password again next time (restarts keep the session).
+        PlayerKickEvent.Cause c = e.getCause();
+        if (c != PlayerKickEvent.Cause.BANNED && c != PlayerKickEvent.Cause.IP_BANNED && c != PlayerKickEvent.Cause.KICK_COMMAND
+                && c != PlayerKickEvent.Cause.DUPLICATE_LOGIN) return;
+        if (authed.contains(e.getPlayer().getUniqueId())) { authed.remove(e.getPlayer().getUniqueId()); store.endSession(e.getPlayer().getName()); store.saveAsync(this); }
     }
 
     @EventHandler
@@ -175,8 +194,38 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         p.removePotionEffect(PotionEffectType.BLINDNESS);
         p.clearTitle();
         store.loggedIn(p.getName(), ip(p));
+        store.setClient(p.getName(), client(p));
+        int fails = store.failsSinceLogin(p.getName());
+        store.clearFails(p.getName());
+        accFails.remove(p.getName().toLowerCase());
         store.saveAsync(this);
         msg.send(p, key);
+        if (fails > 0) msg.send(p, "failsWarning", fails);
+    }
+
+    /** Client fingerprint for auto-login: protocol version (a different launcher/version must log in again). */
+    private static String client(Player p) {
+        try {
+            com.github.retrooper.packetevents.protocol.player.User u = PacketEvents.getAPI().getPlayerManager().getUser(p);
+            return u == null ? "?" : String.valueOf(u.getClientVersion().getProtocolVersion());
+        } catch (Throwable t) { return "?"; }
+    }
+
+    private void accountFail(String name) {
+        String k = name.toLowerCase();
+        long now = System.currentTimeMillis();
+        store.addFail(name);
+        store.endSession(name);
+        Deque<Long> d = accFails.computeIfAbsent(k, x -> new ArrayDeque<>());
+        synchronized (d) {
+            d.addLast(now);
+            while (!d.isEmpty() && now - d.peekFirst() > 900_000) d.pollFirst();
+            if (d.size() >= getConfig().getInt("account-fail-limit", 10)) {
+                accLocked.put(k, now + 900_000);
+                d.clear();
+                getLogger().warning("Account " + name + " locked for 15 minutes after too many wrong passwords.");
+            }
+        }
     }
 
     private static String ip(Player p) {
@@ -213,7 +262,9 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     private boolean pwOk(Player p, String pw) {
         int min = getConfig().getInt("password-min-length", 6);
         if (pw.length() < min) { msg.send(p, "pwShort", min); return false; }
-        if (pw.equalsIgnoreCase(p.getName())) { msg.send(p, "pwName"); return false; }
+        String low = pw.toLowerCase();
+        if (low.contains(p.getName().toLowerCase())) { msg.send(p, "pwName"); return false; }
+        if (COMMON.contains(low) || low.chars().distinct().count() <= 2) { msg.send(p, "pwWeak"); return false; }
         return true;
     }
 
@@ -253,6 +304,9 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
                 if (!p.isOnline()) return;
                 if (ok) { unlock(p, "loggedIn"); return; }
                 ipFail(ip(p));
+                accountFail(p.getName());
+                store.saveAsync(this);
+                if (accLocked.containsKey(p.getName().toLowerCase())) { p.kick(msg.kick("accountLocked")); return; }
                 int n = attempts.merge(p.getUniqueId(), 1, Integer::sum);
                 int left = getConfig().getInt("max-attempts", 5) - n;
                 if (left <= 0) p.kick(msg.kick("tooMany"));
@@ -283,7 +337,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
 
     private boolean admin(CommandSender s, String[] a) {
         if (a.length == 0) {
-            s.sendMessage("§b/chickenauth info <name> §7| §bunregister <name> §7| §bsetpassword <name> <pw> §7| §bforgetcache <name> §7| §breload");
+            s.sendMessage("§b/chickenauth info <name> §7| §bunregister <name> §7| §bsetpassword <name> <pw> §7| §bunlock <name> §7| §bforgetcache <name> §7| §breload");
             return true;
         }
         switch (a[0].toLowerCase()) {
@@ -308,6 +362,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
                     });
                 });
             }
+            case "unlock" -> { if (a.length > 1) { accLocked.remove(a[1].toLowerCase()); accFails.remove(a[1].toLowerCase()); s.sendMessage("§aAccount " + a[1] + " unlocked."); } }
             case "forgetcache" -> { if (a.length > 1) { mojang.forget(a[1]); s.sendMessage("§aCache cleared for " + a[1]); } }
             case "reload" -> { reloadConfig(); s.sendMessage("§aConfig reloaded."); }
             default -> s.sendMessage("§cUnknown subcommand.");

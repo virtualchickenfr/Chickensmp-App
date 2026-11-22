@@ -32,7 +32,15 @@ final class UserStore {
         y.set(b + ".lastIp", ip);
     }
 
-    synchronized void setHash(String name, String hash) { y.set("users." + k(name) + ".hash", hash); }
+    synchronized void setHash(String name, String hash) { y.set("users." + k(name) + ".hash", hash); endSession(name); }
+    /** Session fingerprint = protocol version of the client that last logged in with the password. */
+    synchronized String lastClient(String name) { return y.getString("users." + k(name) + ".lastClient", ""); }
+    synchronized void setClient(String name, String client) { y.set("users." + k(name) + ".lastClient", client); }
+    /** Ends the auto-login session (failed attempt, password change, kick). */
+    synchronized void endSession(String name) { y.set("users." + k(name) + ".lastLogout", 0L); }
+    synchronized int failsSinceLogin(String name) { return y.getInt("users." + k(name) + ".failsSinceLogin", 0); }
+    synchronized void addFail(String name) { y.set("users." + k(name) + ".failsSinceLogin", failsSinceLogin(name) + 1); }
+    synchronized void clearFails(String name) { y.set("users." + k(name) + ".failsSinceLogin", null); }
     synchronized void loggedIn(String name, String ip) {
         y.set("users." + k(name) + ".lastIp", ip);
         y.set("users." + k(name) + ".lastLogin", System.currentTimeMillis());

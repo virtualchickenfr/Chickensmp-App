@@ -53,6 +53,7 @@ jobs:
         if: success() && github.event_name != 'pull_request'
         run: |
           git config user.name "ci"; git config user.email "ci@users.noreply.github.com"
-          git fetch -q origin plugin-dist && git checkout -q plugin-dist
-          cp auth-plugin/target/ChickenSMPAuth.jar . 2>/dev/null || cp $GITHUB_WORKSPACE/auth-plugin/target/ChickenSMPAuth.jar .
+          cp auth-plugin/target/ChickenSMPAuth.jar /tmp/ChickenSMPAuth.jar
+          git fetch -q origin plugin-dist && git checkout -f -q -B plugin-dist origin/plugin-dist
+          cp /tmp/ChickenSMPAuth.jar .
           git add ChickenSMPAuth.jar && git commit -qm "ChickenSMPAuth build" && git push -q origin plugin-dist || echo "nothing to publish"

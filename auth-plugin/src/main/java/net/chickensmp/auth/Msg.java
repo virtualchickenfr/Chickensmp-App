@@ -30,6 +30,9 @@ final class Msg {
         put("pwShort", "<red>Das Passwort muss mindestens <yellow>{n}</yellow> Zeichen lang sein.", "<red>Your password needs at least <yellow>{n}</yellow> characters.");
         put("pwMismatch", "<red>Die Passwörter stimmen nicht überein.", "<red>The passwords don't match.");
         put("pwName", "<red>Dein Passwort darf nicht dein Name sein.", "<red>Your password can't be your name.");
+        put("pwWeak", "<red>Dieses Passwort ist zu leicht zu erraten. Nimm ein anderes.", "<red>That password is too easy to guess. Pick another one.");
+        put("failsWarning", "<yellow>Achtung: <white>{n}</white> falsche Anmeldeversuche seit deinem letzten Login. Ändere dein Passwort mit /changepassword, wenn du das nicht warst.",
+                "<yellow>Heads up: <white>{n}</white> wrong login attempts on your account since your last login. If that wasn't you, use <aqua>/changepassword</aqua>.");
         put("pwChanged", "<green>Passwort geändert.", "<green>Password changed.");
         put("noPremiumPw", "<gray>Du spielst mit einem gekauften Account oder über Bedrock – du brauchst kein Passwort.", "<gray>You play with a paid account or on Bedrock – you don't need a password.");
         put("mustLogin", "<red>Bitte melde dich zuerst an.", "<red>Please log in first.");
@@ -47,6 +50,7 @@ final class Msg {
         put("mojangDown", "Die Mojang-Server sind gerade nicht erreichbar. Bitte versuch es gleich nochmal.", "Mojang's servers can't be reached right now. Please try again shortly.");
         put("oldClient", "Bitte nutze Minecraft 1.19.3 oder neuer.", "Please use Minecraft 1.19.3 or newer.");
         put("verifyFailed", "Dein Minecraft-Account konnte nicht bestätigt werden.\nStarte Minecraft neu und versuch es nochmal.", "Your Minecraft account could not be verified.\nRestart Minecraft and try again.");
+        put("accountLocked", "Dieser Account ist wegen zu vieler falscher Passwörter 15 Minuten gesperrt.", "This account is locked for 15 minutes after too many wrong passwords.");
         put("ipBlocked", "Zu viele fehlgeschlagene Anmeldungen. Bitte warte 10 Minuten.", "Too many failed logins. Please wait 10 minutes.");
     }
 
