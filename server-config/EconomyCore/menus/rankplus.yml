@@ -1,6 +1,6 @@
-# Rank preview: HERO (opened by the rank NPC at spawn). One item, perks stack with the ranks below. Format: see discord.yml.
+# Rank preview: PLUS (opened by the rank NPC at spawn). One item, perks stack with the ranks below. Format: see discord.yml.
 command:
-  - rankhero
+  - rankplus
 title: "&8ʜᴇʀᴏ ʀᴀɴᴋ"
 rows: 3
 open-sound: "minecraft:block.note_block.pling|0.7|1.2"
@@ -10,16 +10,16 @@ items:
   rank:
     SLOT: 13
     MATERIAL: IRON_INGOT
-    TITLE: "&#52B4FF&lHERO RANK"
+    TITLE: "&#52B4FF&lPLUS RANK"
     LORE:
       - "&7Rank"
       - ""
-      - "&#52B4FF&lHERO PERKS"
-      - "&#52B4FF▪ &fHERO ✧ prefix in chat and tab"
+      - "&#52B4FF&lPLUS PERKS"
+      - "&#52B4FF▪ &fPLUS ✧ prefix in chat and tab"
       - "&#52B4FF▪ &f4 homes"
       - "&#52B4FF▪ &fNo /rtp cooldown"
       - "&#52B4FF▪ &fShards everywhere"
-      - "&#52B4FF▪ &fHero kit every 24h"
+      - "&#52B4FF▪ &fPlus kit every 24h"
       - "&#52B4FF▪ &f2 item signatures (/sign) a day"
       - "&#52B4FF▪ &fAll common kill effects"
       - ""
@@ -29,8 +29,8 @@ items:
     ACTIONS:
       - "[sound] minecraft:ui.button.click volume=1 pitch=1"
       - "[close]"
-      - "[msg]              &#52B4FF&lHERO RANK"
+      - "[msg]              &#52B4FF&lPLUS RANK"
       - "[msg] "
-      - "[msg] &fGet &#52B4FFHero &ffor &#00FC00€1.99 &fand keep it forever."
+      - "[msg] &fGet &#52B4FFPlus &ffor &#00FC00€1.99 &fand keep it forever."
       - "[msg] "
       - "[msg]       &#00FC00<click:open_url:'https://store.chickensmp.net'><hover:show_text:'&fClick to open the &#00FC00store'>▶ store.chickensmp.net ◀</hover></click>  "

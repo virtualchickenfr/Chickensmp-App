@@ -79,10 +79,10 @@ const EN = {
   teamTitle: 'Team', website: 'Website', disclaimer: 'Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.',
   pHero: 'A great start to support ChickenSMP.', pElite: 'More perks and a stronger look.', pTitan: 'Serious perks for serious players.', pPrestige: 'The best rank on ChickenSMP. Everything included.',
   pBoost: 'Boost our Discord and get all Plus perks.', pMedia: 'For creators with 500+ YouTube subscribers, 1,000+ TikTok or 100+ Twitch followers.', pKey: 'One key for the matching crate at spawn.',
-  hPrefix: 'HERO ✧ prefix', hHomes: '4 homes', hRtp: 'No RTP cooldown', hShards: 'Shards everywhere', hKit: 'Hero kit every 24h', hSign: '2 /sign per day', hFx: 'All common kill effects',
-  eAll: 'All Hero perks', ePrefix: 'ELITE ✦ prefix', eHomes: '6 homes', eCraft: '/craft /anvil /smithing & more', eTags: '3 chat tags', eKit: 'Elite kit every 24h', eSign: '4 /sign per day', eFx: 'All uncommon kill effects',
-  tAll: 'All Hero & Elite perks', tPrefix: 'TITAN ❖ prefix', tHomes: '8 homes', tGlow: '/glow', tEc: 'Ender chest anywhere', tTags: '4 more chat tags', tKit: 'Titan kit every 24h', tSign: '6 /sign per day', tFx: 'All rare kill effects',
-  xAll: 'All Hero, Elite & Titan perks', xPrefix: 'PRESTIGE ⚜ prefix', xHomes: '12 homes', xTags: 'Every chat tag', xUtil: 'Every utility command', xSign: 'Unlimited /sign', xFx: 'All epic & legendary kill effects',
+  hPrefix: 'PLUS ✧ prefix', hHomes: '4 homes', hRtp: 'No RTP cooldown', hShards: 'Shards everywhere', hKit: 'Plus kit every 24h', hSign: '2 /sign per day', hFx: 'All common kill effects',
+  eAll: 'All Plus perks', ePrefix: 'ELITE ✦ prefix', eHomes: '6 homes', eCraft: '/craft /anvil /smithing & more', eTags: '3 chat tags', eKit: 'Elite kit every 24h', eSign: '4 /sign per day', eFx: 'All uncommon kill effects',
+  tAll: 'All Plus & Elite perks', tPrefix: 'SUPREME ❖ prefix', tHomes: '8 homes', tGlow: '/glow', tEc: 'Ender chest anywhere', tTags: '4 more chat tags', tKit: 'Supreme kit every 24h', tSign: '6 /sign per day', tFx: 'All rare kill effects',
+  xAll: 'All Plus, Elite & Supreme perks', xPrefix: 'PRESTIGE ⚜ prefix', xHomes: '12 homes', xTags: 'Every chat tag', xUtil: 'Every utility command', xSign: 'Unlimited /sign', xFx: 'All epic & legendary kill effects',
   kAllElite: 'All Elite perks', kAllPrestige: 'All Prestige perks',
   kPrefix: '[+] prefix', kTab: 'Tab priority', kHomes5: '5 homes', kRtp: 'No RTP cooldown', kShards: 'Shards everywhere',
   kAllPlus: 'All Plus perks', kCorePrefix: 'Core prefix', kHomes7: '7 homes', kTags3: '3 random tags', kCraft: '/craft /anvil /smithing & more',
@@ -153,10 +153,10 @@ const DE = {
   teamTitle: 'Team', website: 'Website', disclaimer: 'Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt oder mit ihnen verbunden.',
   pHero: 'Ein guter Einstieg, um ChickenSMP zu unterstützen.', pElite: 'Mehr Vorteile und ein stärkerer Look.', pTitan: 'Starke Vorteile für echte Spieler.', pPrestige: 'Der beste Rang auf ChickenSMP. Alles inklusive.',
   pBoost: 'Booste unseren Discord und erhalte alle Plus-Vorteile.', pMedia: 'Für Creator ab 500 YouTube-Abos, 1.000 TikTok- oder 100 Twitch-Followern.', pKey: 'Ein Key für die passende Crate am Spawn.',
-  hPrefix: 'HERO ✧ Prefix', hHomes: '4 Homes', hRtp: 'Kein RTP-Cooldown', hShards: 'Shards überall', hKit: 'Hero-Kit alle 24h', hSign: '2× /sign pro Tag', hFx: 'Alle Common Kill Effects',
-  eAll: 'Alle Hero-Vorteile', ePrefix: 'ELITE ✦ Prefix', eHomes: '6 Homes', eCraft: '/craft /anvil /smithing & mehr', eTags: '3 Chat-Tags', eKit: 'Elite-Kit alle 24h', eSign: '4× /sign pro Tag', eFx: 'Alle Uncommon Kill Effects',
-  tAll: 'Alle Hero- & Elite-Vorteile', tPrefix: 'TITAN ❖ Prefix', tHomes: '8 Homes', tGlow: '/glow', tEc: 'Endertruhe überall', tTags: '4 weitere Chat-Tags', tKit: 'Titan-Kit alle 24h', tSign: '6× /sign pro Tag', tFx: 'Alle Rare Kill Effects',
-  xAll: 'Alle Hero-, Elite- & Titan-Vorteile', xPrefix: 'PRESTIGE ⚜ Prefix', xHomes: '12 Homes', xTags: 'Alle Chat-Tags', xUtil: 'Alle Utility-Befehle', xSign: 'Unbegrenzt /sign', xFx: 'Alle Epic & Legendary Kill Effects',
+  hPrefix: 'PLUS ✧ Prefix', hHomes: '4 Homes', hRtp: 'Kein RTP-Cooldown', hShards: 'Shards überall', hKit: 'Plus-Kit alle 24h', hSign: '2× /sign pro Tag', hFx: 'Alle Common Kill Effects',
+  eAll: 'Alle Plus-Vorteile', ePrefix: 'ELITE ✦ Prefix', eHomes: '6 Homes', eCraft: '/craft /anvil /smithing & mehr', eTags: '3 Chat-Tags', eKit: 'Elite-Kit alle 24h', eSign: '4× /sign pro Tag', eFx: 'Alle Uncommon Kill Effects',
+  tAll: 'Alle Plus- & Elite-Vorteile', tPrefix: 'SUPREME ❖ Prefix', tHomes: '8 Homes', tGlow: '/glow', tEc: 'Endertruhe überall', tTags: '4 weitere Chat-Tags', tKit: 'Supreme-Kit alle 24h', tSign: '6× /sign pro Tag', tFx: 'Alle Rare Kill Effects',
+  xAll: 'Alle Plus-, Elite- & Supreme-Vorteile', xPrefix: 'PRESTIGE ⚜ Prefix', xHomes: '12 Homes', xTags: 'Alle Chat-Tags', xUtil: 'Alle Utility-Befehle', xSign: 'Unbegrenzt /sign', xFx: 'Alle Epic & Legendary Kill Effects',
   kAllElite: 'Alle Elite-Vorteile', kAllPrestige: 'Alle Prestige-Vorteile',
   kPrefix: '[+] Prefix', kTab: 'Tab-Priorität', kHomes5: '5 Homes', kRtp: 'Kein RTP-Cooldown', kShards: 'Shards überall',
   kAllPlus: 'Alle Plus-Vorteile', kCorePrefix: 'Core-Prefix', kHomes7: '7 Homes', kTags3: '3 zufällige Tags', kCraft: '/craft /anvil /smithing & mehr',
@@ -177,9 +177,9 @@ const DE = {
 export const STRINGS = { en: EN, de: DE };
 
 export const RANKS = [
-  { name: 'Hero', tag: '[HERO]', color: '#3b9bff', price: '€1.99', per: 'once', desc: 'pHero', perks: ['hPrefix', 'hHomes', 'hRtp', 'hShards', 'hKit', 'hSign', 'hFx'], art: 'crown' },
+  { name: 'Plus', tag: '[PLUS]', color: '#3b9bff', price: '€1.99', per: 'once', desc: 'pHero', perks: ['hPrefix', 'hHomes', 'hRtp', 'hShards', 'hKit', 'hSign', 'hFx'], art: 'crown' },
   { name: 'Elite', tag: '[ELITE]', color: '#1fd37c', price: '€3.99', per: 'once', desc: 'pElite', perks: ['eAll', 'ePrefix', 'eHomes', 'eCraft', 'eTags', 'eKit', 'eSign', 'eFx'], art: 'crown' },
-  { name: 'Titan', tag: '[TITAN]', color: '#ff6943', price: '€5.99', per: 'once', desc: 'pTitan', popular: true, perks: ['tAll', 'tPrefix', 'tHomes', 'tGlow', 'tEc', 'tTags', 'tKit', 'tSign', 'tFx'], art: 'crown' },
+  { name: 'Supreme', tag: '[SUPREME]', color: '#ff6943', price: '€5.99', per: 'once', desc: 'pTitan', popular: true, perks: ['tAll', 'tPrefix', 'tHomes', 'tGlow', 'tEc', 'tTags', 'tKit', 'tSign', 'tFx'], art: 'crown' },
   { name: 'Prestige', tag: '[PRESTIGE]', color: '#a058ff', price: '€9.99', per: 'once', desc: 'pPrestige', perks: ['xAll', 'xPrefix', 'xHomes', 'xTags', 'xUtil', 'xSign', 'xFx'], art: 'crown' },
 ];
 
