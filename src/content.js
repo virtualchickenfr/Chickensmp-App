@@ -184,8 +184,8 @@ export const RANKS = [
 ];
 
 export const KEYS = [
-  ['Basic Key', '#b8b8b8', '€0.49', '€1.99'], ['Plus Key', C.green, '€0.99', '€3.99'], ['Core Key', C.sky, '€1.49', '€5.99'],
-  ['Supreme Key', C.gold, '€2.49', '€9.99'], ['Crimson Key', '#e0364a', '€3.49', '€13.99'], ['Cherry Key', '#ff8fc8', '€4.99', '€19.99'],
+  ['Basic Key', '#b8b8b8', '€0.29', '€0.99'], ['Plus Key', C.green, '€0.49', '€1.99'], ['Core Key', C.sky, '€0.79', '€2.99'],
+  ['Supreme Key', C.gold, '€1.29', '€4.99'], ['Crimson Key', '#e0364a', '€1.79', '€6.99'], ['Cherry Key', '#ff8fc8', '€2.49', '€9.99'],
 ].map(([name, color, price, pack]) => ({ name, color, price, per: 'perKey', desc: 'pKey', perks: ['kCrate', `pack5:${pack}`], art: 'key' }));
 
 export const EXTRAS = [
