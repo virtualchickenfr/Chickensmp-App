@@ -1,0 +1,502 @@
+
+  # --- 100 new tags (2026-11-22) ---
+
+  chicken:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFF6A0&lC&#FFEC85&lH&#FFE16B&lI&#FFD750&lC&#FFCD35&lK&#FFC21B&lE&#FFB800&lN&8]"
+    PERMISSION: "economycore.tag.chicken"
+
+  egg:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFFFFF&lE&#F8ECD2&lG&#F2D9A6&lG&8]"
+    PERMISSION: "economycore.tag.egg"
+
+  rooster:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF3B3B&lR&#FF5031&lO&#FF6527&lO&#FF7A1E&lS&#FF8E14&lT&#FFA30A&lE&#FFB800&lR&8]"
+    PERMISSION: "economycore.tag.rooster"
+
+  cluck:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFE066&lC&#FFCA4C&lL&#FFB533&lU&#FFA01A&lC&#FF8A00&lK&8]"
+    PERMISSION: "economycore.tag.cluck"
+
+  nugget:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFD27A&lN&#F4C16B&lU&#E9AF5C&lG&#DD9E4E&lG&#D28C3F&lE&#C77B30&lT&8]"
+    PERMISSION: "economycore.tag.nugget"
+
+  goat:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#E8E8E8&lG&#C9C9C9&lO&#ABABAB&lA&#8C8C8C&lT&8]"
+    PERMISSION: "economycore.tag.goat"
+
+  og:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFD84A&lO&#FF9A2A&lG&8]"
+    PERMISSION: "economycore.tag.og"
+
+  pro:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00E5FF&lP&#00A6FF&lR&#0066FF&lO&8]"
+    PERMISSION: "economycore.tag.pro"
+
+  noob:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#7CFF6B&lN&#62E757&lO&#48D042&lO&#2EB82E&lB&8]"
+    PERMISSION: "economycore.tag.noob"
+
+  tryhard:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF4D4D&lT&#EE4040&lR&#DD3333&lY&#CC2626&lH&#BB1A1A&lA&#AA0D0D&lR&#990000&lD&8]"
+    PERMISSION: "economycore.tag.tryhard"
+
+  sweaty:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#7FE7FF&lS&#66DAFE&lW&#4CCCFE&lE&#33BFFD&lA&#19B1FD&lT&#00A4FC&lY&8]"
+    PERMISSION: "economycore.tag.sweaty"
+
+  clutch:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FCE300&lC&#FCCB00&lL&#FCB300&lU&#FC9A00&lT&#FC8200&lC&#FC6A00&lH&8]"
+    PERMISSION: "economycore.tag.clutch"
+
+  ez:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00FC00&lE&#00A86B&lZ&8]"
+    PERMISSION: "economycore.tag.ez"
+
+  gg:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFFFFF&lG&#00A4FC&lG&8]"
+    PERMISSION: "economycore.tag.gg"
+
+  rizz:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF6EC7&lR&#E04AD8&lI&#C227E8&lZ&#A303F9&lZ&8]"
+    PERMISSION: "economycore.tag.rizz"
+
+  sigma:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#C0C0C0&lS&#9C9C9C&lI&#787878&lG&#545454&lM&#303030&lA&8]"
+    PERMISSION: "economycore.tag.sigma"
+
+  based:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFB86B&lB&#FFA268&lA&#FF8C65&lS&#FF7562&lE&#FF5F5F&lD&8]"
+    PERMISSION: "economycore.tag.based"
+
+  vibe:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF9AE0&lV&#D885EA&lI&#B171F5&lB&#8A5CFF&lE&8]"
+    PERMISSION: "economycore.tag.vibe"
+
+  slay:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF5FA2&lS&#FF7A9B&lL&#FF9495&lA&#FFAF8E&lY&8]"
+    PERMISSION: "economycore.tag.slay"
+
+  goated:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFE259&lG&#FFD657&lO&#FFCA56&lA&#FFBF54&lT&#FFB353&lE&#FFA751&lD&8]"
+    PERMISSION: "economycore.tag.goated"
+
+  menace:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF0000&lM&#DE0000&lE&#BD0000&lN&#9C0000&lA&#7B0000&lC&#5A0000&lE&8]"
+    PERMISSION: "economycore.tag.menace"
+
+  chaos:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF00C8&lC&#FF1896&lH&#FF2F64&lA&#FF4632&lO&#FF5E00&lS&8]"
+    PERMISSION: "economycore.tag.chaos"
+
+  feral:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#9BE15D&lF&#74D360&lE&#4EC464&lR&#27B668&lA&#00A86B&lL&8]"
+    PERMISSION: "economycore.tag.feral"
+
+  savage:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF4500&lS&#E83700&lA&#D12900&lV&#B91C00&lA&#A20E00&lG&#8B0000&lE&8]"
+    PERMISSION: "economycore.tag.savage"
+
+  beast:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#B3B3B3&lB&#9A8686&lE&#805A5A&lA&#662D2D&lS&#4D0000&lT&8]"
+    PERMISSION: "economycore.tag.beast"
+
+  wolf:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#DDE6F0&lW&#B7C2CE&lO&#929EAB&lL&#6C7A89&lF&8]"
+    PERMISSION: "economycore.tag.wolf"
+
+  fox:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFA94D&lF&#F4812C&lO&#E8590C&lX&8]"
+    PERMISSION: "economycore.tag.fox"
+
+  bear:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#C48B5A&lB&#A17046&lE&#7F5532&lA&#5C3A1E&lR&8]"
+    PERMISSION: "economycore.tag.bear"
+
+  shark:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#9EC9FF&lS&#81AEE7&lH&#6494CE&lA&#487AB6&lR&#2B5F9E&lK&8]"
+    PERMISSION: "economycore.tag.shark"
+
+  viper:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#A8FF60&lV&#86DE50&lI&#63BC3F&lP&#409B2E&lE&#1E7A1E&lR&8]"
+    PERMISSION: "economycore.tag.viper"
+
+  raven:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#8C8CA6&lR&#717188&lA&#56566A&lV&#3A3A4C&lE&#1F1F2E&lN&8]"
+    PERMISSION: "economycore.tag.raven"
+
+  owl:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#E6CBA8&lO&#B99670&lW&#8C6239&lL&8]"
+    PERMISSION: "economycore.tag.owl"
+
+  panda:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFFFFF&lP&#CECECE&lA&#9C9C9C&lN&#6B6B6B&lD&#3A3A3A&lA&8]"
+    PERMISSION: "economycore.tag.panda"
+
+  bunny:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFD1E8&lB&#FFC0E0&lU&#FFB0D8&lN&#FFA0D0&lN&#FF8FC8&lY&8]"
+    PERMISSION: "economycore.tag.bunny"
+
+  bee:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFE600&lB&#958816&lE&#2B2B2B&lE&8]"
+    PERMISSION: "economycore.tag.bee"
+
+  frog:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#8CFF8C&lF&#6DD87A&lR&#4DB269&lO&#2E8B57&lG&8]"
+    PERMISSION: "economycore.tag.frog"
+
+  axolotl:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFB3D9&lA&#FFA6D2&lX&#FF99CC&lO&#FF8CC6&lL&#FF80BF&lO&#FF73B8&lT&#FF66B2&lL&8]"
+    PERMISSION: "economycore.tag.axolotl"
+
+  dolphin:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#8FD3FF&lD&#7FC5F7&lO&#6FB7F0&lL&#5FA9E8&lP&#4F9BE0&lH&#3F8DD9&lI&#2F7FD1&lN&8]"
+    PERMISSION: "economycore.tag.dolphin"
+
+  tiger:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFB000&lT&#FF9900&lI&#FF8200&lG&#FF6B00&lE&#FF5400&lR&8]"
+    PERMISSION: "economycore.tag.tiger"
+
+  lion:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFD580&lL&#EDB75D&lI&#DB9A39&lO&#C97C16&lN&8]"
+    PERMISSION: "economycore.tag.lion"
+
+  wizard:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#B98CFF&lW&#A376EB&lI&#8D60D6&lZ&#774AC2&lA&#6134AD&lR&#4B1E99&lD&8]"
+    PERMISSION: "economycore.tag.wizard"
+
+  knight:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#D9E1EA&lK&#C4CDD8&lN&#AEBAC6&lI&#99A6B5&lG&#8393A3&lH&#6E7F91&lT&8]"
+    PERMISSION: "economycore.tag.knight"
+
+  samurai:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF3D3D&lS&#DC3333&lA&#B82929&lM&#951E1E&lU&#721414&lR&#4E0A0A&lA&#2B0000&lI&8]"
+    PERMISSION: "economycore.tag.samurai"
+
+  viking:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#C8A27A&lV&#B3977A&lI&#9E8C79&lK&#888179&lI&#737678&lN&#5E6B78&lG&8]"
+    PERMISSION: "economycore.tag.viking"
+
+  ronin:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#E0E0E0&lR&#CBA8A8&lO&#B67070&lN&#A03838&lI&#8B0000&lN&8]"
+    PERMISSION: "economycore.tag.ronin"
+
+  archer:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#9FD86B&lA&#8EC55E&lR&#7EB251&lC&#6DA044&lH&#5D8D37&lE&#4C7A2A&lR&8]"
+    PERMISSION: "economycore.tag.archer"
+
+  rogue:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#6A6A80&lR&#56566A&lO&#424253&lG&#2E2E3C&lU&#1A1A26&lE&8]"
+    PERMISSION: "economycore.tag.rogue"
+
+  paladin:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFF1A8&lP&#FAE68C&lA&#F5DB70&lL&#F0D054&lA&#EAC638&lD&#E5BB1C&lI&#E0B000&lN&8]"
+    PERMISSION: "economycore.tag.paladin"
+
+  mage:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#7FD4FF&lM&#83ACFF&lA&#8684FF&lG&#8A5CFF&lE&8]"
+    PERMISSION: "economycore.tag.mage"
+
+  assassin:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#5A5A5A&lA&#674D4D&lS&#734040&lS&#803333&lA&#8D2727&lS&#9A1A1A&lS&#A60D0D&lI&#B30000&lN&8]"
+    PERMISSION: "economycore.tag.assassin"
+
+  cosmic:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF6EC7&lC&#D861D2&lO&#B153DD&lS&#8946E9&lM&#6238F4&lI&#3B2BFF&lC&8]"
+    PERMISSION: "economycore.tag.cosmic"
+
+  nebula:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#C77DFF&lN&#AE8CFC&lE&#969BF9&lB&#7DABF6&lU&#65BAF3&lL&#4CC9F0&lA&8]"
+    PERMISSION: "economycore.tag.nebula"
+
+  comet:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFFFFF&lC&#DEF0FF&lO&#BEE2FF&lM&#9DD3FF&lE&#7CC4FF&lT&8]"
+    PERMISSION: "economycore.tag.comet"
+
+  meteor:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFB347&lM&#E89739&lE&#D17A2B&lT&#B95E1C&lE&#A2410E&lO&#8B2500&lR&8]"
+    PERMISSION: "economycore.tag.meteor"
+
+  eclipse:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFD700&lE&#D9B804&lC&#B39809&lL&#8C780D&lI&#665911&lP&#403A16&lS&#1A1A1A&lE&8]"
+    PERMISSION: "economycore.tag.eclipse"
+
+  solar:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFF200&lS&#FFD400&lO&#FFB600&lL&#FF9800&lA&#FF7A00&lR&8]"
+    PERMISSION: "economycore.tag.solar"
+
+  lunar:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#E8ECF2&lL&#D0D6E0&lU&#B9C0CD&lN&#A2ABBA&lA&#8A95A8&lR&8]"
+    PERMISSION: "economycore.tag.lunar"
+
+  stellar:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFFFFF&lS&#FFF8E1&lT&#FFF2C3&lE&#FFECA4&lL&#FFE586&lL&#FFDE68&lA&#FFD84A&lR&8]"
+    PERMISSION: "economycore.tag.stellar"
+
+  orbit:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00E5FF&lO&#1FB8FD&lR&#3E8AFB&lB&#5C5CF9&lI&#7B2FF7&lT&8]"
+    PERMISSION: "economycore.tag.orbit"
+
+  quasar:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00FFD5&lQ&#23CCDD&lU&#4699E6&lA&#6A66EE&lS&#8D33F7&lA&#B000FF&lR&8]"
+    PERMISSION: "economycore.tag.quasar"
+
+  thunder:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFF59D&lT&#FFEA83&lH&#FFDF69&lU&#FFD44E&lN&#FFC934&lD&#FFBE1A&lE&#FFB300&lR&8]"
+    PERMISSION: "economycore.tag.thunder"
+
+  blizzard:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFFFFF&lB&#EDF9FF&lL&#DAF3FF&lI&#C8EDFF&lZ&#B6E6FF&lZ&#A4E0FF&lA&#91DAFF&lR&#7FD4FF&lD&8]"
+    PERMISSION: "economycore.tag.blizzard"
+
+  tsunami:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00E5FF&lT&#00C7F6&lS&#00AAEE&lU&#008CE6&lN&#006EDD&lA&#0051D4&lM&#0033CC&lI&8]"
+    PERMISSION: "economycore.tag.tsunami"
+
+  tornado:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#D0D5DB&lT&#BDC3CA&lO&#AAB2BA&lR&#98A0AA&lN&#858E99&lA&#727D88&lD&#5F6B78&lO&8]"
+    PERMISSION: "economycore.tag.tornado"
+
+  volcano:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF9A00&lV&#E48200&lO&#C86A00&lL&#AC5200&lC&#913A00&lA&#762200&lN&#5A0A00&lO&8]"
+    PERMISSION: "economycore.tag.volcano"
+
+  aurora:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00FFA3&lA&#19D5B4&lU&#31ACC5&lR&#4A82D5&lO&#6259E6&lR&#7B2FF7&lA&8]"
+    PERMISSION: "economycore.tag.aurora"
+
+  mist:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#E3E8EE&lM&#CBD2DA&lI&#B2BBC5&lS&#9AA5B1&lT&8]"
+    PERMISSION: "economycore.tag.mist"
+
+  ember:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFB347&lE&#FF9635&lM&#FF7824&lB&#FF5A12&lE&#FF3D00&lR&8]"
+    PERMISSION: "economycore.tag.ember"
+
+  glacier:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#DFF6FF&lG&#CAECFB&lL&#B4E1F7&lA&#9FD7F4&lC&#8ACDF0&lI&#74C2EC&lE&#5FB8E8&lR&8]"
+    PERMISSION: "economycore.tag.glacier"
+
+  jungle:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#7CFF6B&lJ&#69DF5C&lU&#55BF4D&lN&#429E3E&lG&#2E7E2F&lL&#1B5E20&lE&8]"
+    PERMISSION: "economycore.tag.jungle"
+
+  crystal:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#E0FFFF&lC&#D4F9FF&lR&#C9F2FF&lY&#BDECFF&lS&#B1E6FF&lT&#A6DFFF&lA&#9AD9FF&lL&8]"
+    PERMISSION: "economycore.tag.crystal"
+
+  amethyst:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#E2B0FF&lA&#D59FFF&lM&#C98FFF&lE&#BC7EFF&lT&#B06DFF&lH&#A35CFF&lY&#974CFF&lS&#8A3BFF&lT&8]"
+    PERMISSION: "economycore.tag.amethyst"
+
+  sapphire:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#7FB2FF&lS&#6DA0F3&lA&#5B8EE7&lP&#497CDB&lP&#3669CE&lH&#2457C2&lI&#1245B6&lR&#0033AA&lE&8]"
+    PERMISSION: "economycore.tag.sapphire"
+
+  topaz:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFE08A&lT&#FFD06E&lO&#FFC053&lP&#FFAF38&lA&#FF9F1C&lZ&8]"
+    PERMISSION: "economycore.tag.topaz"
+
+  onyx:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#5C5C5C&lO&#424242&lN&#272727&lY&#0D0D0D&lX&8]"
+    PERMISSION: "economycore.tag.onyx"
+
+  jade:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#8CFFC1&lJ&#5DD79F&lA&#2FAF7C&lD&#00875A&lE&8]"
+    PERMISSION: "economycore.tag.jade"
+
+  pearl:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFFFFF&lP&#FCF9FF&lE&#F8F2FF&lA&#F5ECFF&lR&#F2E6FF&lL&8]"
+    PERMISSION: "economycore.tag.pearl"
+
+  obsidian:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#6B4C9A&lO&#5E4388&lB&#523977&lS&#453065&lI&#382654&lD&#2B1D42&lI&#1F1331&lA&#120A1F&lN&8]"
+    PERMISSION: "economycore.tag.obsidian"
+
+  copper:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFB07A&lC&#F19F6B&lO&#E38E5C&lP&#D47E4C&lP&#C66D3D&lE&#B85C2E&lR&8]"
+    PERMISSION: "economycore.tag.copper"
+
+  netherite:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#7A6F6F&lN&#706666&lE&#665C5C&lT&#5C5353&lH&#524A4A&lE&#494040&lR&#3F3737&lI&#352D2D&lT&#2B2424&lE&8]"
+    PERMISSION: "economycore.tag.netherite"
+
+  pixel:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF00E3&lP&#BF29E9&lI&#8052F0&lX&#407BF6&lE&#00A4FC&lL&8]"
+    PERMISSION: "economycore.tag.pixel"
+
+  glitch:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00FF9C&lG&#33CCAA&lL&#6699B8&lI&#9966C7&lT&#CC33D5&lC&#FF00E3&lH&8]"
+    PERMISSION: "economycore.tag.glitch"
+
+  retro:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF6B6B&lR&#FF8660&lE&#FFA254&lT&#FFBE48&lR&#FFD93D&lO&8]"
+    PERMISSION: "economycore.tag.retro"
+
+  arcade:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00F0FF&lA&#33C0F9&lR&#6690F4&lC&#9960EE&lA&#CC30E9&lD&#FF00E3&lE&8]"
+    PERMISSION: "economycore.tag.arcade"
+
+  bot:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#B0BEC5&lB&#7A8C94&lO&#455A64&lT&8]"
+    PERMISSION: "economycore.tag.bot"
+
+  vapor:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF71CE&lV&#C088DA&lA&#809FE6&lP&#40B6F2&lO&#01CDFE&lR&8]"
+    PERMISSION: "economycore.tag.vapor"
+
+  laser:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF0055&lL&#FF0080&lA&#FF00AA&lS&#FF00D4&lE&#FF00FF&lR&8]"
+    PERMISSION: "economycore.tag.laser"
+
+  matrix:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#66FF66&lM&#52D652&lA&#3DAD3D&lT&#298529&lR&#145C14&lI&#003300&lX&8]"
+    PERMISSION: "economycore.tag.matrix"
+
+  turbo:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FCE300&lT&#FCAA00&lU&#FC7200&lR&#FC3900&lB&#FC0000&lO&8]"
+    PERMISSION: "economycore.tag.turbo"
+
+  nitro:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#00FFFF&lN&#00D4FF&lI&#00AAFF&lT&#0080FF&lR&#0055FF&lO&8]"
+    PERMISSION: "economycore.tag.nitro"
+
+  cookie:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#E8B67A&lC&#D5A46A&lO&#C3915A&lO&#B07F4B&lK&#9E6C3B&lI&#8B5A2B&lE&8]"
+    PERMISSION: "economycore.tag.cookie"
+
+  taco:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFD166&lT&#FAA369&lA&#F4756C&lC&#EF476F&lO&8]"
+    PERMISSION: "economycore.tag.taco"
+
+  donut:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF9AD5&lD&#F196B6&lO&#E29297&lN&#D48F78&lU&#C68B59&lT&8]"
+    PERMISSION: "economycore.tag.donut"
+
+  pizza:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFCC4D&lP&#F9A74B&lI&#F2824A&lZ&#EC5E48&lZ&#E63946&lA&8]"
+    PERMISSION: "economycore.tag.pizza"
+
+  boba:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#D9B38C&lB&#AF8B68&lO&#866245&lB&#5C3A21&lA&8]"
+    PERMISSION: "economycore.tag.boba"
+
+  mango:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFD000&lM&#FFBA00&lA&#FFA500&lN&#FF9000&lG&#FF7A00&lO&8]"
+    PERMISSION: "economycore.tag.mango"
+
+  cherry:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FF8FC8&lC&#F477AF&lH&#E95F96&lE&#DF487C&lR&#D43063&lR&#C9184A&lY&8]"
+    PERMISSION: "economycore.tag.cherry"
+
+  lemon:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#FFFF8A&lL&#F9F168&lE&#F2E345&lM&#ECD522&lO&#E6C700&lN&8]"
+    PERMISSION: "economycore.tag.lemon"
+
+  mint:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#C1FFE4&lM&#90F2CE&lI&#5FE5B9&lN&#2ED8A3&lT&8]"
+    PERMISSION: "economycore.tag.mint"
+
+  grape:
+    MATERIAL: NAME_TAG
+    DISPLAY: "&8[&#C69CFF&lG&#AB7BE6&lR&#905ACC&lA&#7539B3&lP&#5A189A&lE&8]"
+    PERMISSION: "economycore.tag.grape"
