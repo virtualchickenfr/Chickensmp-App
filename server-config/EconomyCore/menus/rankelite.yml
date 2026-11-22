@@ -1,0 +1,45 @@
+# Rank preview: ELITE (opened by the rank NPC at spawn). One item, perks stack with the ranks below. Format: see discord.yml.
+command:
+  - rankelite
+title: "&8ᴇʟɪᴛᴇ ʀᴀɴᴋ"
+rows: 3
+open-sound: "minecraft:block.note_block.pling|0.7|1.2"
+
+items:
+
+  rank:
+    SLOT: 13
+    MATERIAL: EMERALD
+    TITLE: "&#1FD37C&lELITE RANK"
+    LORE:
+      - "&7Rank"
+      - ""
+      - "&#52B4FF&lHERO PERKS"
+      - "&#52B4FF▪ &fHERO ✧ prefix in chat and tab"
+      - "&#52B4FF▪ &f4 homes"
+      - "&#52B4FF▪ &fNo /rtp cooldown"
+      - "&#52B4FF▪ &fShards everywhere"
+      - "&#52B4FF▪ &fHero kit every 24h"
+      - "&#52B4FF▪ &f2 item signatures (/sign) a day"
+      - "&#52B4FF▪ &fAll common kill effects"
+      - ""
+      - "&#1FD37C&lELITE PERKS"
+      - "&#1FD37C▪ &fELITE ✦ prefix in chat and tab"
+      - "&#1FD37C▪ &f6 homes"
+      - "&#1FD37C▪ &f/craft /anvil /smithing & more"
+      - "&#1FD37C▪ &f3 chat tags: Gold, Fire, Ocean"
+      - "&#1FD37C▪ &fElite kit every 24h"
+      - "&#1FD37C▪ &f4 item signatures a day"
+      - "&#1FD37C▪ &fAll uncommon kill effects"
+      - ""
+      - "&fPrice: &#00FC00€3.99 &7(one-time, keep forever)"
+      - ""
+      - "&#1FD37C▶ &#1FD37C&l&nCLICK&r &#1FD37Cto get the link"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[msg]              &#1FD37C&lELITE RANK"
+      - "[msg] "
+      - "[msg] &fGet &#1FD37CElite &ffor &#00FC00€3.99 &fand keep it forever."
+      - "[msg] "
+      - "[msg]       &#00FC00<click:open_url:'https://store.chickensmp.net'><hover:show_text:'&fClick to open the &#00FC00store'>▶ store.chickensmp.net ◀</hover></click>  "
