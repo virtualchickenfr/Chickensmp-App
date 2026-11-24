@@ -22,19 +22,19 @@ b.once('spawn', async () => {
   b.digTime = () => 2500; // prismarine-block can't read 1.21.11 enchantments
   try {
     await sleep(1500);
-    con('op ' + NAME); con('clear ' + NAME); con('gamemode survival ' + NAME); con('effect give ' + NAME + ' resistance 600 5'); con('time set day');
+    con('op ' + NAME); con('clear ' + NAME); con('gamemode survival ' + NAME); con('effect give ' + NAME + ' resistance 600 5'); con('time set day'); con('execute at ' + NAME + ' run fill ~-10 ~ ~-6 ~10 ~6 ~8 air');
     await sleep(1500);
     // ---- menu
     b.chat('/admin');
     let w = await win();
     ok(w && title(w).includes('ᴀᴅᴍɪɴ'), 'admin menu opens ' + (w && title(w)));
     // tools -> player -> pickaxe, shovel, axe, rocket, bucket
-    w = await click(w, 13);
+    w = await click(w, 21);
     ok(w && title(w).includes('ѕᴇʟᴇᴄᴛ'), 'player picker opens');
     const head = w.slots.findIndex((s, i) => i < 45 && s && s.name === 'player_head');
     w = await click(w, head);
     ok(w && title(w).includes('ѕʜᴀʀᴅ'), 'tools menu opens');
-    for (const s of [9, 11, 13, 15, 17]) { await b.clickWindow(s, 0, 0); await sleep(300); }
+    for (const s of [20, 21, 22, 23, 24]) { await b.clickWindow(s, 0, 0); await sleep(300); }
     b.closeWindow(w); await sleep(800);
     ok(count('netherite_pickaxe') === 1 && count('netherite_shovel') === 1 && count('netherite_axe') === 1 && count('firework_rocket') === 1 && count('bucket') === 1, 'got all 5 shard tools');
 
@@ -96,6 +96,7 @@ b.once('spawn', async () => {
     ok(count('spawner') === 3, 'got 3 zombie spawners (' + count('spawner') + ')');
     await b.equip(b.inventory.items().find(i => i.name === 'spawner'), 'hand');
     const sx = wx - 3, sz = wz - 2;
+    con(`setblock ${sx} ${wy} ${sz} air`); await sleep(800);
     const ground = b.blockAt(new Vec3(sx, wy - 1, sz));
     await b.lookAt(ground.position.offset(0.5, 1, 0.5), true);
     await b.placeBlock(ground, new Vec3(0, 1, 0)).catch(() => {});
@@ -139,30 +140,30 @@ b.once('spawn', async () => {
 
     // ---- money / ranks / keyall dispatch the right console commands
     b.chat('/admin'); w = await win();
-    w = await click(w, 29); // money
+    w = await click(w, 23); // money
     const head2 = w.slots.findIndex((s, i) => i < 45 && s && s.name === 'player_head');
     w = await click(w, head2);
     ok(w && title(w).includes('ᴍᴏɴᴇʏ'), 'money menu opens');
-    const emerald = w.slots.findIndex((s, i) => i < 27 && s && s.name === 'emerald');
+    const emerald = w.slots.findIndex((s, i) => i < 36 && s && s.name === 'emerald');
     await b.clickWindow(emerald, 0, 0); await sleep(800);
     ok(/ran: \/moneymanager add AdmBot 1000/.test(log()), 'money: moneymanager add AdmBot 1000');
     b.closeWindow(b.currentWindow); await sleep(500);
     b.chat('/admin'); w = await win();
-    w = await click(w, 11);
+    w = await click(w, 20);
     const head3 = w.slots.findIndex((s, i) => i < 45 && s && s.name === 'player_head');
     w = await click(w, head3);
     ok(w && title(w).includes('ʀᴀɴᴋѕ'), 'ranks menu opens');
-    w = await click(w, 10); // first store rank (Plus)
+    w = await click(w, 11); // first store rank (Plus)
     ok(w && w.slots.some(s => s && s.name === 'clock'), 'duration menu opens');
-    const clock = w.slots.findIndex((s, i) => i < 27 && s && s.name === 'clock');
+    const clock = w.slots.findIndex((s, i) => i < 36 && s && s.name === 'clock');
     w = await click(w, clock + 1);   // 1d
     ok(w && title(w).includes('ᴄᴏɴꜰɪʀᴍ'), 'confirm menu opens');
     await b.clickWindow(11, 0, 0); await sleep(800);
     ok(/ran: \/lp user AdmBot parent addtemp hero 1d accumulate/.test(log()), 'rank: lp addtemp hero 1d');
     b.chat('/admin'); w = await win();
-    w = await click(w, 33);
+    w = await click(w, 31);
     ok(w && title(w).includes('ᴋᴇʏ ᴀʟʟ'), 'key all menu opens');
-    const eye = w.slots.findIndex((s, i) => i < 27 && s && s.name === 'ender_eye');
+    const eye = w.slots.findIndex((s, i) => i < 36 && s && s.name === 'ender_eye');
     w = await click(w, eye);
     await b.clickWindow(11, 0, 0); await sleep(800);
     ok(/ran: \/ckeyall random 1/.test(log()), 'key all: ckeyall random 1');

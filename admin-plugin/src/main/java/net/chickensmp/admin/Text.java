@@ -21,7 +21,7 @@ public final class Text {
 
     // EconomyCore palette
     public static final String GREEN = "00FC00", BLUE = "00A4FC", YELLOW = "FCE300", RED = "FC0000",
-            PINK = "FC00E3", PURPLE = "A303F9", CYAN = "1EB8E9", MINT = "00FC99";
+            PINK = "FC00E3", PURPLE = "A303F9", ORANGE = "F97603", GRAY = "AAAAAA", CYAN = "1EB8E9", MINT = "00FC99";
 
     private static final LegacyComponentSerializer S = LegacyComponentSerializer.builder()
             .character('&').hexColors().build();
@@ -115,6 +115,34 @@ public final class Text {
             return -1;
         }
     }
+
+    /** Per-letter gradient, e.g. gradient("PLUS", "7FE7FF:3B9BFF", true). One colour = plain. */
+    public static String gradient(String text, String colors, boolean bold) {
+        String[] cs = colors.split(":");
+        String b = bold ? "&l" : "";
+        if (cs.length < 2) return "&#" + cs[0] + b + text;
+        int[] a = rgb(cs[0]), z = rgb(cs[cs.length - 1]);
+        StringBuilder out = new StringBuilder();
+        int n = text.length();
+        for (int i = 0; i < n; i++) {
+            char ch = text.charAt(i);
+            if (ch == ' ') { out.append(' '); continue; }
+            double t = n <= 1 ? 0 : (double) i / (n - 1);
+            out.append(String.format("&#%02X%02X%02X", (int) Math.round(a[0] + (z[0] - a[0]) * t),
+                    (int) Math.round(a[1] + (z[1] - a[1]) * t), (int) Math.round(a[2] + (z[2] - a[2]) * t))).append(b).append(ch);
+        }
+        return out.toString();
+    }
+
+    private static int[] rgb(String hex) {
+        int v = Integer.parseInt(hex.replace("#", ""), 16);
+        return new int[]{(v >> 16) & 255, (v >> 8) & 255, v & 255};
+    }
+
+    /** First colour of "AAAAAA:BBBBBB". */
+    public static String first(String colors) { return colors.split(":")[0]; }
+    /** Last colour of "AAAAAA:BBBBBB". */
+    public static String last(String colors) { String[] c = colors.split(":"); return c[c.length - 1]; }
 
     /** "ZOMBIE" -> "ᴢᴏᴍʙɪᴇ" */
     public static String small(String s) {

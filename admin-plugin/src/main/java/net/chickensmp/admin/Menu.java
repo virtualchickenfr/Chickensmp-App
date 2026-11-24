@@ -25,6 +25,7 @@ public class Menu implements InventoryHolder {
     public interface Click { void run(Player p, ClickType type); }
 
     private static final ItemStack FILLER = Text.item(Material.BLACK_STAINED_GLASS_PANE, " ", List.of());
+    private static final ItemStack EDGE = Text.item(Material.GRAY_STAINED_GLASS_PANE, " ", List.of());
 
     protected final Inventory inv;
     private final Map<Integer, Click> clicks = new HashMap<>();
@@ -50,7 +51,28 @@ public class Menu implements InventoryHolder {
         for (int i = 0; i < inv.getSize(); i++) if (inv.getItem(i) == null) inv.setItem(i, FILLER);
     }
 
-    public void open(Player p) { p.openInventory(inv); }
+    /** Black frame around the menu (inner slots stay empty), gray corners. */
+    public void frame() {
+        int rows = inv.getSize() / 9;
+        for (int i = 0; i < inv.getSize(); i++) {
+            int r = i / 9, c = i % 9;
+            boolean edge = r == 0 || r == rows - 1 || c == 0 || c == 8;
+            if (!edge || inv.getItem(i) != null) continue;
+            boolean corner = (r == 0 || r == rows - 1) && (c == 0 || c == 8);
+            inv.setItem(i, corner ? EDGE : FILLER);
+        }
+    }
+
+    /** Black bar in the bottom row only. */
+    public void bar() {
+        for (int i = inv.getSize() - 9; i < inv.getSize(); i++) if (inv.getItem(i) == null) inv.setItem(i, FILLER);
+    }
+
+    public int size() { return inv.getSize(); }
+
+    public void open(Player p) {
+        p.openInventory(inv);
+    }
 
     protected void onClose(Player p) {}
 

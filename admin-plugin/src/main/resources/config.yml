@@ -13,23 +13,24 @@ messages:
 # ------------------------------------------------------------ ranks
 # group = LuckPerms group, name = what the menu shows. Staff ranks need chickensmp.admin.ranks.staff.
 ranks:
+  # colors: one hex colour, or "start:end" for a gradient; symbol = icon behind the name
   store:
-    hero:     { name: "Plus",     color: "3B9BFF", icon: DIAMOND }
-    elite:    { name: "Elite",    color: "00C46A", icon: EMERALD }
-    titan:    { name: "Supreme",  color: "FF4B2B", icon: NETHERITE_INGOT }
-    prestige: { name: "Prestige", color: "8A3BFF", icon: NETHER_STAR }
+    hero:     { name: "Plus",     colors: "7FE7FF:3B9BFF", symbol: "✧", item: DIAMOND }
+    elite:    { name: "Elite",    colors: "7CFFB2:00C46A", symbol: "✦", item: EMERALD }
+    titan:    { name: "Supreme",  colors: "FFC48A:FF4B2B", symbol: "❖", item: NETHERITE_INGOT }
+    prestige: { name: "Prestige", colors: "E2B0FF:8A3BFF", symbol: "⚜", item: NETHER_STAR }
   staff:
-    jr.helper: { name: "Jr. Helper", color: "1EB8E9", icon: WOODEN_SWORD }
-    helper:    { name: "Helper",     color: "00A4FC", icon: STONE_SWORD }
-    mod:       { name: "Mod",        color: "00FC99", icon: IRON_SWORD }
-    sr.mod:    { name: "Sr. Mod",    color: "00FC00", icon: DIAMOND_SWORD }
-    admin:     { name: "Admin",      color: "FC0000", icon: NETHERITE_SWORD }
-    manager:   { name: "Manager",    color: "FC00E3", icon: MACE }
+    jr.helper: { name: "Jr. Helper", colors: "00FC00", symbol: "✚", item: WOODEN_SWORD }
+    helper:    { name: "Helper",     colors: "00FC00", symbol: "✚", item: STONE_SWORD }
+    mod:       { name: "Mod",        colors: "00A4FC", symbol: "⚔", item: IRON_SWORD }
+    sr.mod:    { name: "Sr. Mod",    colors: "00A4FC", symbol: "⚔", item: DIAMOND_SWORD }
+    admin:     { name: "Admin",      colors: "FC0000", symbol: "⚡", item: NETHERITE_SWORD }
+    manager:   { name: "Manager",    colors: "A303F9", symbol: "✪", item: MACE }
   other:
-    booster:      { name: "Booster",            color: "FC00E3", icon: PINK_DYE }
-    media:        { name: "Media",              color: "FC00E3", icon: PAINTING }
-    servermedia:  { name: "Server Media",       color: "A303F9", icon: ITEM_FRAME }
-    socialmedia:  { name: "Social Media",       color: "FF5FA2", icon: WRITABLE_BOOK }
+    booster:      { name: "Booster",      colors: "FC00E3", symbol: "❤", item: PINK_DYE }
+    media:        { name: "Media",        colors: "FC00E3", symbol: "▶", item: PAINTING }
+    servermedia:  { name: "Server Media", colors: "FF6ED8:8A5CFF", symbol: "✦", item: ITEM_FRAME }
+    socialmedia:  { name: "Social Media", colors: "FC00E3", symbol: "✎", item: WRITABLE_BOOK }
 
 # Buttons in the duration menu (a "custom" button is always added). LuckPerms format: 1h, 1d, 2w, 1mo
 rank-durations: [permanent, 1h, 1d, 7d, 30d, 90d]
@@ -51,20 +52,20 @@ tools:
   max-hardness: 30
   pickaxe:
     material: NETHERITE_PICKAXE
-    name: "&#FC00E3&l3X3 PICKAXE"
-    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fMines a &#FCE3003x3 &farea.", "&fSneak to mine one block."]
+    name: "&#00A4FC&l3X3 PICKAXE"
+    lore: ["&7Shard Tool", "", "&#00A4FCInformation", "&fMines a &#FCE3003x3 &farea.", "&fSneak to mine one block."]
     enchantments: [efficiency:5, fortune:3, unbreaking:3]
     unbreakable: true
   shovel:
     material: NETHERITE_SHOVEL
-    name: "&#FC00E3&l3X3 SHOVEL"
-    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fDigs a &#FCE3003x3 &farea.", "&fSneak to dig one block."]
+    name: "&#00A4FC&l3X3 SHOVEL"
+    lore: ["&7Shard Tool", "", "&#00A4FCInformation", "&fDigs a &#FCE3003x3 &farea.", "&fSneak to dig one block."]
     enchantments: [efficiency:5, unbreaking:3]
     unbreakable: true
   axe:
     material: NETHERITE_AXE
-    name: "&#FC00E3&lTREE AXE"
-    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fFells a &#FCE300whole tree&f.", "&fSneak to chop one log."]
+    name: "&#00A4FC&lTREE AXE"
+    lore: ["&7Shard Tool", "", "&#00A4FCInformation", "&fFells a &#FCE300whole tree&f.", "&fSneak to chop one log."]
     enchantments: [efficiency:5, unbreaking:3]
     unbreakable: true
     max-logs: 256
@@ -73,14 +74,14 @@ tools:
     require-leaves: true
   rocket:
     material: FIREWORK_ROCKET
-    name: "&#FC00E3&lINFINITE ROCKET"
-    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fBoost your elytra &#FCE300forever&f.", "&fIs never used up."]
+    name: "&#00A4FC&lINFINITE ROCKET"
+    lore: ["&7Shard Tool", "", "&#00A4FCInformation", "&fBoost your elytra &#FCE300forever&f.", "&fIs never used up."]
     enchantments: []
     flight-duration: 3
   bucket:
     material: BUCKET
-    name: "&#FC00E3&lSPONGE BUCKET"
-    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fRemoves water and lava", "&fnearby like a &#FCE300sponge&f."]
+    name: "&#00A4FC&lSPONGE BUCKET"
+    lore: ["&7Shard Tool", "", "&#00A4FCInformation", "&fRemoves water and lava", "&fnearby like a &#FCE300sponge&f."]
     enchantments: []
     radius: 6
     max-blocks: 128
