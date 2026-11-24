@@ -44,6 +44,7 @@ jobs:
           cd srv && echo "stop" >> server.in; sleep 8
           grep -vE "^\s*at " server.log | grep -iE "admin|exception|error" | head -60
           ! grep -v packetevents server.log | grep -q "Exception"
+          ! grep -q "Failed to register" server.log
       - name: Publish jar
         run: |
           git config user.name ci; git config user.email ci@users.noreply.github.com

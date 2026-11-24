@@ -50,10 +50,9 @@ public final class Menus {
         Player t = Bukkit.getPlayerExact(target);
         List<String> info = new ArrayList<>();
         info.add("Status: " + (t != null ? "&#00FC00Online" : "&#FC0000Offline"));
-        var eco = plugin.economy();
-        if (eco != null) {
+        if (Eco.available()) {
             OfflinePlayer op = t != null ? t : Bukkit.getOfflinePlayerIfCached(target);
-            if (op != null) info.add("Balance: &#00FC00$" + Text.compact(eco.getBalance(op)));
+            if (op != null) info.add("Balance: &#00FC00$" + Text.compact(Eco.balance(op)));
         }
         return head(target, Text.title(Text.YELLOW, target), Text.lore("Selected Player", Text.YELLOW, info));
     }

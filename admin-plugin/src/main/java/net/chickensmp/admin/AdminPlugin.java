@@ -2,7 +2,6 @@ package net.chickensmp.admin;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -35,7 +33,6 @@ public final class AdminPlugin extends JavaPlugin implements Listener, TabExecut
     private Tools tools;
     private Spawners spawners;
     private Menus menus;
-    private Economy economy;
 
     private final Map<UUID, Consumer<String>> asks = new ConcurrentHashMap<>();
     private final Map<UUID, Long> swallow = new ConcurrentHashMap<>();
@@ -67,13 +64,6 @@ public final class AdminPlugin extends JavaPlugin implements Listener, TabExecut
     public Tools tools() { return tools; }
     public Spawners spawners() { return spawners; }
 
-    public Economy economy() {
-        if (economy == null && getServer().getPluginManager().getPlugin("Vault") != null) {
-            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-            if (rsp != null) economy = rsp.getProvider();
-        }
-        return economy;
-    }
 
     // ---------------------------------------------------------------- messages / log
 

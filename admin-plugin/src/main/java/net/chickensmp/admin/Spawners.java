@@ -496,20 +496,24 @@ public final class Spawners implements Listener {
 
     void sellAll(Player p, Data d) {
         if (!valid(d)) { p.closeInventory(); return; }
-        var eco = plugin.economy();
-        if (eco == null) { msg(p, "&#FC0000Selling is not available right now."); return; }
+        if (!Eco.available()) { msg(p, "&#FC0000Selling is not available right now."); return; }
         double total = 0;
         long count = 0;
-        for (var it = d.items.entrySet().iterator(); it.hasNext(); ) {
-            var e = it.next();
+        Map<Material, Long> sold = new LinkedHashMap<>();
+        for (var e : d.items.entrySet()) {
             double price = price(e.getKey());
             if (price <= 0) continue;
             total += price * e.getValue();
             count += e.getValue();
-            it.remove();
+            sold.put(e.getKey(), e.getValue());
         }
         if (count == 0) { msg(p, "&#FC0000Nothing to sell."); return; }
-        eco.depositPlayer(p, total);
+        sold.keySet().forEach(d.items::remove);
+        if (!Eco.deposit(p, total)) {
+            sold.forEach((m, n) -> d.items.merge(m, n, Long::sum));
+            msg(p, "&#FC0000Selling failed, nothing was sold.");
+            return;
+        }
         dirty = true;
         p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1.2f);
         msg(p, "&fSold &#FCE300" + Text.num(count) + " &fitems for &#00FC00$" + Text.num(Math.round(total * 100) / 100.0) + "&f.");
