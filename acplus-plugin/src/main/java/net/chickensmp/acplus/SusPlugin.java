@@ -44,6 +44,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     private StaffMode staff;
     private Arena arena;
     private XrayAlerts xray;
+    private SusMenu menu;
     private File dataFile;
 
     // config cache
@@ -66,6 +67,8 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         getServer().getPluginManager().registerEvents(this, this);
         Objects.requireNonNull(getCommand("sus")).setExecutor(this);
         Objects.requireNonNull(getCommand("sus")).setTabCompleter(this);
+        menu = new SusMenu(this);
+        getServer().getPluginManager().registerEvents(menu, this);
 
         hammer = new BanHammer(this);
         getServer().getPluginManager().registerEvents(hammer, this);
@@ -275,7 +278,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         return b.append('"').toString();
     }
 
-    private static String fmt(double d) {
+    static String fmt(double d) {
         return d == Math.floor(d) ? String.valueOf((long) d) : String.format(Locale.ROOT, "%.1f", d);
     }
 
@@ -283,7 +286,10 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] a) {
-        if (a.length == 0) { list(s); return true; }
+        if (a.length == 0) {
+            if (s instanceof Player p) menu.openList(p, 0); else list(s);
+            return true;
+        }
         String sub = a[0].toLowerCase(Locale.ROOT);
         switch (sub) {
             case "help" -> send(s, "usage", Map.of());
@@ -328,9 +334,22 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
                 recordFlag(op.getUniqueId(), op.getName() == null ? a[1] : op.getName(), check, 'A', cat, false, 1, "simulated by " + s.getName());
                 s.sendMessage(MM.deserialize(msg("prefix") + "<gray>Simulated flag <white>" + esc(check) + "</white> for <white>" + esc(a[1]) + "</white>.</gray>"));
             }
-            default -> info(s, a[0]);
+            default -> {
+                PlayerData d = find(a[0]);
+                if (s instanceof Player p && d != null) menu.openPlayer(p, d); else info(s, a[0]);
+            }
         }
         return true;
+    }
+
+    double susScore() { return susScore; }
+    double watchScore() { return watchScore; }
+    boolean hooked() { return hook.isHooked(); }
+
+    /** All players with points, highest first. */
+    List<Map.Entry<PlayerData, Double>> ranking() {
+        return data.values().stream().map(d -> Map.entry(d, d.score())).filter(e -> e.getValue() > 0)
+                .sorted(Map.Entry.<PlayerData, Double>comparingByValue().reversed()).toList();
     }
 
     private boolean admin(CommandSender s) {

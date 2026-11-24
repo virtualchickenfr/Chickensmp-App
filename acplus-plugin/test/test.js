@@ -124,6 +124,21 @@ function bot(name) {
   }
   ok(await waitLog(/X-RAY\? NormalBot found/, 6000), 'X-ray alert after many diamond veins');
 
+  // --- /sus GUI: list -> click head -> player details
+  for (let i = 0; i < 3; i++) consoleCmd('sus test NormalBot KillAura combat');
+  await sleep(1000);
+  const nextWin = () => new Promise((r) => { staff.once('windowOpen', r); setTimeout(() => r(null), 5000); });
+  let w = nextWin(); staff.chat('/sus'); w = await w;
+  const title = (x) => { try { return JSON.stringify(x.title); } catch (e) { return String(x && x.title); } };
+  ok(w && title(w).includes('ѕᴜѕᴘɪᴄɪᴏᴜѕ'), '/sus opens the GUI ' + (w && title(w)));
+  const headSlot = w ? w.slots.findIndex((it, i) => i < 45 && it && it.name === 'player_head') : -1;
+  ok(headSlot >= 0, 'flagged player is listed as a head');
+  if (headSlot >= 0) {
+    const w2p = nextWin(); await staff.clickWindow(headSlot, 0, 0); const w2 = await w2p;
+    ok(w2 && title(w2).includes('NormalBot'), 'clicking the head opens the player page ' + (w2 && title(w2)));
+    if (w2) staff.closeWindow(w2);
+  }
+
   for (const b of [staff, viewer]) { try { b.quit(); } catch (e) {} }
   await sleep(1000);
   console.log(failed ? `${failed} FAILED` : 'ALL PASSED');
