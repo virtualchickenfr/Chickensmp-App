@@ -10,12 +10,12 @@ import java.util.Locale;
 import org.bukkit.Material;
 
 enum Rarity {
-    COMMON("Common", "&7", 0xAAAAAA, Material.LIGHT_GRAY_STAINED_GLASS_PANE),
-    UNCOMMON("Uncommon", "&a", 0x55FF55, Material.LIME_STAINED_GLASS_PANE),
-    RARE("Rare", "&#3B9BFF", 3906559, Material.LIGHT_BLUE_STAINED_GLASS_PANE),
-    EPIC("Epic", "&#B565FF", 11888127, Material.PURPLE_STAINED_GLASS_PANE),
-    LEGENDARY("Legendary", "&#FFB020", 16756768, Material.ORANGE_STAINED_GLASS_PANE),
-    MYTHIC("Mythic", "&#FF4D6D", 16731501, Material.RED_STAINED_GLASS_PANE);
+    COMMON("Common", "&#AAAAAA", 0xAAAAAA, Material.LIGHT_GRAY_STAINED_GLASS_PANE),
+    UNCOMMON("Uncommon", "&#00FC00", 0x00FC00, Material.LIME_STAINED_GLASS_PANE),
+    RARE("Rare", "&#00A4FC", 0x00A4FC, Material.LIGHT_BLUE_STAINED_GLASS_PANE),
+    EPIC("Epic", "&#A303F9", 0xA303F9, Material.PURPLE_STAINED_GLASS_PANE),
+    LEGENDARY("Legendary", "&#FCE300", 0xFCE300, Material.YELLOW_STAINED_GLASS_PANE),
+    MYTHIC("Mythic", "&#FC0000", 0xFC0000, Material.RED_STAINED_GLASS_PANE);
 
     final String display;
     final String color;

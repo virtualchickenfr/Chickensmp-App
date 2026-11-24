@@ -144,7 +144,8 @@ TabExecutor {
 
     void load() {
         this.reloadConfig();
-        Map<String, KillEffect> map = Effects.all();
+        Map<String, KillEffect> map = new LinkedHashMap<String, KillEffect>(Effects.all());
+        map.putAll(Effects2.all());
         this.effects = new LinkedHashMap<String, KillEffect>();
         for (KillEffect killEffect : map.values()) {
             String string = "effects." + killEffect.id() + ".";
