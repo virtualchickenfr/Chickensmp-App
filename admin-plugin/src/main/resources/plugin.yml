@@ -1,0 +1,34 @@
+name: ChickenSMPAdmin
+version: ${project.version}
+main: net.chickensmp.admin.AdminPlugin
+api-version: '1.21'
+author: ChickenSMP
+description: Admin menu (ranks, shard tools, spawners, money, shards, key all) + shard tools + stackable spawners.
+softdepend: [Vault, EconomyCore, LuckPerms, WorldGuard, ChickenSMPKeyAll]
+commands:
+  admin:
+    description: Open the admin menu
+    usage: /admin [give <player> <tool|spawner> <id> [amount] | reload]
+    aliases: [adminmenu, cadmin]
+permissions:
+  chickensmp.admin.*:
+    default: op
+    children:
+      chickensmp.admin.use: true
+      chickensmp.admin.ranks: true
+      chickensmp.admin.ranks.staff: true
+      chickensmp.admin.tools: true
+      chickensmp.admin.spawners: true
+      chickensmp.admin.money: true
+      chickensmp.admin.shards: true
+      chickensmp.admin.keyall: true
+      chickensmp.admin.reload: true
+  chickensmp.admin.use: { default: op }
+  chickensmp.admin.ranks: { default: op }
+  chickensmp.admin.ranks.staff: { default: op }
+  chickensmp.admin.tools: { default: op }
+  chickensmp.admin.spawners: { default: op }
+  chickensmp.admin.money: { default: op }
+  chickensmp.admin.shards: { default: op }
+  chickensmp.admin.keyall: { default: op }
+  chickensmp.admin.reload: { default: op }

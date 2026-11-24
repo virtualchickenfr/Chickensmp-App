@@ -1,0 +1,249 @@
+# Spawner types. entity = Minecraft entity type, drops: item, min, max, chance (%), xp = per kill.
+# icon defaults to the spawn egg. Order = order in the admin menu.
+mobs:
+  pig:
+    name: "Pig"
+    color: "FF9EC4"
+    xp: 1-3
+    drops:
+      - { item: PORKCHOP, min: 1, max: 3, chance: 100 }
+  cow:
+    name: "Cow"
+    color: "B57A4A"
+    xp: 1-3
+    drops:
+      - { item: BEEF, min: 1, max: 3, chance: 100 }
+      - { item: LEATHER, min: 1, max: 2, chance: 60 }
+  chicken:
+    name: "Chicken"
+    color: "FCE300"
+    xp: 1-3
+    drops:
+      - { item: CHICKEN, min: 1, max: 1, chance: 100 }
+      - { item: FEATHER, min: 1, max: 2, chance: 70 }
+  sheep:
+    name: "Sheep"
+    color: "FFFFFF"
+    xp: 1-3
+    drops:
+      - { item: MUTTON, min: 1, max: 2, chance: 100 }
+      - { item: WHITE_WOOL, min: 1, max: 1, chance: 100 }
+  rabbit:
+    name: "Rabbit"
+    color: "C9A57A"
+    xp: 1-3
+    drops:
+      - { item: RABBIT, min: 1, max: 1, chance: 70 }
+      - { item: RABBIT_HIDE, min: 1, max: 1, chance: 50 }
+      - { item: RABBIT_FOOT, min: 1, max: 1, chance: 10 }
+  mooshroom:
+    name: "Mooshroom"
+    color: "FC0000"
+    xp: 1-3
+    drops:
+      - { item: BEEF, min: 1, max: 3, chance: 100 }
+      - { item: LEATHER, min: 1, max: 2, chance: 60 }
+      - { item: RED_MUSHROOM, min: 1, max: 2, chance: 30 }
+  squid:
+    name: "Squid"
+    color: "1EB8E9"
+    xp: 1-3
+    drops:
+      - { item: INK_SAC, min: 1, max: 3, chance: 100 }
+  glow_squid:
+    name: "Glow Squid"
+    color: "00FC99"
+    xp: 1-3
+    drops:
+      - { item: GLOW_INK_SAC, min: 1, max: 3, chance: 100 }
+  cod:
+    name: "Cod"
+    color: "C9A57A"
+    xp: 1-3
+    drops:
+      - { item: COD, min: 1, max: 1, chance: 100 }
+      - { item: BONE_MEAL, min: 1, max: 1, chance: 5 }
+  salmon:
+    name: "Salmon"
+    color: "FC6A4A"
+    xp: 1-3
+    drops:
+      - { item: SALMON, min: 1, max: 1, chance: 100 }
+      - { item: BONE_MEAL, min: 1, max: 1, chance: 5 }
+  zombie:
+    name: "Zombie"
+    color: "00FC00"
+    xp: 5-5
+    drops:
+      - { item: ROTTEN_FLESH, min: 1, max: 2, chance: 90 }
+      - { item: IRON_INGOT, min: 1, max: 1, chance: 2.5 }
+      - { item: CARROT, min: 1, max: 1, chance: 2.5 }
+      - { item: POTATO, min: 1, max: 1, chance: 2.5 }
+  husk:
+    name: "Husk"
+    color: "D6B36A"
+    xp: 5-5
+    drops:
+      - { item: ROTTEN_FLESH, min: 1, max: 2, chance: 90 }
+      - { item: IRON_INGOT, min: 1, max: 1, chance: 2.5 }
+  drowned:
+    name: "Drowned"
+    color: "1EB8E9"
+    xp: 5-5
+    drops:
+      - { item: ROTTEN_FLESH, min: 1, max: 2, chance: 90 }
+      - { item: COPPER_INGOT, min: 1, max: 1, chance: 11 }
+  skeleton:
+    name: "Skeleton"
+    color: "E6E6E6"
+    xp: 5-5
+    drops:
+      - { item: BONE, min: 1, max: 2, chance: 90 }
+      - { item: ARROW, min: 1, max: 2, chance: 90 }
+  stray:
+    name: "Stray"
+    color: "A7C7D8"
+    xp: 5-5
+    drops:
+      - { item: BONE, min: 1, max: 2, chance: 90 }
+      - { item: ARROW, min: 1, max: 2, chance: 90 }
+  bogged:
+    name: "Bogged"
+    color: "6B8E23"
+    xp: 5-5
+    drops:
+      - { item: BONE, min: 1, max: 2, chance: 90 }
+      - { item: ARROW, min: 1, max: 2, chance: 90 }
+  spider:
+    name: "Spider"
+    color: "FC0000"
+    xp: 5-5
+    drops:
+      - { item: STRING, min: 1, max: 2, chance: 90 }
+      - { item: SPIDER_EYE, min: 1, max: 1, chance: 33 }
+  cave_spider:
+    name: "Cave Spider"
+    color: "1EB8E9"
+    xp: 5-5
+    drops:
+      - { item: STRING, min: 1, max: 2, chance: 90 }
+      - { item: SPIDER_EYE, min: 1, max: 1, chance: 33 }
+  creeper:
+    name: "Creeper"
+    color: "00FC00"
+    xp: 5-5
+    drops:
+      - { item: GUNPOWDER, min: 1, max: 2, chance: 90 }
+  enderman:
+    name: "Enderman"
+    color: "A303F9"
+    xp: 5-5
+    drops:
+      - { item: ENDER_PEARL, min: 1, max: 1, chance: 50 }
+  witch:
+    name: "Witch"
+    color: "A303F9"
+    xp: 5-5
+    drops:
+      - { item: REDSTONE, min: 1, max: 3, chance: 40 }
+      - { item: GLOWSTONE_DUST, min: 1, max: 3, chance: 40 }
+      - { item: SUGAR, min: 1, max: 2, chance: 30 }
+      - { item: GLASS_BOTTLE, min: 1, max: 2, chance: 30 }
+      - { item: SPIDER_EYE, min: 1, max: 1, chance: 20 }
+      - { item: GUNPOWDER, min: 1, max: 1, chance: 20 }
+      - { item: STICK, min: 1, max: 2, chance: 30 }
+  slime:
+    name: "Slime"
+    color: "00FC00"
+    xp: 1-4
+    drops:
+      - { item: SLIME_BALL, min: 1, max: 2, chance: 90 }
+  magma_cube:
+    name: "Magma Cube"
+    color: "FC6A00"
+    xp: 1-4
+    drops:
+      - { item: MAGMA_CREAM, min: 1, max: 1, chance: 40 }
+  blaze:
+    name: "Blaze"
+    color: "FCE300"
+    xp: 10-10
+    drops:
+      - { item: BLAZE_ROD, min: 1, max: 1, chance: 70 }
+  ghast:
+    name: "Ghast"
+    color: "FFFFFF"
+    xp: 5-5
+    drops:
+      - { item: GHAST_TEAR, min: 1, max: 1, chance: 50 }
+      - { item: GUNPOWDER, min: 1, max: 2, chance: 70 }
+  guardian:
+    name: "Guardian"
+    color: "00FC99"
+    xp: 10-10
+    drops:
+      - { item: PRISMARINE_SHARD, min: 1, max: 2, chance: 90 }
+      - { item: PRISMARINE_CRYSTALS, min: 1, max: 1, chance: 40 }
+      - { item: COD, min: 1, max: 1, chance: 40 }
+  iron_golem:
+    name: "Iron Golem"
+    color: "D8D8D8"
+    xp: 0-0
+    drops:
+      - { item: IRON_INGOT, min: 3, max: 5, chance: 100 }
+      - { item: POPPY, min: 1, max: 2, chance: 50 }
+  zombified_piglin:
+    name: "Zombified Piglin"
+    color: "FF9EC4"
+    xp: 5-5
+    drops:
+      - { item: ROTTEN_FLESH, min: 1, max: 1, chance: 70 }
+      - { item: GOLD_NUGGET, min: 1, max: 1, chance: 70 }
+      - { item: GOLD_INGOT, min: 1, max: 1, chance: 2.5 }
+  hoglin:
+    name: "Hoglin"
+    color: "C97A4A"
+    xp: 5-5
+    drops:
+      - { item: PORKCHOP, min: 2, max: 4, chance: 100 }
+      - { item: LEATHER, min: 1, max: 1, chance: 50 }
+  wither_skeleton:
+    name: "Wither Skeleton"
+    color: "7F7F7F"
+    xp: 5-5
+    drops:
+      - { item: COAL, min: 1, max: 1, chance: 33 }
+      - { item: BONE, min: 1, max: 2, chance: 90 }
+      - { item: WITHER_SKELETON_SKULL, min: 1, max: 1, chance: 2.5 }
+  pillager:
+    name: "Pillager"
+    color: "7F7F7F"
+    xp: 5-5
+    drops:
+      - { item: ARROW, min: 1, max: 2, chance: 90 }
+      - { item: EMERALD, min: 1, max: 1, chance: 10 }
+  vindicator:
+    name: "Vindicator"
+    color: "7F7F7F"
+    xp: 5-5
+    drops:
+      - { item: EMERALD, min: 1, max: 1, chance: 50 }
+  evoker:
+    name: "Evoker"
+    color: "FCE300"
+    xp: 10-10
+    drops:
+      - { item: TOTEM_OF_UNDYING, min: 1, max: 1, chance: 100 }
+      - { item: EMERALD, min: 1, max: 1, chance: 50 }
+  shulker:
+    name: "Shulker"
+    color: "A303F9"
+    xp: 5-5
+    drops:
+      - { item: SHULKER_SHELL, min: 1, max: 1, chance: 50 }
+  breeze:
+    name: "Breeze"
+    color: "1EB8E9"
+    xp: 10-10
+    drops:
+      - { item: BREEZE_ROD, min: 1, max: 2, chance: 100 }

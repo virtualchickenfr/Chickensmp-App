@@ -1,0 +1,110 @@
+# ============================================================
+#  ChickenSMPAdmin
+#  /admin = admin menu: ranks, shard tools, spawners, money, shards, key all
+#  /admin give <player> tool <pickaxe|shovel|axe|rocket|bucket> [amount]
+#  /admin give <player> spawner <mob> [amount]      (for shops / crates)
+#  /admin reload
+#  Every admin action is written to plugins/ChickenSMPAdmin/log.txt
+# ============================================================
+
+messages:
+  prefix: "&#FC0000&lADMIN &r&7» &f"
+
+# ------------------------------------------------------------ ranks
+# group = LuckPerms group, name = what the menu shows. Staff ranks need chickensmp.admin.ranks.staff.
+ranks:
+  store:
+    hero:     { name: "Plus",     color: "3B9BFF", icon: DIAMOND }
+    elite:    { name: "Elite",    color: "00C46A", icon: EMERALD }
+    titan:    { name: "Supreme",  color: "FF4B2B", icon: NETHERITE_INGOT }
+    prestige: { name: "Prestige", color: "8A3BFF", icon: NETHER_STAR }
+  staff:
+    jr.helper: { name: "Jr. Helper", color: "1EB8E9", icon: WOODEN_SWORD }
+    helper:    { name: "Helper",     color: "00A4FC", icon: STONE_SWORD }
+    mod:       { name: "Mod",        color: "00FC99", icon: IRON_SWORD }
+    sr.mod:    { name: "Sr. Mod",    color: "00FC00", icon: DIAMOND_SWORD }
+    admin:     { name: "Admin",      color: "FC0000", icon: NETHERITE_SWORD }
+    manager:   { name: "Manager",    color: "FC00E3", icon: MACE }
+  other:
+    booster:      { name: "Booster",            color: "FC00E3", icon: PINK_DYE }
+    media:        { name: "Media",              color: "FC00E3", icon: PAINTING }
+    servermedia:  { name: "Server Media",       color: "A303F9", icon: ITEM_FRAME }
+    socialmedia:  { name: "Social Media",       color: "FF5FA2", icon: WRITABLE_BOOK }
+
+# Buttons in the duration menu (a "custom" button is always added). LuckPerms format: 1h, 1d, 2w, 1mo
+rank-durations: [permanent, 1h, 1d, 7d, 30d, 90d]
+
+# ------------------------------------------------------------ money / shards
+amounts:
+  money: [1k, 10k, 100k, 1m, 10m, 100m]
+  shards: [10, 50, 100, 500, 1k, 5k]
+# Giving at least this much asks for a confirmation first (taking always asks).
+confirm-above:
+  money: 10000000
+  shards: 1000
+
+# ------------------------------------------------------------ shard tools
+tools:
+  # tools do nothing special in these worlds
+  disabled-worlds: []
+  # the 3x3 tools skip blocks at least this hard (obsidian = 50, ancient debris = 30)
+  max-hardness: 30
+  pickaxe:
+    material: NETHERITE_PICKAXE
+    name: "&#FC00E3&l3X3 PICKAXE"
+    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fMines a &#FCE3003x3 &farea.", "&fSneak to mine one block."]
+    enchantments: [efficiency:5, fortune:3, unbreaking:3]
+    unbreakable: true
+  shovel:
+    material: NETHERITE_SHOVEL
+    name: "&#FC00E3&l3X3 SHOVEL"
+    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fDigs a &#FCE3003x3 &farea.", "&fSneak to dig one block."]
+    enchantments: [efficiency:5, unbreaking:3]
+    unbreakable: true
+  axe:
+    material: NETHERITE_AXE
+    name: "&#FC00E3&lTREE AXE"
+    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fFells a &#FCE300whole tree&f.", "&fSneak to chop one log."]
+    enchantments: [efficiency:5, unbreaking:3]
+    unbreakable: true
+    max-logs: 256
+    blocks-per-tick: 4
+    # only trees with natural leaves (keeps log houses safe)
+    require-leaves: true
+  rocket:
+    material: FIREWORK_ROCKET
+    name: "&#FC00E3&lINFINITE ROCKET"
+    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fBoost your elytra &#FCE300forever&f.", "&fIs never used up."]
+    enchantments: []
+    flight-duration: 3
+  bucket:
+    material: BUCKET
+    name: "&#FC00E3&lSPONGE BUCKET"
+    lore: ["&7Shard Tool", "", "&#FC00E3Information", "&fRemoves water and lava", "&fnearby like a &#FCE300sponge&f."]
+    enchantments: []
+    radius: 6
+    max-blocks: 128
+    absorb-lava: true
+
+# ------------------------------------------------------------ spawners (mob types + drops in mobs.yml)
+spawners:
+  prefix: "&#00A4FC&lSPAWNER &r&7» &f"
+  # seconds between drop cycles while a player is within activation-range
+  delay-min-seconds: 60
+  delay-max-seconds: 120
+  activation-range: 48
+  # each spawner in the stack "kills" this many mobs per cycle
+  mobs-per-cycle-min: 1
+  mobs-per-cycle-max: 3
+  max-stack: 10000
+  # items / XP each spawner in the stack can hold
+  storage-per-spawner: 576
+  xp-per-spawner: 1000
+  silk-touch-only: true
+  # silk touch on a natural (dungeon) spawner gives a spawner item of that mob
+  natural-silk-drop: true
+  disabled-worlds: []
+  # sell prices = EconomyCore worth.yml (same as /sell); sell-prices only for items it doesn't have
+  use-economycore-worth: true
+  sell-default-price: 0
+  sell-prices: {}
