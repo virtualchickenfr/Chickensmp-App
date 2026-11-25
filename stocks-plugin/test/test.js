@@ -27,6 +27,7 @@ b.once('spawn', async () => {
     ok(w && title(w).includes('ORE MARKET'), 'market opens ' + (w && title(w)));
     const ores = [20, 21, 22, 23, 24].map(s => w.slots[s] && w.slots[s].name);
     ok(JSON.stringify(ores) === JSON.stringify(['coal', 'iron_ingot', 'gold_ingot', 'diamond', 'netherite_ingot']), '5 ores shown ' + ores);
+    ok(lore(w.slots[23]).includes('4,000.00') && !lore(w.slots[23]).includes('own: "},{"color":"#FCE300","text":"3'), 'old diamond company price/shares not used for the diamond ore');
     ok(w.slots[4] && w.slots[4].name === 'book' && lore(w.slots[4]).includes('HOW IT WORKS'), 'how it works book');
     ok(w.slots[38] && w.slots[38].name === 'chest', 'your ores item');
     ok(w.slots[42] && w.slots[42].name === 'nether_star', 'top traders item');
@@ -73,7 +74,7 @@ b.once('spawn', async () => {
   } catch (e) { console.log('ERROR', e); fail++; }
   await sleep(500);
   const l = log();
-  ok(/Paid out old stock fish x10/.test(l) && /Paid out old stock crate x2/.test(l), 'console logs the payouts');
+  ok(/Paid out old stock fish x10/.test(l) && /Paid out old stock crate x2/.test(l) && /Paid out old stock diamond x3 = \$48,000.00/.test(l), 'console logs the payouts');
   ok(!/Exception[^\n]*\n(\s+at [^\n]*\n)*[^\n]*stocks/i.test(l) && !/net\.chickensmp\.stocks/.test(l), 'no exceptions from the plugin');
   console.log(msgs.filter(m => /ORES|NEWS/.test(m)).join('\n'));
   console.log(fail ? 'FAILED ' + fail : 'ALL PASSED');

@@ -42,6 +42,7 @@ public final class StocksPlugin extends JavaPlugin implements Listener {
     static final int HISTORY = 60;
 
     final Map<String, Ore> ores = new LinkedHashMap<>();
+    private final Map<String, Double> oldPrices = new java.util.HashMap<>();
     private File dataFile;
     YamlConfiguration data;
     private Economy economy;
@@ -58,6 +59,8 @@ public final class StocksPlugin extends JavaPlugin implements Listener {
         saveDefaultConfig();
         dataFile = new File(getDataFolder(), "data.yml");
         data = YamlConfiguration.loadConfiguration(dataFile);
+        ConfigurationSection oldSec = data.getConfigurationSection("prices");
+        if (oldSec != null) for (String id : oldSec.getKeys(false)) oldPrices.put(id, data.getDouble("prices." + id + ".price"));
         loadOres();
         menus = new Menus(this);
         getServer().getPluginManager().registerEvents(menus, this);
@@ -127,6 +130,9 @@ public final class StocksPlugin extends JavaPlugin implements Listener {
             o.max = Math.max(1, s.getInt("max", 100));
             o.newsUp = s.getStringList("news-up");
             o.newsDown = s.getStringList("news-down");
+            // Version 2 had companies called "diamond" and "netherite" (with a "change" key):
+            // their prices belong to the old companies, so those ores start at their normal price.
+            if (data.contains("prices." + o.id + ".change")) data.set("prices." + o.id, null);
             o.price = data.getDouble("prices." + o.id + ".price", o.base);
             for (double d : data.getDoubleList("prices." + o.id + ".history")) o.history.add(d);
             if (o.history.isEmpty()) o.history.add(o.price);
@@ -159,13 +165,14 @@ public final class StocksPlugin extends JavaPlugin implements Listener {
             ConfigurationSection hold = data.getConfigurationSection("players." + key + ".holdings");
             if (hold == null) continue;
             for (String id : new ArrayList<>(hold.getKeys(false))) {
-                if (ores.containsKey(id)) continue;
+                // Old shares always have "shares"; ore holdings use "amount" (old ids can match an ore).
+                if (ores.containsKey(id) && !hold.contains(id + ".shares")) continue;
                 if (economy == null) {
                     getLogger().warning("Old stocks found but no economy yet - they will be paid out on the next start.");
                     return;
                 }
                 int shares = hold.getInt(id + ".shares", hold.getInt(id + ".amount"));
-                double price = data.getDouble("prices." + id + ".price", 0);
+                double price = ores.containsKey(id) ? oldPrices.getOrDefault(id, 0.0) : data.getDouble("prices." + id + ".price", 0);
                 double money = round(shares * price);
                 UUID uuid;
                 try { uuid = UUID.fromString(key); } catch (IllegalArgumentException e) { continue; }

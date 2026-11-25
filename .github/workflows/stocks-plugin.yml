@@ -28,7 +28,7 @@ jobs:
           cp ../stocks-plugin/target/ChickenSMPStocks.jar /tmp/FakeEco.jar plugins/
           curl -sfLo plugins/Vault.jar https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar
           echo "eula=true" > eula.txt
-          mkdir -p plugins/ChickenSMPStocks && printf 'prices:\n  fish: {price: 2011.24}\n  crate: {price: 8091.93}\nplayers:\n  b8c5d054-ffb0-39a4-bb0b-b6ea97176b94:\n    name: StockBot\n    holdings:\n      fish: {shares: 10, cost: 20000.0}\n      crate: {shares: 2, cost: 16000.0}\n' > plugins/ChickenSMPStocks/data.yml
+          mkdir -p plugins/ChickenSMPStocks && printf 'prices:\n  fish: {price: 2011.24}\n  crate: {price: 8091.93}\n  diamond: {price: 16000.0, change: 0.1}\nplayers:\n  b8c5d054-ffb0-39a4-bb0b-b6ea97176b94:\n    name: StockBot\n    holdings:\n      fish: {shares: 10, cost: 20000.0}\n      crate: {shares: 2, cost: 16000.0}\n      diamond: {shares: 3, cost: 45000.0}\n' > plugins/ChickenSMPStocks/data.yml
           printf "settings:\n  connection-throttle: -1\n" > bukkit.yml
           printf "online-mode=false\nenforce-secure-profile=false\nserver-port=25565\nspawn-protection=0\nlevel-type=minecraft\\\\:flat\n" > server.properties
       - name: Start server
