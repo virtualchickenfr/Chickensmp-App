@@ -1,0 +1,56 @@
+name: stocks-plugin
+on:
+  push:
+    branches: [main]
+    paths: ['stocks-plugin/**', '.github/workflows/stocks-plugin.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Build
+        run: |
+          cd stocks-plugin && mvn -q -B package && ls -la target/*.jar
+          mvn -q -B dependency:build-classpath -Dmdep.outputFile=/tmp/cp.txt
+          mkdir -p /tmp/fe && javac -proc:none -d /tmp/fe -cp "$(cat /tmp/cp.txt)" test/fakeeco/fe/*.java && cp test/fakeeco/plugin.yml /tmp/fe/ && (cd /tmp/fe && jar cf /tmp/FakeEco.jar .)
+      - name: Prepare test server
+        run: |
+          mkdir -p srv/plugins && cd srv
+          B=$(curl -s https://fill.papermc.io/v3/projects/paper/versions/1.21.11/builds/latest)
+          curl -sfo paper.jar "$(echo "$B" | jq -r '.downloads["server:default"].url')"
+          cp ../stocks-plugin/target/ChickenSMPStocks.jar /tmp/FakeEco.jar plugins/
+          curl -sfLo plugins/Vault.jar https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar
+          echo "eula=true" > eula.txt
+          mkdir -p plugins/ChickenSMPStocks && printf 'prices:\n  fish: {price: 2011.24}\n  crate: {price: 8091.93}\nplayers:\n  b8c5d054-ffb0-39a4-bb0b-b6ea97176b94:\n    name: StockBot\n    holdings:\n      fish: {shares: 10, cost: 20000.0}\n      crate: {shares: 2, cost: 16000.0}\n' > plugins/ChickenSMPStocks/data.yml
+          printf "settings:\n  connection-throttle: -1\n" > bukkit.yml
+          printf "online-mode=false\nenforce-secure-profile=false\nserver-port=25565\nspawn-protection=0\nlevel-type=minecraft\\\\:flat\n" > server.properties
+      - name: Start server
+        run: |
+          cd srv && touch server.in
+          (tail -f server.in | java -Xmx2G -jar paper.jar --nogui > server.log 2>&1 &)
+          for i in $(seq 1 150); do grep -q 'Done (' server.log && break; sleep 2; done
+          grep -q "ChickenSMPStocks enabled" server.log
+      - name: Bot test
+        run: |
+          cd srv && npm init -y >/dev/null && npm i -s mineflayer vec3 >/dev/null 2>&1
+          cp ../stocks-plugin/test/test.js .
+          BOT_HOST=$(hostname -I | awk '{print $1}') timeout 240 node test.js
+      - name: Server log
+        if: always()
+        run: |
+          cd srv && echo "stop" >> server.in; sleep 8
+          grep -vE "^\s*at " server.log | grep -iE "enderchest|exception|error" | head -60
+          ! grep -q "Exception" server.log
+      - name: Publish jar
+        run: |
+          git config user.name ci; git config user.email ci@users.noreply.github.com
+          cp stocks-plugin/target/ChickenSMPStocks.jar /tmp/
+          git fetch -q origin plugin-dist && git checkout -f -q -B plugin-dist origin/plugin-dist
+          cp /tmp/ChickenSMPStocks.jar . && git add ChickenSMPStocks.jar && git commit -qm "ChickenSMPStocks build" && git push -q origin plugin-dist || echo unchanged

@@ -1,0 +1,18 @@
+name: ChickenSMPStocks
+version: '${project.version}'
+main: net.chickensmp.stocks.StocksPlugin
+api-version: '1.21'
+description: A simple ore market (/stocks). Buy ores cheap, sell them for more.
+depend: [Vault]
+softdepend: [EconomyCore]
+
+commands:
+  stocks:
+    description: Open the ore market.
+    usage: /stocks
+    aliases: [stock, market, aktien, ores]
+
+permissions:
+  stocks.admin:
+    description: Reload, set prices and trigger market news.
+    default: op

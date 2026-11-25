@@ -1,0 +1,79 @@
+# ChickenSMP Ore Market: 5 ores whose prices go up and down on their own.
+# Buy an ore when it is cheap, sell it when the price is higher - the difference is your profit.
+# Players never get real items, only shares of the ore (money in, money out).
+
+# How often prices change, in seconds.
+tick-seconds: 60
+
+# Fee on every buy and sell, in percent. The fee is gone (money sink),
+# so buying and selling straight away always loses a little.
+fee-percent: 1.5
+
+# Chance per update and ore, in percent, for market news (a big jump up or down).
+news-chance: 1.0
+
+# The ores, in menu order.
+#   price: normal price, the market always drifts back towards it.
+#   swing: how much the price moves per update (in percent, roughly).
+#   risk:  only the label in the menu.
+#   max:   most of this ore one player can own.
+ores:
+  coal:
+    name: "&#AAAAAA&lCOAL"
+    material: COAL
+    price: 50
+    swing: 1.0
+    risk: LOW
+    max: 1000
+    news-up: ["Winter is coming, everyone needs coal!"]
+    news-down: ["A huge coal vein was found at spawn."]
+  iron:
+    name: "&#E8E8E8&lIRON"
+    material: IRON_INGOT
+    price: 250
+    swing: 1.8
+    risk: LOW
+    max: 500
+    news-up: ["Everyone is building iron farms!"]
+    news-down: ["Iron golems are dropping double iron."]
+  gold:
+    name: "&#FCE300&lGOLD"
+    material: GOLD_INGOT
+    price: 1000
+    swing: 2.5
+    risk: MEDIUM
+    max: 250
+    news-up: ["Gold rush! Piglins want more gold."]
+    news-down: ["A gold farm flooded the market."]
+  diamond:
+    name: "&#00A4FC&lDIAMOND"
+    material: DIAMOND
+    price: 4000
+    swing: 3.5
+    risk: HIGH
+    max: 100
+    news-up: ["Diamonds are rare this week!"]
+    news-down: ["Someone found a diamond cave."]
+  netherite:
+    name: "&#A303F9&lNETHERITE"
+    material: NETHERITE_INGOT
+    price: 15000
+    swing: 5.0
+    risk: VERY HIGH
+    max: 25
+    news-up: ["Every PvPer wants full netherite!"]
+    news-down: ["Ancient debris everywhere, prices crash."]
+
+messages:
+  prefix: "&#00FC99&lORES &r&7» &f"
+  no-economy: "%prefix%&#FC0000The economy is not available right now."
+  not-enough-money: "%prefix%You need &#FCE300$%cost% &ffor that."
+  not-enough: "%prefix%You don't have that much &#FCE300%ore%&f."
+  max: "%prefix%You can own at most &#FCE300%max% %ore%&f."
+  bought: "%prefix%Bought &#FCE300%amount% %ore% &ffor &#FCE300$%cost%&f."
+  sold: "%prefix%Sold &#FCE300%amount% %ore% &ffor &#FCE300$%cost%&f."
+  news: "&#00FC99&lORE NEWS &r&7» &f%headline% %ore% %change%"
+  refund: "%prefix%The market now only trades ores. Your old stocks were sold for &#FCE300$%money%&f."
+  reloaded: "%prefix%Config reloaded."
+  set: "%prefix%Set %ore% &fto &#FCE300$%price%&f."
+  unknown-ore: "%prefix%&#FC0000No ore with that id."

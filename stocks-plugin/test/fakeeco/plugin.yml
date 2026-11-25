@@ -1,0 +1,6 @@
+name: FakeEco
+version: '1'
+main: fe.P
+api-version: '1.21'
+depend: [Vault]
+load: STARTUP
