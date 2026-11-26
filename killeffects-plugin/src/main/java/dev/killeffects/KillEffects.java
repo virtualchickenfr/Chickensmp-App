@@ -89,7 +89,7 @@ public final class KillEffects
 extends JavaPlugin
 implements Listener,
 TabExecutor {
-    static final String VERSION = "4.0.0";
+    static final String VERSION = "4.0.1";
     static final UUID PACK_ID = UUID.nameUUIDFromBytes("ChickenSMPKillEffects".getBytes(StandardCharsets.UTF_8));
     final SecureRandom random = new SecureRandom();
     private final Map<UUID, Store.Profile> profiles = new ConcurrentHashMap<UUID, Store.Profile>();
@@ -111,7 +111,6 @@ TabExecutor {
         try {
             this.store.open();
             this.profiles.putAll(this.store.loadAll());
-            this.migrate();
         }
         catch (Exception exception) {
             this.getLogger().severe("Could not open the database: " + exception.getMessage());
@@ -119,6 +118,7 @@ TabExecutor {
             return;
         }
         this.load();
+        this.migrate();
         Bukkit.getPluginManager().registerEvents((Listener)this, (Plugin)this);
         if (this.getCommand("killeffects") != null) {
             this.getCommand("killeffects").setExecutor((CommandExecutor)this);
