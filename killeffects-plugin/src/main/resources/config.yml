@@ -24,6 +24,17 @@ use-economy-format: false
 # Chat message to everyone when someone wins this rarity or better from a crate
 broadcast-from: LEGENDARY
 
+# ------------------------------------------------------------ mystery roll
+# Button in the crates menu (/ke crates, /ke mystery): one random effect the player
+# doesn't own yet, with a big public animation in front of them.
+mystery-roll:
+  enabled: true
+  price: 50000000
+  # % chance to get a second random effect
+  double-chance: 10
+  # chat message to everyone from this rarity (and always for a double)
+  broadcast-from: LEGENDARY
+
 # ------------------------------------------------------------ crates
 # price = money per opening (0 = keys only). Keys (from /ke keys) are used first.
 # chances = weight per rarity (shown as % in the menu)

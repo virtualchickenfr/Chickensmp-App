@@ -151,9 +151,33 @@ implements Gui {
             this.inv.setItem(nArray[i], itemStack);
             this.slots.put(nArray[i], crate);
         }
+        if (MysteryRoll.enabled(this.plugin)) this.inv.setItem(22, this.mysteryItem());
         this.inv.setItem(18, Gui.item(Material.ARROW, this.plugin.gui("back", new Object[0]), List.of()));
         this.inv.setItem(26, Gui.item(Material.BARRIER, this.plugin.gui("close", new Object[0]), List.of()));
         Gui.fill(this.inv, Material.BLACK_STAINED_GLASS_PANE);
+    }
+
+    private static final String MYSTERY = "\u0000mystery";
+
+    private ItemStack mysteryItem() {
+        boolean armedNow = MYSTERY.equals(this.armed) && System.currentTimeMillis() - this.armedAt < 5000L;
+        int left = MysteryRoll.pool(this.plugin, this.viewer).size();
+        List<String> lore = new ArrayList<String>();
+        lore.add(Text.color("&7One random kill effect"));
+        lore.add(Text.color("&7you don't own yet."));
+        lore.add("");
+        lore.add(Text.color("&f\u25B8 Big show that everyone around sees"));
+        lore.add(Text.color("&f\u25B8 Legendary & Mythic pulls go in chat"));
+        lore.add(Text.color("&f\u25B8 &#FCE300" + CratesMenu.pct(MysteryRoll.doubleChance(this.plugin)) + "% &fchance for a &#FCE300&lDOUBLE"));
+        lore.add("");
+        lore.add(Text.color("&7Left to get: &#FCE300" + left));
+        lore.add(Text.color("&7Price: &#00FC00" + this.plugin.money(MysteryRoll.price(this.plugin))));
+        lore.add("");
+        lore.add(Text.color(left == 0 ? "&#FC0000You own every effect!" : (armedNow ? "&#FCE300&lClick again to confirm!" : "&#00FC00Click to roll")));
+        ItemStack it = Gui.item(Material.NETHER_STAR, Text.color("<gradient:#A303F9:#FC00E3>&lMYSTERY ROLL</gradient>"), lore);
+        ItemMeta m = it.getItemMeta();
+        if (m != null) { m.setEnchantmentGlintOverride(Boolean.valueOf(true)); it.setItemMeta(m); }
+        return it;
     }
 
     static String pct(double d) {
@@ -168,6 +192,20 @@ implements Gui {
         }
         if (n == 26) {
             player.closeInventory();
+            return;
+        }
+        if (n == 22 && MysteryRoll.enabled(this.plugin)) {
+            long now = System.currentTimeMillis();
+            if (!MYSTERY.equals(this.armed) || now - this.armedAt >= 5000L) {
+                this.armed = MYSTERY;
+                this.armedAt = now;
+                this.plugin.sound(player, "click");
+                this.render();
+                return;
+            }
+            this.armed = null;
+            MysteryRoll.start(this.plugin, player);
+            if (player.getOpenInventory().getTopInventory().getHolder() == this) this.render();
             return;
         }
         Crate crate = this.slots.get(n);

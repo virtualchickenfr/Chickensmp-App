@@ -315,6 +315,7 @@ final class Kit {
             meta.setPower(0);
             f.setFireworkMeta(meta);
             f.setSilent(false);
+            f.addScoreboardTag("killeffects");
             if (fx.viewer != null) f.setVisibleByDefault(false);
         });
         fx.trackEntity(fw);

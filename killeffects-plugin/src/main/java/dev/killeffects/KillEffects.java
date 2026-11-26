@@ -89,7 +89,7 @@ public final class KillEffects
 extends JavaPlugin
 implements Listener,
 TabExecutor {
-    static final String VERSION = "4.2.0";
+    static final String VERSION = "4.3.0";
     static final UUID PACK_ID = UUID.nameUUIDFromBytes("ChickenSMPKillEffects".getBytes(StandardCharsets.UTF_8));
     final SecureRandom random = new SecureRandom();
     private final Map<UUID, Store.Profile> profiles = new ConcurrentHashMap<UUID, Store.Profile>();
@@ -430,6 +430,11 @@ TabExecutor {
         return true;
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onFireworkDamage(org.bukkit.event.entity.EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof org.bukkit.entity.Firework fw && fw.getScoreboardTags().contains("killeffects")) e.setCancelled(true);
+    }
+
     @EventHandler(priority=EventPriority.MONITOR)
     public void onDeath(PlayerDeathEvent playerDeathEvent) {
         Player player = playerDeathEvent.getEntity();
@@ -611,6 +616,7 @@ TabExecutor {
             }
             case "crates": 
             case "crate": 
+            case "mystery": 
             case "gamble": {
                 CratesMenu.open(this, player2);
                 break;
@@ -871,7 +877,7 @@ TabExecutor {
         boolean bl = commandSender.hasPermission("killeffects.admin");
         String string3 = stringArray[0].toLowerCase(Locale.ROOT);
         if (stringArray.length == 1) {
-            arrayList.addAll(List.of("crates", "select", "preview", "help"));
+            arrayList.addAll(List.of("crates", "mystery", "select", "preview", "help"));
             if (bl) {
                 arrayList.addAll(List.of("give", "take", "keys", "open", "play", "info", "reload"));
             }
