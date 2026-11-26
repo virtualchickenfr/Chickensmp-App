@@ -102,7 +102,12 @@ final class Fx {
         return this.loc(0.0, 1.0, 0.0);
     }
 
+    /** Tick (relative to the start) of the last scheduled step, i.e. how long the effect runs. */
+    int endTick;
+    private final int startTick = Bukkit.getCurrentTick();
+
     void later(int n, Runnable runnable) {
+        if (n < MAX_TICKS) this.endTick = Math.max(this.endTick, Bukkit.getCurrentTick() - this.startTick + n);
         if (n <= 0) {
             runnable.run();
         } else {

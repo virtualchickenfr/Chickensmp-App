@@ -206,8 +206,14 @@ implements Gui {
                 return;
             }
             player.closeInventory();
+            int page = this.page;
+            Rarity filter = this.filter;
             if (this.plugin.preview(player, killEffect)) {
                 this.plugin.send((CommandSender)player, "preview", "effect", Text.color(killEffect.colored()));
+                Fx fx = this.plugin.lastPreview;
+                reopenAfter(player, fx, page, filter, 0);
+            } else {
+                CollectionMenu.open(this.plugin, player, page, filter);
             }
             return;
         }
@@ -220,5 +226,21 @@ implements Gui {
         this.plugin.send((CommandSender)player, "error.locked", "effect", Text.color(killEffect.colored()));
         this.plugin.sound(player, "error");
     }
-}
 
+    /** Opens the menu again once the preview has finished (waits while the effect still schedules steps). */
+    private void reopenAfter(Player player, Fx fx, int page, Rarity filter, int waited) {
+        int end = fx == null ? 60 : fx.endTick;
+        int wait = Math.max(5, end - waited) + 8;
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            if (!player.isOnline()) return;
+            int now = waited + wait;
+            if (fx != null && fx.endTick > now - 8 && now < Fx.MAX_TICKS) {
+                reopenAfter(player, fx, page, filter, now);
+                return;
+            }
+            // only if the player has not opened something else meanwhile
+            if (player.getOpenInventory().getTopInventory().getType() != org.bukkit.event.inventory.InventoryType.CRAFTING) return;
+            CollectionMenu.open(this.plugin, player, page, filter);
+        }, wait);
+    }
+}

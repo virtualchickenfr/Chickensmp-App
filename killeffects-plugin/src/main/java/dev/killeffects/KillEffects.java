@@ -89,7 +89,7 @@ public final class KillEffects
 extends JavaPlugin
 implements Listener,
 TabExecutor {
-    static final String VERSION = "4.1.0";
+    static final String VERSION = "4.1.1";
     static final UUID PACK_ID = UUID.nameUUIDFromBytes("ChickenSMPKillEffects".getBytes(StandardCharsets.UTF_8));
     final SecureRandom random = new SecureRandom();
     private final Map<UUID, Store.Profile> profiles = new ConcurrentHashMap<UUID, Store.Profile>();
@@ -396,6 +396,14 @@ TabExecutor {
         }
     }
 
+    /** The Fx of the last preview (to know how long it runs). */
+    Fx lastPreview;
+
+    /** How long the last preview runs, in ticks (it keeps growing while the effect schedules more steps). */
+    int lastPreviewTicks() {
+        return this.lastPreview == null ? 60 : Math.max(20, this.lastPreview.endTick);
+    }
+
     boolean preview(Player player, KillEffect killEffect) {
         long l = System.currentTimeMillis();
         Long l2 = this.previewCooldown.get(player.getUniqueId());
@@ -410,7 +418,9 @@ TabExecutor {
         Location location2 = location.clone().add(-Math.sin(d) * 3.5, 0.0, Math.cos(d) * 3.5);
         location2.setY(Math.floor(location.getY()));
         try {
-            killEffect.play().accept(new Fx(this, location2, player, this.customModels()));
+            Fx fx = new Fx(this, location2, player, this.customModels());
+            killEffect.play().accept(fx);
+            this.lastPreview = fx;
         }
         catch (Exception exception) {
             this.getLogger().warning("Kill effect preview " + killEffect.id() + " failed: " + String.valueOf(exception));
