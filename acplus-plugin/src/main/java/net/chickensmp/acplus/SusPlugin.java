@@ -55,6 +55,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
     private Set<String> ignored = new HashSet<>();
     private Sound alertSound;
     private String webhook, webhookName;
+    private BanFx banFx;
 
     @Override
     public void onEnable() {
@@ -74,6 +75,9 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         getServer().getPluginManager().registerEvents(hammer, this);
         Objects.requireNonNull(getCommand("banhammer")).setExecutor(hammer);
         Objects.requireNonNull(getCommand("banhammer")).setTabCompleter(hammer);
+
+        banFx = new BanFx(this);
+        getServer().getPluginManager().registerEvents(banFx, this);
 
         staff = new StaffMode(this);
         getServer().getPluginManager().registerEvents(staff, this);

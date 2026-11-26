@@ -59,6 +59,12 @@ messages:
 #  Banhammer - /banhammer gives it. Right-click switches the mode,
 #  hitting a player catches them: CAUGHT! title, cage, then the punishment.
 # ------------------------------------------------------------
+# Ban animation: /ban, /tempban, /ipban on an online player waits a few seconds while the player
+# is lifted into a red beam with a BANNED title, then the original command runs.
+ban-animation:
+  enabled: true
+  ticks: 70
+
 banhammer:
   name: "<gradient:#ff3b3b:#ff9a3b><bold>BANHAMMER</bold></gradient>"
   # Hit the same player twice within this many seconds to confirm (0 = first hit counts).

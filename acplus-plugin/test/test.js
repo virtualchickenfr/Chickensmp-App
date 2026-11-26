@@ -139,6 +139,25 @@ function bot(name) {
     if (w2) staff.closeWindow(w2);
   }
 
+  // --- ban animation: /ban on an online player waits for the animation, then bans
+  const victim = await bot('BanBot');
+  await sleep(1500);
+  consoleCmd('tp BanBot 0 -60 0');
+  await sleep(1500);
+  const y0 = victim.entity.position.y;
+  staff.chat('/ban BanBot Hacking');
+  ok(await waitLog(/Ban animation: StaffBot -> \/ban BanBot Hacking/), 'ban command is taken over by the animation');
+  await sleep(1500);
+  ok(victim.log.some((l) => /BANNED/.test(l)), 'victim sees the BANNED title');
+  ok(victim.entity.position.y > y0 + 0.3, 'victim is lifted (' + (victim.entity.position.y - y0).toFixed(2) + ')');
+  ok(Object.values(staff.entities).filter((e) => e.name === 'text_display').length >= 20, 'beam and ring displays are visible');
+  ok(!fs.readFileSync('banned-players.json', 'utf8').includes('BanBot'), 'not banned yet during the animation');
+  await sleep(4000);
+  ok(fs.readFileSync('banned-players.json', 'utf8').includes('BanBot'), 'BanBot is banned after the animation');
+  ok(victim.log.some((l) => /KICK/.test(l)), 'victim was kicked');
+  await sleep(500);
+  ok(Object.values(staff.entities).filter((e) => e.name === 'text_display').length === 0, 'all displays removed');
+
   for (const b of [staff, viewer]) { try { b.quit(); } catch (e) {} }
   await sleep(1000);
   console.log(failed ? `${failed} FAILED` : 'ALL PASSED');
