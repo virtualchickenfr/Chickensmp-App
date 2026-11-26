@@ -58,9 +58,14 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     boolean failClosed() { return getConfig().getBoolean("fail-closed", true); }
     String floodgatePrefix() { return floodgate ? FloodgateHook.prefix() : ""; }
 
+    Limbo limbo;
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        limbo = new Limbo(this);
+        Bukkit.getPluginManager().registerEvents(limbo, this);
+        limbo.world();
         try { LogFilter.install(); } catch (Throwable t) { getLogger().warning("Could not install log filter: " + t); }
         store = new UserStore(getDataFolder());
         floodgate = Bukkit.getPluginManager().getPlugin("floodgate") != null;
@@ -130,6 +135,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        limbo.fixLeftover(p);
         if (!needsLogin(p)) return;
         String ip = ip(p);
         long session = getConfig().getLong("session-minutes", 30) * 60_000L;
@@ -142,7 +148,12 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
             return;
         }
         waitingSince.put(p.getUniqueId(), System.currentTimeMillis());
-        p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, PotionEffect.INFINITE_DURATION, 0, false, false, false));
+        if (limbo.enabled()) {
+            // one tick later, after other join handlers (first-join spawn teleport) have run
+            Bukkit.getScheduler().runTask(this, () -> { if (p.isOnline() && needsLogin(p)) limbo.enter(p); });
+        } else {
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, PotionEffect.INFINITE_DURATION, 0, false, false, false));
+        }
         Bukkit.getScheduler().runTaskLater(this, () -> prompt(p), 10L);
     }
 
@@ -192,6 +203,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         waitingSince.remove(u);
         attempts.remove(u);
         p.removePotionEffect(PotionEffectType.BLINDNESS);
+        limbo.leaveNow(p);
         p.clearTitle();
         p.updateCommands(); // the command list was trimmed to /login + /register at join
         store.loggedIn(p.getName(), ip(p));

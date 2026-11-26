@@ -62,6 +62,8 @@ messages:
 # Menu opened on join (after the resource pack loaded, or after the fallback delay).
 join-menu:
   enabled: true
+  # only the very first time a player joins the server
+  first-join-only: true
   command: guide
   fallback-delay-ticks: 100
 

@@ -22,3 +22,6 @@ fail-closed: true
 max-accounts-per-ip: 3
 # Wrong passwords on one account (from any IP) within 15 minutes before it is locked for 15 minutes
 account-fail-limit: 10
+
+# Cracked players wait in an empty void world until they log in / register, then return to where they were
+limbo: true
