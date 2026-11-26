@@ -59,6 +59,12 @@ messages:
 #  Banhammer - /banhammer gives it. Right-click switches the mode,
 #  hitting a player catches them: CAUGHT! title, cage, then the punishment.
 # ------------------------------------------------------------
+# Menu opened on join (after the resource pack loaded, or after the fallback delay).
+join-menu:
+  enabled: true
+  command: guide
+  fallback-delay-ticks: 100
+
 # Ban animation: /ban, /tempban, /ipban on an online player waits a few seconds while the player
 # is lifted into a red beam with a BANNED title, then the original command runs.
 ban-animation:

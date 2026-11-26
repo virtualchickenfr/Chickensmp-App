@@ -77,6 +77,7 @@ public final class SusPlugin extends JavaPlugin implements Listener, CommandExec
         Objects.requireNonNull(getCommand("banhammer")).setTabCompleter(hammer);
 
         getServer().getPluginManager().registerEvents(new ChatSpacing(), this);
+        getServer().getPluginManager().registerEvents(new JoinMenu(this), this);
 
         banFx = new BanFx(this);
         getServer().getPluginManager().registerEvents(banFx, this);
