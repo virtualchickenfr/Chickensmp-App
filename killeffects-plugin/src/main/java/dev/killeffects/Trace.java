@@ -84,7 +84,8 @@ final class Trace {
                 Color bg = td.getBackgroundColor();
                 String text = td.text() == null ? "" : net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(td.text());
                 o.append(",\"t\":\"t\",\"text\":").append(q(text)).append(",\"bg\":").append(bg == null ? 0 : bg.asARGB())
-                        .append(",\"op\":").append(td.getTextOpacity() & 0xFF);
+                        .append(",\"op\":").append(td.getTextOpacity() & 0xFF)
+                        .append(",\"tcol\":").append(td.text() != null && td.text().color() != null ? td.text().color().value() : 0xFFFFFF);
             } else if (e instanceof org.bukkit.entity.Mannequin le) {
                 double sc = 1;
                 try { sc = le.getAttribute(Attribute.SCALE).getValue(); } catch (Exception ignored) { }

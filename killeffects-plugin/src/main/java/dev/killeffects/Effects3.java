@@ -38,6 +38,7 @@ final class Effects3 {
         // common
         l.add(new KillEffect("tombstone", "Tombstone", Rarity.COMMON, "They fall, the ground takes them, a grave rises.", Material.MOSSY_STONE_BRICKS, Effects3::tombstone));
         l.add(new KillEffect("anvil", "Anvil Drop", Rarity.COMMON, "Look up. Too late.", Material.ANVIL, Effects3::anvil));
+        l.add(new KillEffect("bone_pile", "Bone Pile", Rarity.COMMON, "They rattle apart into a pile of bones.", Material.BONE, Effects3::bonePile));
         l.add(new KillEffect("confetti_pop", "Party Popper", Rarity.COMMON, "Pop! Fireworks and confetti everywhere.", Material.FIREWORK_STAR, Effects3::partyPopper));
         // uncommon
         l.add(new KillEffect("ice_cube", "Frozen", Rarity.UNCOMMON, "Frozen in a block of ice, then shattered.", Material.PACKED_ICE, Effects3::frozen));
@@ -50,6 +51,7 @@ final class Effects3 {
         // epic
         l.add(new KillEffect("explode", "Explode", Rarity.EPIC, "Charged up, then they blow apart.", Material.TNT_MINECART, Effects3::explode));
         l.add(new KillEffect("thunder_strike", "Smite", Rarity.EPIC, "Three bolts. Burnt to ash.", Material.LIGHTNING_ROD, Effects3::smite));
+        l.add(new KillEffect("ez", "EZ", Rarity.EPIC, "Way too easy. A giant EZ slams down.", Material.NAME_TAG, Effects3::ez));
         l.add(new KillEffect("phantom", "Phantom Grab", Rarity.EPIC, "A giant phantom swoops down and takes them.", Material.PHANTOM_MEMBRANE, Effects3::phantom));
         // legendary
         l.add(new KillEffect("meteor", "Meteor", Rarity.LEGENDARY, "A burning rock from the sky.", Material.MAGMA_BLOCK, Effects3::meteor));
@@ -68,7 +70,7 @@ final class Effects3 {
     /** Every removed effect id -> the effect a player gets instead (same rarity). */
     static final Map<String, String> MIGRATE = Map.ofEntries(
             // common
-            Map.entry("coffin", "tombstone"), Map.entry("bone_pile", "tombstone"), Map.entry("nap_time", "tombstone"), Map.entry("quicksand", "tombstone"),
+            Map.entry("coffin", "tombstone"), Map.entry("nap_time", "tombstone"), Map.entry("quicksand", "tombstone"),
             Map.entry("cake", "confetti_pop"), Map.entry("gift", "confetti_pop"), Map.entry("gg", "confetti_pop"), Map.entry("bouncy", "confetti_pop"),
             Map.entry("spin_out", "anvil"), Map.entry("shrink_ray", "anvil"), Map.entry("float_away", "anvil"), Map.entry("dizzy", "anvil"), Map.entry("crouch_spam", "anvil"),
             // uncommon
@@ -80,7 +82,7 @@ final class Effects3 {
             Map.entry("slot_machine", "rocket"), Map.entry("rocket_ride", "rocket"), Map.entry("dance_floor", "rocket"),
             Map.entry("teleported", "vortex"), Map.entry("washing_machine", "vortex"), Map.entry("magnet", "vortex"), Map.entry("portal", "vortex"),
             // epic
-            Map.entry("ez", "explode"), Map.entry("tick_tock", "explode"), Map.entry("pinata", "explode"), Map.entry("big_slap", "explode"),
+            Map.entry("tick_tock", "explode"), Map.entry("pinata", "explode"), Map.entry("big_slap", "explode"),
             Map.entry("awoooga", "phantom"), Map.entry("i_love_you", "phantom"), Map.entry("piano", "phantom"), Map.entry("ufo", "phantom"), Map.entry("hologram", "phantom"),
             Map.entry("heart_attack", "thunder_strike"), Map.entry("statue", "thunder_strike"), Map.entry("gold_statue", "thunder_strike"), Map.entry("star_shower", "thunder_strike"), Map.entry("knockout", "thunder_strike"),
             // legendary
@@ -259,6 +261,68 @@ final class Effects3 {
         fx.repeat(16, 2, i -> Kit.confetti(fx, fx.base.clone().add(0, 2.6 + i * 0.03, 0), 10, 1.6));
         fx.sound(16, "minecraft:entity.firework_rocket.twinkle_far", 0.8f, 1.4f);
         fx.sound(22, "minecraft:block.note_block.chime", 0.9f, 1.8f);
+    }
+
+    private static void bonePile(Fx fx) {
+        Doll d = Kit.doll(fx);
+        hurt(fx);
+        fx.sound(2, "minecraft:entity.skeleton.ambient", 1.2f, 0.7f);
+        // rattles, shaking harder
+        fx.anim(2, 14, 1, t -> {
+            double j = 0.03 + 0.09 * t;
+            Kit.dollAt(fx, d, fx.rand(j), 0, fx.rand(j));
+            d.look((float) (-fx.face() + fx.rand(14 * t)), (float) fx.rand(10 * t));
+            if ((int) (t * 14) % 3 == 0) fx.sound("minecraft:entity.skeleton.step", 1f, (float) (1.2 + t));
+        });
+        fx.later(16, () -> {
+            Location c = fx.base.clone().add(0, 1.0, 0);
+            d.remove();
+            fx.sound("minecraft:entity.skeleton.death", 1.2f, 0.8f);
+            fx.sound("minecraft:block.bone_block.break", 1.2f, 0.7f);
+            fx.sound("minecraft:entity.skeleton.hurt", 1f, 0.6f);
+            fx.p(Particle.POOF, c, 20, 0.35, 0.05);
+            fx.block(c, Material.BONE_BLOCK, 50, 0.4, 0.15);
+            fx.item(c, Material.BONE_MEAL, 20, 0.4, 0.1);
+            // bones fly up and land in a pile
+            for (int i = 0; i < 12; i++) {
+                Model b = fx.model(fx.rand(0.25), 0.5 + fx.rnd.nextDouble() * 1.2, fx.rand(0.25));
+                b.item(Material.BONE, 0, 0, 0, 0.55 + fx.rnd.nextDouble() * 0.25);
+                double a = fx.rnd.nextDouble() * Math.PI * 2, sp = 0.05 + fx.rnd.nextDouble() * 0.09;
+                Kit.fly(fx, b, new Vector(Math.cos(a) * sp, 0.25 + fx.rnd.nextDouble() * 0.2, Math.sin(a) * sp), 62, 0.12);
+            }
+            for (int i = 0; i < 3; i++) {
+                Model b = fx.model(fx.rand(0.2), 0.6, fx.rand(0.2));
+                b.cube(Material.BONE_BLOCK, 0, 0, 0, 0.32);
+                double a = fx.rnd.nextDouble() * Math.PI * 2;
+                Kit.fly(fx, b, new Vector(Math.cos(a) * 0.06, 0.22, Math.sin(a) * 0.06), 62, 0.32);
+            }
+            // the skull pops up spinning and lands on top, facing the killer
+            Model root = Kit.root(fx);
+            Model skull = root.child(0, 1.4, 0);
+            skull.item(Material.SKELETON_SKULL, 0, 0, 0, 1.3);
+            skull.show(0);
+            fx.anim(1, 16, 1, tt -> {
+                double y = 1.4 + 1.8 * Math.sin(tt * Math.PI) - 1.15 * tt;
+                skull.at(0, Math.max(0.33, y), 0.1).rot(tt * 720, 0, 0).apply(1);
+            });
+            fx.later(18, () -> {
+                skull.at(0, 0.33, 0.1).rot(0, -8, 4).apply(2);
+                fx.sound("minecraft:block.bone_block.place", 1.2f, 0.8f);
+                fx.block(fx.base.clone().add(0, 0.2, 0), fx.groundBlock(), 12, 0.3, 0.05);
+            });
+            fx.later(20, () -> skull.at(0, 0.36, 0.1).rot(0, -10, 6).size(1.08).apply(2));
+            fx.later(22, () -> skull.at(0, 0.33, 0.1).rot(0, -8, 4).size(1).apply(3));
+            // a soul leaves, then the pile crumbles to dust
+            fx.later(26, () -> fx.sound("minecraft:particle.soul_escape", 1.2f, 1f));
+            fx.later(26, () -> fx.repeat(10, 3, i -> fx.p(Particle.SOUL, fx.base.clone().add(fx.rand(0.3), 0.5 + i * 0.15, fx.rand(0.3)), 1, 0.05, 0.02)));
+            fx.later(58, () -> {
+                skull.at(0, -0.3, 0.1).size(0.001).apply(6);
+                fx.block(fx.base.clone().add(0, 0.3, 0), Material.BONE_BLOCK, 30, 0.5, 0.05);
+                fx.particle(Particle.FALLING_DUST, fx.base.clone().add(0, 0.5, 0), 20, 0.4, 0.2, 0.4, 0, Material.BONE_BLOCK.createBlockData());
+                fx.sound("minecraft:block.sand.break", 1f, 0.8f);
+            });
+            fx.later(66, root::remove);
+        });
     }
 
     // ==================================================================== uncommon
@@ -572,6 +636,121 @@ final class Effects3 {
         fx.later(34, () -> core.set(10, 0x00FFFFFF, 6));
         fx.later(42, core::remove);
         fx.later(38, () -> fx.repeat(8, 4, i -> fx.p(Particle.CAMPFIRE_COSY_SMOKE, fx.base.clone().add(fx.rand(1), 0.2, fx.rand(1)), 1, 0.1, 0.02)));
+    }
+
+    /** One layer of the big 3D "EZ": bold text, transparent background, facing the killer. */
+    private static org.bukkit.entity.TextDisplay ezLayer(Fx fx, Location at, String hex, float scale, float back) {
+        org.bukkit.entity.TextDisplay t = fx.world.spawn(at, org.bukkit.entity.TextDisplay.class, d -> {
+            d.text(net.kyori.adventure.text.Component.text("EZ").color(net.kyori.adventure.text.format.TextColor.fromHexString(hex))
+                    .decorate(net.kyori.adventure.text.format.TextDecoration.BOLD));
+            d.setDefaultBackground(false);
+            d.setBackgroundColor(org.bukkit.Color.fromARGB(0));
+            d.setShadowed(false);
+            d.setSeeThrough(false);
+            fx.prepareDisplay(d);
+            d.setBillboard(Display.Billboard.FIXED);
+            d.setTransformation(new org.bukkit.util.Transformation(new org.joml.Vector3f(0, 0, -back),
+                    new Quaternionf().rotateY((float) Math.toRadians(fx.face())), new org.joml.Vector3f(0.001f, 0.001f, 0.001f), new Quaternionf()));
+        });
+        fx.trackEntity(t);
+        return t;
+    }
+
+    private static void ez(Fx fx) {
+        Doll d = Kit.doll(fx);
+        hurt(fx);
+        // 3D letters: a bright front layer and darker layers behind it
+        String[] cols = {"#FFF27A", "#FCE300", "#FCC800", "#F9A600", "#F97603", "#D85A00", "#A84300", "#7A3000"};
+        Location at = L(fx, 0, 9, -2.6);
+        at.setYaw(0);
+        at.setPitch(0);
+        List<org.bukkit.entity.TextDisplay> layers = new ArrayList<>();
+        for (int i = 0; i < cols.length; i++) layers.add(ezLayer(fx, at, cols[i], 0.001f, i * 0.035f));
+        java.util.function.BiConsumer<Double, Integer> pose = (sc, dur) -> {
+            for (int i = 0; i < layers.size(); i++) {
+                org.bukkit.entity.TextDisplay t = layers.get(i);
+                if (!t.isValid()) continue;
+                Quaternionf q = new Quaternionf().rotateY((float) Math.toRadians(fx.face()));
+                org.joml.Vector3f off = q.transform(new org.joml.Vector3f(0, 0, (float) (-i * 0.035 * sc / 6)));
+                t.setInterpolationDelay(0);
+                t.setInterpolationDuration(dur);
+                float s = (float) Math.max(0.001, sc);
+                t.setTransformation(new org.bukkit.util.Transformation(off, q, new org.joml.Vector3f(s, s, s), new Quaternionf()));
+            }
+        };
+        fx.later(1, () -> pose.accept(10.0, 0));
+        // the doll looks up at it
+        fx.later(3, () -> d.look((float) -fx.face(), -45f));
+        fx.sound(2, "minecraft:entity.firework_rocket.launch", 1f, 0.5f);
+        fx.sound(4, "minecraft:block.note_block.pling", 1f, 0.6f);
+        fx.sound(8, "minecraft:block.note_block.pling", 1f, 0.9f);
+        // falls from the sky and slams into the ground behind them
+        fx.anim(2, 12, 1, t -> {
+            Location l = L(fx, 0, 9 - 9 * t * t, -2.6);
+            l.setYaw(0);
+            l.setPitch(0);
+            for (org.bukkit.entity.TextDisplay layer : layers) {
+                if (!layer.isValid()) continue;
+                layer.setTeleportDuration(1);
+                layer.teleport(l);
+            }
+            fx.p(Particle.END_ROD, l.clone().add(0, 1.0, 0), 2, 0.8, 0.02);
+        });
+        fx.later(14, () -> {
+            pose.accept(12.0, 2);
+            Location g = L(fx, 0, 0.1, -2.6);
+            fx.sound("minecraft:item.mace.smash_ground_heavy", 1.4f, 0.9f);
+            fx.sound("minecraft:entity.generic.explode", 0.8f, 1.2f);
+            fx.sound("minecraft:block.anvil.land", 0.8f, 1.4f);
+            fx.particle(Particle.DUST_PILLAR, g, 40, 1.4, 0.1, 0.4, 0, fx.groundBlock().createBlockData());
+            fx.p(Particle.CLOUD, g, 20, 1.2, 0.04);
+            Kit.burst(fx, g.clone().add(0, 1, 0), 4, 30, Kit.Y, 10);
+            Kit.wave(fx, 1.0, 3.2, 8, 3, 0.45);
+        });
+        fx.later(16, () -> pose.accept(9.2, 2));
+        fx.later(18, () -> pose.accept(10.0, 3));
+        // wobble while the doll gets laughed out
+        fx.sound(22, "minecraft:entity.villager.no", 1.2f, 1.4f);
+        fx.sound(28, "minecraft:entity.goat.screaming.ambient", 0.8f, 1.6f);
+        fx.repeat(5, 4, i -> fx.later(22, () -> {
+            for (org.bukkit.entity.TextDisplay layer : layers) {
+                if (!layer.isValid()) continue;
+                Quaternionf q = new Quaternionf().rotateY((float) Math.toRadians(fx.face())).rotateZ((float) Math.toRadians(i % 2 == 0 ? 5 : -5));
+                org.bukkit.util.Transformation tr = layer.getTransformation();
+                layer.setInterpolationDelay(0);
+                layer.setInterpolationDuration(4);
+                layer.setTransformation(new org.bukkit.util.Transformation(tr.getTranslation(), q, tr.getScale(), new Quaternionf()));
+            }
+        }));
+        // the doll shrinks with embarrassment and is flicked away
+        fx.anim(22, 14, 1, t -> {
+            d.scale(1 - 0.6 * t);
+            d.look((float) (-fx.face() + Math.sin(t * 18) * 30), 20f);
+        });
+        fx.later(36, () -> {
+            fx.sound("minecraft:entity.player.attack.knockback", 1.2f, 1.2f);
+            fx.p(Particle.SWEEP_ATTACK, d.loc().add(0, 0.5, 0), 1, 0, 0);
+        });
+        fx.anim(36, 10, 1, t -> {
+            Kit.dollAt(fx, d, -3 * t, 2.2 * Math.sin(t * Math.PI), 1.0 * t);
+            d.look((float) (-fx.face() + t * 900), 0);
+        });
+        fx.later(46, () -> {
+            Kit.firework(fx, d.loc().add(0, 0.6, 0), FireworkEffect.Type.BURST, false, true, Kit.Y, Kit.O);
+            poof(fx, d, 0.5);
+        });
+        // the letters burst into fireworks
+        fx.later(54, () -> {
+            Location c = L(fx, 0, 1.6, -2.6);
+            pose.accept(12.5, 3);
+            Kit.firework(fx, c, FireworkEffect.Type.BALL_LARGE, true, true, Kit.Y, Kit.O, 0xFFFFFF);
+            Kit.firework(fx, c.clone().add(Kit.dir(fx, 2.0, 0.3, 0)), FireworkEffect.Type.STAR, false, true, Kit.Y);
+            Kit.firework(fx, c.clone().add(Kit.dir(fx, -2.0, 0.3, 0)), FireworkEffect.Type.STAR, false, true, Kit.O);
+            fx.sound("minecraft:entity.firework_rocket.large_blast", 1.2f, 1f);
+            fx.sound("minecraft:entity.firework_rocket.twinkle", 1f, 1.2f);
+        });
+        fx.later(57, () -> pose.accept(0.001, 4));
+        fx.later(62, () -> layers.forEach(t -> { if (t.isValid()) t.remove(); }));
     }
 
     /** A jagged bolt from the sky made of glowing planes. */

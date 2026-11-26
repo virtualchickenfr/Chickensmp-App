@@ -33,7 +33,7 @@ async function count(type) {
   cmd('op Killer'); cmd('difficulty peaceful'); cmd('gamerule doMobSpawning false'); cmd('kill @e[type=chicken]');
   cmd('tp Killer 0 -60 0'); cmd('tp Victim 0 -60 4');
   await sleep(1500);
-  const all = process.argv.length > 2 ? process.argv.slice(2) : ['tombstone', 'anvil', 'confetti_pop', 'ice_cube', 'tnt', 'ground_slam', 'rocket', 'vortex', 'balloon',
+  const all = process.argv.length > 2 ? process.argv.slice(2) : ['tombstone', 'anvil', 'bone_pile', 'ez', 'confetti_pop', 'ice_cube', 'tnt', 'ground_slam', 'rocket', 'vortex', 'balloon',
     'explode', 'thunder_strike', 'phantom', 'meteor', 'dragon_breath', 'ascension', 'shattered', 'black_hole_x', 'judgement', 'chicken_god'];
   cmd('ke list');
   await sleep(800);

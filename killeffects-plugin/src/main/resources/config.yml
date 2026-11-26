@@ -1,6 +1,6 @@
 # ============================================================
 #  ChickenSMPKillEffects
-#  19 kill effects (the victim's real skin, real blocks, fireworks and mobs) in 6 rarities. Players unlock them by:
+#  21 kill effects (the victim's real skin, real blocks, fireworks and mobs) in 6 rarities. Players unlock them by:
 #    - permission:  killeffects.effect.<id>   (or killeffects.rarity.<rarity>, killeffects.effect.*)
 #    - crates:      gamble with money (Vault) or keys
 #    Duplicates from crates give part of the crate price back (duplicate-refund-percent).
