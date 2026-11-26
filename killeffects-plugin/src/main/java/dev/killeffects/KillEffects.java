@@ -35,7 +35,6 @@ package dev.killeffects;
 import dev.killeffects.CollectionMenu;
 import dev.killeffects.Crate;
 import dev.killeffects.CratesMenu;
-import dev.killeffects.Effects;
 import dev.killeffects.Fx;
 import dev.killeffects.Gui;
 import dev.killeffects.KillEffect;
@@ -90,7 +89,7 @@ public final class KillEffects
 extends JavaPlugin
 implements Listener,
 TabExecutor {
-    static final String VERSION = "2.2.0";
+    static final String VERSION = "4.0.0";
     static final UUID PACK_ID = UUID.nameUUIDFromBytes("ChickenSMPKillEffects".getBytes(StandardCharsets.UTF_8));
     final SecureRandom random = new SecureRandom();
     private final Map<UUID, Store.Profile> profiles = new ConcurrentHashMap<UUID, Store.Profile>();
@@ -144,8 +143,7 @@ TabExecutor {
 
     void load() {
         this.reloadConfig();
-        Map<String, KillEffect> map = new LinkedHashMap<String, KillEffect>(Effects.all());
-        map.putAll(Effects2.all());
+        Map<String, KillEffect> map = new LinkedHashMap<String, KillEffect>(Effects3.all());
         this.effects = new LinkedHashMap<String, KillEffect>();
         for (KillEffect killEffect : map.values()) {
             String string = "effects." + killEffect.id() + ".";
@@ -210,29 +208,43 @@ TabExecutor {
         return profile;
     }
 
-    /** Effects of version 1.x were replaced by block effects: give the new effect of the same rarity instead. */
+    /** Follows the rename chain (v1 -> v2 -> v4) to an effect that still exists, or null. */
+    private String migrated(String id) {
+        String cur = id;
+        for (int i = 0; i < 5 && cur != null && !this.effects.containsKey(cur); i++) {
+            String next = Effects3.MIGRATE.get(cur);
+            if (next == null) next = Effects3.LEGACY.get(cur);
+            cur = next;
+        }
+        return cur != null && this.effects.containsKey(cur) ? cur : null;
+    }
+
+    /** Old effects were removed or replaced: give the new effect of the same rarity instead. */
     private void migrate() {
         int changed = 0;
         for (Map.Entry<UUID, Store.Profile> e : this.profiles.entrySet()) {
             Store.Profile p = e.getValue();
             boolean dirty = false;
             for (String old : new ArrayList<String>(p.owned)) {
-                String neu = Effects.MIGRATE.get(old);
-                if (neu == null) continue;
+                String neu = migrated(old);
+                if (neu == null || neu.equals(old)) continue;
                 p.owned.remove(old);
                 p.owned.add(neu);
                 dirty = true;
             }
-            if (p.selected != null && Effects.MIGRATE.containsKey(p.selected)) {
-                p.selected = Effects.MIGRATE.get(p.selected);
-                dirty = true;
+            if (p.selected != null) {
+                String neu = migrated(p.selected);
+                if (neu != null && !neu.equals(p.selected)) {
+                    p.selected = neu;
+                    dirty = true;
+                }
             }
             if (dirty) {
                 ++changed;
                 this.save(e.getKey());
             }
         }
-        if (changed > 0) this.getLogger().info("Moved " + changed + " player(s) to the new block kill effects.");
+        if (changed > 0) this.getLogger().info("Moved " + changed + " player(s) to the new kill effects.");
     }
 
     void save(UUID uUID) {
@@ -373,6 +385,7 @@ TabExecutor {
 
     void play(KillEffect killEffect, Location location, Player victim, Location faceTarget) {
         try {
+            if (Trace.ON) Trace.name = killEffect.id();
             Fx fx = new Fx(this, location, null, this.customModels());
             fx.victim = victim;
             fx.faceTarget = faceTarget;

@@ -82,7 +82,7 @@ final class Fx {
         return m.isSolid() && m.isBlock() && !m.isAir() ? m : Material.DIRT;
     }
     final ThreadLocalRandom rnd = ThreadLocalRandom.current();
-    private final List<Entity> spawned = new ArrayList<Entity>();
+    final List<Entity> spawned = new ArrayList<Entity>();
 
     Fx(KillEffects killEffects, Location location, Player player, boolean bl) {
         this.plugin = killEffects;
@@ -91,6 +91,7 @@ final class Fx {
         this.viewer = player;
         this.sprites = bl;
         this.later(MAX_TICKS, this::cleanup);
+        if (Trace.ON) Trace.start(this);
     }
 
     Location loc(double d, double d2, double d3) {
@@ -121,6 +122,7 @@ final class Fx {
     }
 
     <T> void particle(Particle particle, Location location, int n, double d, double d2, double d3, double d4, T t) {
+        if (Trace.ON) Trace.particle(this, particle, location, n, d, d2, d3, d4, t);
         if (this.viewer != null) {
             if (this.viewer.isOnline() && this.viewer.getWorld() == this.world) {
                 this.viewer.spawnParticle(particle, location, n, d, d2, d3, d4, t);

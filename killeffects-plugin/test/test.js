@@ -19,7 +19,8 @@ function bot(name) {
 
 async function count(type) {
   const mark = log().length;
-  cmd(`execute if entity @e[type=${type}]`);
+  const near = ['chicken', 'phantom'].includes(type) ? ',x=0,y=-60,z=0,distance=..40' : '';
+  cmd(`execute if entity @e[type=${type}${near}]`);
   await sleep(600);
   const m = log().slice(mark).match(/Test passed\. Count: (\d+)|Test failed/i);
   return m && m[1] ? +m[1] : 0;
@@ -29,27 +30,29 @@ async function count(type) {
   const startLen = log().length;
   const a = await bot('Killer');
   const v = await bot('Victim');
-  cmd('op Killer'); cmd('difficulty peaceful');
+  cmd('op Killer'); cmd('difficulty peaceful'); cmd('gamerule doMobSpawning false'); cmd('kill @e[type=chicken]');
   cmd('tp Killer 0 -60 0'); cmd('tp Victim 0 -60 4');
   await sleep(1500);
-  const ids = [...log().matchAll(/EFFECT_ID (\w+)/g)].map(m => m[1]);
-  const all = ids.length ? ids : process.argv.slice(2);
-  check(all.length === 81, 'found 81 effect ids (' + all.length + ')');
+  const all = process.argv.length > 2 ? process.argv.slice(2) : ['tombstone', 'anvil', 'confetti_pop', 'ice_cube', 'tnt', 'ground_slam', 'rocket', 'vortex', 'balloon',
+    'explode', 'thunder_strike', 'phantom', 'meteor', 'dragon_breath', 'ascension', 'shattered', 'black_hole_x', 'judgement', 'chicken_god'];
+  cmd('ke list');
+  await sleep(800);
   for (const id of all) {
     const before = log().length;
     a.chat('/ke play ' + id);
-    await sleep(1500);
-    const n = await count('block_display') + await count('item_display') + await count('mannequin');
+    await sleep(400);
+    const n = await count('mannequin') + await count('block_display') + await count('item_display') + await count('text_display') + await count('firework_rocket');
     const failed = / failed: |Exception/.test(log().slice(before));
     check(n > 0 && !failed, `play ${id}: ${n} displays`);
     await sleep(4500);
   }
-  await sleep(4000);
-  check(await count('block_display') + await count('mannequin') === 0, 'all displays removed afterwards');
+  await sleep(6000);
+  const left = await count('block_display') + await count('item_display') + await count('mannequin') + await count('text_display') + await count('chicken') + await count('phantom') + await count('firework_rocket');
+  check(left === 0, 'everything removed afterwards (' + left + ')');
   // preview (only the viewer)
-  a.chat('/ke preview helicopter');
+  a.chat('/ke preview judgement');
   await sleep(1500);
-  check(await count('block_display') + await count('mannequin') > 0, 'preview spawns displays');
+  check(await count('item_display') + await count('mannequin') + await count('text_display') > 0, 'preview spawns displays');
   await sleep(9000);
   // real kill with a selected effect
   cmd('ke give Killer all');
@@ -58,7 +61,7 @@ async function count(type) {
   await sleep(800);
   cmd('damage Victim 1000 minecraft:player_attack by Killer');
   await sleep(2500);
-  check(await count('block_display') + await count('mannequin') > 0, 'kill plays the selected effect');
+  check(await count('chicken') + await count('mannequin') + await count('text_display') > 0, 'kill plays the selected effect');
   check(/Killer/.test(log()) && !/Exception/.test(log().slice(startLen)), 'no exceptions in the log');
   console.log(fails ? `${fails} FAILED` : 'ALL PASSED');
   a.quit(); v.quit();
