@@ -73,6 +73,7 @@ implements Gui {
         ArrayList<KillEffect> arrayList = new ArrayList<KillEffect>();
         for (KillEffect killEffect3 : this.plugin.effects().values()) {
             if (this.filter != null && killEffect3.rarity() != this.filter) continue;
+            if (Effects3.EXCLUSIVE.contains(killEffect3.id()) && !this.plugin.owns(this.viewer, killEffect3)) continue;
             arrayList.add(killEffect3);
         }
         arrayList.sort((killEffect, killEffect2) -> killEffect.rarity() != killEffect2.rarity() ? Integer.compare(killEffect.rarity().ordinal(), killEffect2.rarity().ordinal()) : 0);
@@ -127,7 +128,7 @@ implements Gui {
         Crate crate = this.plugin.crates().isEmpty() ? null : this.plugin.crates().values().iterator().next();
         this.inv.setItem(49, this.plugin.textured("crate/" + (crate == null ? "common" : crate.texture()), Material.ENDER_CHEST, this.plugin.gui("collection.crates", new Object[0]), this.plugin.guiList("collection.crates-lore", new Object[0])));
         n = this.plugin.ownedCount(this.viewer);
-        int n3 = this.plugin.effects().size();
+        int n3 = (int) this.plugin.effects().values().stream().filter(e -> !Effects3.EXCLUSIVE.contains(e.id()) || this.plugin.owns(this.viewer, e)).count();
         this.inv.setItem(51, Gui.head(this.viewer.getUniqueId(), this.plugin.gui("collection.profile", "player", this.viewer.getName()), this.plugin.guiList("collection.profile-lore", "owned", n, "total", n3, "percent", n3 == 0 ? 0 : n * 100 / n3, "kills", KillEffects.num(profile.kills), "opened", KillEffects.num(profile.opened))));
     }
 

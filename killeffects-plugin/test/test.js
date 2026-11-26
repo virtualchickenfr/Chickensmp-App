@@ -34,7 +34,7 @@ async function count(type) {
   cmd('tp Killer 0 -60 0'); cmd('tp Victim 0 -60 4');
   await sleep(1500);
   const all = process.argv.length > 2 ? process.argv.slice(2) : ['tombstone', 'anvil', 'bone_pile', 'ez', 'confetti_pop', 'ice_cube', 'tnt', 'ground_slam', 'rocket', 'vortex', 'balloon',
-    'explode', 'thunder_strike', 'phantom', 'meteor', 'dragon_breath', 'ascension', 'shattered', 'black_hole_x', 'judgement', 'chicken_god'];
+    'explode', 'thunder_strike', 'phantom', 'meteor', 'dragon_breath', 'ascension', 'shattered', 'black_hole_x', 'judgement', 'chicken_god', 'banned'];
   cmd('ke list');
   await sleep(800);
   for (const id of all) {

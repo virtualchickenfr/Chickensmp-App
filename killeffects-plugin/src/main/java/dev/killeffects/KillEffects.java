@@ -89,7 +89,7 @@ public final class KillEffects
 extends JavaPlugin
 implements Listener,
 TabExecutor {
-    static final String VERSION = "4.1.1";
+    static final String VERSION = "4.2.0";
     static final UUID PACK_ID = UUID.nameUUIDFromBytes("ChickenSMPKillEffects".getBytes(StandardCharsets.UTF_8));
     final SecureRandom random = new SecureRandom();
     private final Map<UUID, Store.Profile> profiles = new ConcurrentHashMap<UUID, Store.Profile>();
@@ -158,6 +158,7 @@ TabExecutor {
             this.byRarity.put(r, new ArrayList<KillEffect>());
         }
         for (KillEffect killEffect : this.effects.values()) {
+            if (Effects3.EXCLUSIVE.contains(killEffect.id())) continue;
             this.byRarity.get(killEffect.rarity()).add(killEffect);
         }
         this.crates.clear();
@@ -259,6 +260,7 @@ TabExecutor {
         if (profile != null && profile.owned.contains(killEffect.id())) {
             return true;
         }
+        if (Effects3.EXCLUSIVE.contains(killEffect.id())) return false;
         return player.hasPermission(killEffect.permission()) || player.hasPermission("killeffects.rarity." + killEffect.rarity().key()) || player.hasPermission("killeffects.effect.*");
     }
 
@@ -696,7 +698,9 @@ TabExecutor {
 
     private List<KillEffect> resolve(String string) {
         if (string.equalsIgnoreCase("all") || string.equals("*")) {
-            return new ArrayList<KillEffect>(this.effects.values());
+            ArrayList<KillEffect> all = new ArrayList<KillEffect>(this.effects.values());
+            all.removeIf(e -> Effects3.EXCLUSIVE.contains(e.id()));
+            return all;
         }
         Rarity rarity = Rarity.parse(string);
         if (rarity != null) {

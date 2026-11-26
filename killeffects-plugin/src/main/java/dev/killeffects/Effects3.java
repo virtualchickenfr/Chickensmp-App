@@ -61,11 +61,16 @@ final class Effects3 {
         // mythic
         l.add(new KillEffect("black_hole_x", "Black Hole", Rarity.MYTHIC, "Everything gets pulled in. Then: boom.", Material.BLACK_CONCRETE, Effects3::blackHole));
         l.add(new KillEffect("judgement", "Judgement", Rarity.MYTHIC, "A giant mace from the sky.", Material.MACE, Effects3::judgement));
+        // exclusive (not in crates, only visible to players who were given it)
+        l.add(new KillEffect("banned", "Banned", Rarity.MYTHIC, "The Banhammer comes down. BANNED.", Material.BARRIER, Effects3::banned));
         l.add(new KillEffect("chicken_god", "Chicken God", Rarity.MYTHIC, "The Golden Chicken sits on them. Then lays an egg.", Material.GOLDEN_APPLE, Effects3::chickenGod));
         Map<String, KillEffect> map = new LinkedHashMap<>();
         for (KillEffect e : l) map.put(e.id(), e);
         return map;
     }
+
+    /** Effects that never drop from crates and only show up for players who own them (given with /ke give). */
+    static final java.util.Set<String> EXCLUSIVE = java.util.Set.of("banned");
 
     /** Every removed effect id -> the effect a player gets instead (same rarity). */
     static final Map<String, String> MIGRATE = Map.ofEntries(
@@ -1162,6 +1167,127 @@ final class Effects3 {
             Kit.wave(fx, 1.0, 4.2, 10, 5, 0.5);
         });
         fx.later(86, aura::remove);
+    }
+
+    private static org.bukkit.entity.TextDisplay word(Fx fx, Location at, String text, String hex, float back) {
+        org.bukkit.entity.TextDisplay t = fx.world.spawn(at, org.bukkit.entity.TextDisplay.class, d -> {
+            d.text(net.kyori.adventure.text.Component.text(text).color(net.kyori.adventure.text.format.TextColor.fromHexString(hex))
+                    .decorate(net.kyori.adventure.text.format.TextDecoration.BOLD));
+            d.setDefaultBackground(false);
+            d.setBackgroundColor(org.bukkit.Color.fromARGB(0));
+            d.setShadowed(false);
+            d.setSeeThrough(false);
+            fx.prepareDisplay(d);
+            d.setBillboard(Display.Billboard.FIXED);
+            d.setTransformation(new org.bukkit.util.Transformation(new org.joml.Vector3f(0, 0, -back),
+                    new Quaternionf().rotateY((float) Math.toRadians(fx.face())), new org.joml.Vector3f(0.001f, 0.001f, 0.001f), new Quaternionf()));
+        });
+        fx.trackEntity(t);
+        return t;
+    }
+
+    /** Exclusive: red beam, the victim is lifted and judged, BANNED in 3D letters, the Banhammer slams down. */
+    private static void banned(Fx fx) {
+        Doll d = Kit.doll(fx);
+        hurt(fx);
+        Location base = fx.base.clone();
+        fx.sound("minecraft:entity.elder_guardian.curse", 1f, 0.8f);
+        fx.sound(1, "minecraft:block.beacon.activate", 1.4f, 0.5f);
+        fx.sound(1, "minecraft:block.respawn_anchor.charge", 1.2f, 0.6f);
+        // red light from the sky
+        Kit.Beam beam = new Kit.Beam(fx, base, R);
+        fx.later(2, () -> beam.set(2.6, 1, 8));
+        // spinning red rings on the ground, closing in
+        Kit.Ring outer = new Kit.Ring(fx, base.clone().add(0, 0.06, 0), 2.6, 0.14, 28, 0x00FC0000);
+        Kit.Ring inner = new Kit.Ring(fx, base.clone().add(0, 0.07, 0), 1.6, 0.08, 20, 0x00FF5050);
+        outer.apply(0); inner.apply(0);
+        fx.anim(1, 52, 1, t -> {
+            outer.r = 2.6 - 1.4 * t; outer.spin += 0.12; outer.argb = ((int) (0xD0 * Math.min(1, t * 6))) << 24 | R; outer.apply(1);
+            inner.r = 1.6 - 0.9 * t; inner.spin -= 0.2; inner.argb = ((int) (0xB0 * Math.min(1, t * 6))) << 24 | 0xFF5050; inner.apply(1);
+        });
+        // lifted and held in the beam, shaking, energy pulled in
+        fx.anim(4, 40, 1, t -> {
+            double y = 2.2 * Kit.easeOut(t);
+            Kit.dollAt(fx, d, fx.rand(0.04), y, fx.rand(0.04));
+            d.look((float) -fx.face(), -35f);
+            Location b = d.loc().add(0, 1, 0);
+            fx.dust(b.clone().add(fx.rand(0.5), fx.rand(0.8), fx.rand(0.5)), R, 1.3f, 2, 0.05);
+            fx.p(Particle.ELECTRIC_SPARK, b, 2, 0.4, 0.05);
+        });
+        fx.repeat(12, 4, i -> Kit.converge(fx, d.loc().add(0, 1, 0), 3.2, 3, i % 2 == 0 ? R : 0xFF6A00, 10));
+        fx.repeat(5, 9, i -> fx.sound("minecraft:block.note_block.basedrum", 1.2f, 0.5f + i * 0.15f));
+        fx.anim(44, 18, 1, t -> Kit.dollAt(fx, d, fx.rand(0.07), 2.2 + fx.rand(0.04), fx.rand(0.07)));
+        // BANNED in 3D letters behind the victim
+        String[] cols = {"#FF7A7A", "#FC0000", "#E00000", "#C40000", "#A00000", "#7C0000", "#5A0000"};
+        Location at = L(fx, 0, 5.2, -2.8);
+        at.setYaw(0);
+        at.setPitch(0);
+        List<org.bukkit.entity.TextDisplay> layers = new ArrayList<>();
+        for (int i = 0; i < cols.length; i++) layers.add(word(fx, at, "BANNED", cols[i], i * 0.03f));
+        java.util.function.BiConsumer<Double, Integer> pose = (sc, dur) -> {
+            for (int i = 0; i < layers.size(); i++) {
+                org.bukkit.entity.TextDisplay t = layers.get(i);
+                if (!t.isValid()) continue;
+                t.setInterpolationDelay(0);
+                t.setInterpolationDuration(dur);
+                float f = sc.floatValue();
+                t.setTransformation(new org.bukkit.util.Transformation(new org.joml.Vector3f(0, 0, -i * 0.03f * f),
+                        new Quaternionf().rotateY((float) Math.toRadians(fx.face())), new org.joml.Vector3f(f, f, f), new Quaternionf()));
+            }
+        };
+        fx.later(10, () -> {
+            pose.accept(7.0, 6);
+            beam.set(1.5, 0.8, 6);
+            fx.sound("minecraft:entity.warden.sonic_charge", 1.2f, 0.8f);
+            fx.sound("minecraft:block.anvil.land", 1f, 0.5f);
+        });
+        fx.later(16, () -> pose.accept(6.0, 4));
+        // the Banhammer (giant mace) appears high above
+        Model root = Kit.root(fx);
+        Model mace = root.child(0, 13, 0);
+        mace.item(Material.MACE, 0, 0, 0, 5.0);
+        mace.rot(0, 0, -135).size(0.001);
+        mace.show(0);
+        fx.later(20, () -> {
+            mace.at(0, 8.5, 0).size(1).rot(0, 0, -135).apply(14);
+            mace.parts.forEach(p -> { p.d.setGlowing(true); p.d.setGlowColorOverride(Kit.col(R)); });
+            fx.p(Particle.END_ROD, L(fx, 0, 8.5, 0), 30, 1.5, 0.05);
+        });
+        fx.later(56, () -> {
+            fx.sound("minecraft:item.mace.smash_air", 1.4f, 0.5f);
+            fx.sound("minecraft:entity.wither.shoot", 0.8f, 0.5f);
+        });
+        // SLAM
+        fx.anim(58, 5, 1, t -> mace.at(0, 8.5 - 6.3 * t * t, 0).apply(1));
+        fx.later(63, () -> {
+            Location c = base.clone().add(0, 0.3, 0);
+            List<Kit.Glow> b = bolt(fx, base, 24, 0xFF4A4A);
+            fx.later(3, () -> b.forEach(g -> g.size(0.001, g.h).apply(3)));
+            fx.later(7, () -> b.forEach(Kit.Glow::remove));
+            d.remove();
+            fx.particle(Particle.FLASH, c.clone().add(0, 1.5, 0), 1, 0, 0, 0, 0, Kit.col(0xFF4040));
+            fx.p(Particle.EXPLOSION_EMITTER, c.clone().add(0, 1, 0), 1, 0, 0);
+            fx.dust(c.clone().add(0, 1.5, 0), R, 2f, 90, 1.0);
+            fx.p(Particle.LARGE_SMOKE, c.clone().add(0, 1, 0), 30, 0.7, 0.05);
+            fx.particle(Particle.DUST_PILLAR, c, 100, 2.0, 0.1, 2.0, 0, fx.groundBlock().createBlockData());
+            fx.block(c, fx.groundBlock(), 70, 1.4, 0.4);
+            Kit.burst(fx, c.clone().add(0, 1, 0), 6, 40, R, 14);
+            Kit.wave(fx, 1.2, 4.8, 14, 6, 0.75);
+            Kit.debris(fx, c, fx.groundBlock(), 16, 0.25, 0.7, 0.45, 36);
+            fx.sound("minecraft:entity.lightning_bolt.thunder", 1.4f, 0.7f);
+            fx.sound("minecraft:item.mace.smash_ground_heavy", 2f, 0.6f);
+            fx.sound("minecraft:entity.generic.explode", 1.5f, 0.6f);
+            outer.remove(); inner.remove();
+            beam.set(6, 0, 10);
+            pose.accept(7.2, 2);
+            Kit.Ring shock = new Kit.Ring(fx, base.clone().add(0, 0.07, 0), 0.6, 0.3, 32, 0xE0FC0000);
+            shock.apply(0);
+            fx.later(1, () -> { shock.r = 8; shock.argb = 0x00FC0000; shock.apply(14); });
+            fx.later(16, shock::remove);
+        });
+        fx.later(66, () -> mace.at(0, 2.6, 0).size(0.001).apply(10));
+        fx.later(76, () -> pose.accept(0.001, 8));
+        fx.later(86, () -> { layers.forEach(t -> { if (t.isValid()) t.remove(); }); mace.remove(); beam.remove(); root.remove(); });
     }
 
     private static void judgement(Fx fx) {
