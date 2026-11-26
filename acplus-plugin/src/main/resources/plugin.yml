@@ -21,6 +21,9 @@ commands:
     permission: chickensmp.acplus.staff
     aliases: [staffmode, sm]
 permissions:
+  chickensmp.acplus.chat.spaced:
+    description: Empty line above and below your chat messages.
+    default: false
   chickensmp.acplus.sus:
     description: Use /sus
     default: op
