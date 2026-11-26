@@ -1,0 +1,499 @@
+# ============================================================================
+#  Menu: Guide (/guide, /help) - ChickenSMP 2026-11-26, opened on join
+#  5 rows, EconomyCore style, glass frame. Old textured version: guide.yml.bak-2026-11-26
+# ============================================================================
+
+command:
+  - guide
+  - help
+title: "&8ɢᴜɪᴅᴇ"
+rows: 5
+open-sound: "minecraft:block.note_block.pling|0.7|1.2"
+
+items:
+
+  glass0:
+    SLOT: 0
+    MATERIAL: PURPLE_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass1:
+    SLOT: 1
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass2:
+    SLOT: 2
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass3:
+    SLOT: 3
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass5:
+    SLOT: 5
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass6:
+    SLOT: 6
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass7:
+    SLOT: 7
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass8:
+    SLOT: 8
+    MATERIAL: PURPLE_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass9:
+    SLOT: 9
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass17:
+    SLOT: 17
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass18:
+    SLOT: 18
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass26:
+    SLOT: 26
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass27:
+    SLOT: 27
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass35:
+    SLOT: 35
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass36:
+    SLOT: 36
+    MATERIAL: PURPLE_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass37:
+    SLOT: 37
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass38:
+    SLOT: 38
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass39:
+    SLOT: 39
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass41:
+    SLOT: 41
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass42:
+    SLOT: 42
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass43:
+    SLOT: 43
+    MATERIAL: BLACK_STAINED_GLASS_PANE
+    TITLE: " "
+
+  glass44:
+    SLOT: 44
+    MATERIAL: PURPLE_STAINED_GLASS_PANE
+    TITLE: " "
+
+  welcome:
+    SLOT: 4
+    MATERIAL: NETHER_STAR
+    TITLE: "&#FCE300&lWELCOME"
+    LORE:
+      - "&7ChickenSMP"
+      - ""
+      - "&#FCE300Information"
+      - "&fSurvival with economy, PvP,"
+      - "&fkill effects and much more."
+      - "&fClick any item to get started!"
+
+  sell:
+    SLOT: 10
+    MATERIAL: EMERALD
+    TITLE: "&#00FC00&lSELL"
+    LORE:
+      - "&7Economy"
+      - ""
+      - "&#00FC00Information"
+      - "&fSell items to earn money."
+      - "&fBuild farms and bases."
+      - ""
+      - "&#00FC00▶ &#00FC00&l&nCLICK&r &#00FC00to sell"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] sell"
+
+  shop:
+    SLOT: 11
+    MATERIAL: GOLD_INGOT
+    TITLE: "&#FCE300&lSHOP"
+    LORE:
+      - "&7Economy"
+      - ""
+      - "&#FCE300Information"
+      - "&fBuy blocks, gear,"
+      - "&fredstone and more."
+      - ""
+      - "&#FCE300▶ &#FCE300&l&nCLICK&r &#FCE300to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] shop"
+
+  ah:
+    SLOT: 12
+    MATERIAL: GOLDEN_CARROT
+    TITLE: "&#F97603&lAUCTION HOUSE"
+    LORE:
+      - "&7Economy"
+      - ""
+      - "&#F97603Information"
+      - "&fBuy and sell items"
+      - "&fwith other players."
+      - ""
+      - "&#F97603▶ &#F97603&l&nCLICK&r &#F97603to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] ah"
+
+  orders:
+    SLOT: 13
+    MATERIAL: PAPER
+    TITLE: "&#1EB8E9&lORDERS"
+    LORE:
+      - "&7Economy"
+      - ""
+      - "&#1EB8E9Information"
+      - "&fPost what you need and"
+      - "&flet players deliver it."
+      - ""
+      - "&#1EB8E9▶ &#1EB8E9&l&nCLICK&r &#1EB8E9to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] orders"
+
+  stocks:
+    SLOT: 14
+    MATERIAL: DIAMOND
+    TITLE: "&#00A4FC&lSTOCKS"
+    LORE:
+      - "&7Economy"
+      - ""
+      - "&#00A4FCInformation"
+      - "&fTrade ores on the market."
+      - "&fBuy low, sell high!"
+      - ""
+      - "&#00A4FC▶ &#00A4FC&l&nCLICK&r &#00A4FCto open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] stocks"
+
+  daily:
+    SLOT: 15
+    MATERIAL: CHEST
+    TITLE: "&#A303F9&lDAILY REWARD"
+    LORE:
+      - "&7Rewards"
+      - ""
+      - "&#A303F9Information"
+      - "&fClaim a free reward"
+      - "&fevery day."
+      - ""
+      - "&#A303F9▶ &#A303F9&l&nCLICK&r &#A303F9to claim"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] daily"
+
+  kits:
+    SLOT: 16
+    MATERIAL: IRON_CHESTPLATE
+    TITLE: "&#00FC00&lKITS"
+    LORE:
+      - "&7Rewards"
+      - ""
+      - "&#00FC00Information"
+      - "&fClaim free kits"
+      - "&fto get started."
+      - ""
+      - "&#00FC00▶ &#00FC00&l&nCLICK&r &#00FC00to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] kit"
+
+  rtp:
+    SLOT: 19
+    MATERIAL: COMPASS
+    TITLE: "&#00FC00&lRTP"
+    LORE:
+      - "&7Explore"
+      - ""
+      - "&#00FC00Information"
+      - "&fTeleport to a random"
+      - "&fplace in the world."
+      - ""
+      - "&#00FC00▶ &#00FC00&l&nCLICK&r &#00FC00to teleport"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] rtp"
+
+  pvp:
+    SLOT: 20
+    MATERIAL: DIAMOND_SWORD
+    TITLE: "&#FC0000&l1V1 QUEUE"
+    LORE:
+      - "&7Combat"
+      - ""
+      - "&#FC0000Information"
+      - "&fFind an opponent"
+      - "&ffor a quick fight."
+      - ""
+      - "&#FC0000▶ &#FC0000&l&nCLICK&r &#FC0000to join"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] rtpqueue"
+
+  quests:
+    SLOT: 21
+    MATERIAL: WRITABLE_BOOK
+    TITLE: "&#FCE300&lQUESTS"
+    LORE:
+      - "&7Rewards"
+      - ""
+      - "&#FCE300Information"
+      - "&fComplete quests"
+      - "&ffor money and keys."
+      - ""
+      - "&#FCE300▶ &#FCE300&l&nCLICK&r &#FCE300to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] quests"
+
+  killeffects:
+    SLOT: 22
+    MATERIAL: SKELETON_SKULL
+    TITLE: "&#A303F9&lKILL EFFECTS"
+    LORE:
+      - "&7Cosmetics"
+      - ""
+      - "&#A303F9Information"
+      - "&fShow off with every kill."
+      - "&fTry the Mystery Roll!"
+      - ""
+      - "&#A303F9▶ &#A303F9&l&nCLICK&r &#A303F9to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] ke"
+
+  fish:
+    SLOT: 23
+    MATERIAL: FISHING_ROD
+    TITLE: "&#1EB8E9&lFISHING"
+    LORE:
+      - "&7Fun"
+      - ""
+      - "&#1EB8E9Information"
+      - "&fCatch rare fish"
+      - "&fand upgrade your rod."
+      - ""
+      - "&#1EB8E9▶ &#1EB8E9&l&nCLICK&r &#1EB8E9to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] fish"
+
+  cookie:
+    SLOT: 24
+    MATERIAL: COOKIE
+    TITLE: "&#F97603&lCOOKIE CLICKER"
+    LORE:
+      - "&7Fun"
+      - ""
+      - "&#F97603Information"
+      - "&fClick cookies"
+      - "&fand earn money."
+      - ""
+      - "&#F97603▶ &#F97603&l&nCLICK&r &#F97603to play"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] cookie"
+
+  coinflip:
+    SLOT: 25
+    MATERIAL: SUNFLOWER
+    TITLE: "&#FCE300&lCOINFLIP"
+    LORE:
+      - "&7Fun"
+      - ""
+      - "&#FCE300Information"
+      - "&fBet money against"
+      - "&fother players."
+      - ""
+      - "&#FCE300▶ &#FCE300&l&nCLICK&r &#FCE300to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] cf"
+
+  teams:
+    SLOT: 28
+    MATERIAL: SHIELD
+    TITLE: "&#00A4FC&lTEAMS"
+    LORE:
+      - "&7Social"
+      - ""
+      - "&#00A4FCInformation"
+      - "&fCreate or join a team."
+      - "&fPlay together and win."
+      - ""
+      - "&#00A4FC▶ &#00A4FC&l&nCLICK&r &#00A4FCto open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] team"
+
+  homes:
+    SLOT: 29
+    MATERIAL: RED_BED
+    TITLE: "&#FC0000&lHOMES"
+    LORE:
+      - "&7Utility"
+      - ""
+      - "&#FC0000Information"
+      - "&fSet homes and teleport"
+      - "&fback to them anytime."
+      - ""
+      - "&#FC0000▶ &#FC0000&l&nCLICK&r &#FC0000to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] homes"
+
+  tags:
+    SLOT: 30
+    MATERIAL: NAME_TAG
+    TITLE: "&#FC00E3&lTAGS"
+    LORE:
+      - "&7Cosmetics"
+      - ""
+      - "&#FC00E3Information"
+      - "&fPick a tag that shows"
+      - "&fnext to your name."
+      - ""
+      - "&#FC00E3▶ &#FC00E3&l&nCLICK&r &#FC00E3to open"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[command] tags"
+
+  sign:
+    SLOT: 31
+    MATERIAL: FEATHER
+    TITLE: "&#AAAAAA&lSIGN ITEMS"
+    LORE:
+      - "&7Cosmetics"
+      - ""
+      - "&#AAAAAAInformation"
+      - "&fSign the item in your hand"
+      - "&fwith /sign [message]."
+      - ""
+      - "&#AAAAAA▶ &#AAAAAA&l&nCLICK&r &#AAAAAAfor help"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[close]"
+      - "[msg] &#AAAAAA&lSIGN &r&7» &fHold an item and type &#FCE300/sign [message]&f."
+
+  rules:
+    SLOT: 32
+    MATERIAL: BOOK
+    TITLE: "&#00A4FC&lRULES"
+    LORE:
+      - "&7Information"
+      - ""
+      - "&#00A4FCInformation"
+      - "&fRead the server rules."
+      - "&fAvoid punishments."
+      - ""
+      - "&#00A4FC▶ &#00A4FC&l&nCLICK&r &#00A4FCto view"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[open] rules"
+
+  discord:
+    SLOT: 33
+    MATERIAL: LIGHT_BLUE_CANDLE
+    TITLE: "&#5865F2&lDISCORD"
+    LORE:
+      - "&7Community"
+      - ""
+      - "&#5865F2Information"
+      - "&fJoin our Discord for"
+      - "&fnews, events and support."
+      - ""
+      - "&#5865F2▶ &#5865F2&l&nCLICK&r &#5865F2to join"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[open] discord"
+
+  store:
+    SLOT: 34
+    MATERIAL: CHEST_MINECART
+    TITLE: "&#00FC00&lSTORE"
+    LORE:
+      - "&7Support"
+      - ""
+      - "&#00FC00Information"
+      - "&fSupport the server."
+      - "&fGet ranks and more."
+      - ""
+      - "&#00FC00▶ &#00FC00&l&nCLICK&r &#00FC00to view"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=1"
+      - "[open] store"
+
+  close:
+    SLOT: 40
+    MATERIAL: BARRIER
+    TITLE: "&#FC0000&lCLOSE"
+    LORE:
+      - "&7Close this menu"
+    ACTIONS:
+      - "[sound] minecraft:ui.button.click volume=1 pitch=0.8"
+      - "[close]"
