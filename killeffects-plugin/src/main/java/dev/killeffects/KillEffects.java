@@ -89,7 +89,7 @@ public final class KillEffects
 extends JavaPlugin
 implements Listener,
 TabExecutor {
-    static final String VERSION = "4.3.0";
+    static final String VERSION = "4.4.0";
     static final UUID PACK_ID = UUID.nameUUIDFromBytes("ChickenSMPKillEffects".getBytes(StandardCharsets.UTF_8));
     final SecureRandom random = new SecureRandom();
     private final Map<UUID, Store.Profile> profiles = new ConcurrentHashMap<UUID, Store.Profile>();
@@ -375,6 +375,11 @@ TabExecutor {
             itemStack.setItemMeta(itemMeta);
         }
         return itemStack;
+    }
+
+    /** EconomyCore style item name: rarity colour, bold, upper case. */
+    static String upper(KillEffect e) {
+        return e.rarity().color + "&l" + e.name().toUpperCase(Locale.ROOT);
     }
 
     List<String> effectLore(KillEffect killEffect) {

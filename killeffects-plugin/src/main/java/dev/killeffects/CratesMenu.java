@@ -118,40 +118,8 @@ implements Gui {
         }
         this.slots.clear();
         Store.Profile profile = this.plugin.profileOrCreate(this.viewer.getUniqueId(), this.viewer.getName());
-        ArrayList<Crate> arrayList = new ArrayList<Crate>(this.plugin.crates().values());
-        int[] nArray = CratesMenu.layout(arrayList.size());
-        boolean bl = System.currentTimeMillis() - this.armedAt < 5000L;
-        for (int i = 0; i < arrayList.size() && i < nArray.length; ++i) {
-            Object object;
-            Crate crate = (Crate)arrayList.get(i);
-            ArrayList<String> arrayList2 = new ArrayList<String>();
-            for (String object2 : crate.lore()) {
-                arrayList2.add(Text.color(object2));
-            }
-            arrayList2.addAll(this.plugin.guiList("crates.chances-header", new Object[0]));
-            for (Map.Entry<Rarity, Double> entry : crate.percents(this.plugin.byRarity()).entrySet()) {
-                Rarity rr = entry.getKey();
-                long l = this.plugin.byRarity().get(rr).stream().filter(killEffect -> this.plugin.owns(this.viewer, (KillEffect)killEffect)).count();
-                arrayList2.add(Text.color(KillEffects.fill(this.plugin.raw("gui.crates.chance-line"), "rarity", rr.color + rr.display, "chance", CratesMenu.pct((Double)entry.getValue()), "have", l, "total", this.plugin.byRarity().get(rr).size())));
-            }
-            int n = profile.keys(crate.id());
-            boolean bl2 = crate.price() > 0.0 && this.plugin.economy() != null;
-            arrayList2.addAll(this.plugin.guiList("crates.price-lore", "keys", n, "price", bl2 ? this.plugin.money(crate.price()) : this.plugin.raw("gui.crates.keys-only")));
-            object = n > 0 ? "crates.open-key" : (bl2 ? (bl && crate.id().equals(this.armed) ? "crates.confirm" : "crates.open-money") : "crates.no-key");
-            arrayList2.addAll(this.plugin.guiList((String)object, "price", this.plugin.money(crate.price())));
-            ItemStack itemStack = this.plugin.textured("crate/" + crate.texture(), Material.CHEST, crate.name(), arrayList2);
-            if (n > 0) {
-                itemStack.setAmount(Math.min(64, n));
-                ItemMeta itemMeta = itemStack.getItemMeta();
-                if (itemMeta != null) {
-                    itemMeta.setEnchantmentGlintOverride(Boolean.valueOf(true));
-                    itemStack.setItemMeta(itemMeta);
-                }
-            }
-            this.inv.setItem(nArray[i], itemStack);
-            this.slots.put(nArray[i], crate);
-        }
-        if (MysteryRoll.enabled(this.plugin)) this.inv.setItem(22, this.mysteryItem());
+        // crates were removed (2026-11-26): this menu only holds the Mystery Roll
+        if (MysteryRoll.enabled(this.plugin)) this.inv.setItem(13, this.mysteryItem());
         this.inv.setItem(18, Gui.item(Material.ARROW, this.plugin.gui("back", new Object[0]), List.of()));
         this.inv.setItem(26, Gui.item(Material.BARRIER, this.plugin.gui("close", new Object[0]), List.of()));
         Gui.fill(this.inv, Material.BLACK_STAINED_GLASS_PANE);
@@ -162,19 +130,22 @@ implements Gui {
     private ItemStack mysteryItem() {
         boolean armedNow = MYSTERY.equals(this.armed) && System.currentTimeMillis() - this.armedAt < 5000L;
         int left = MysteryRoll.pool(this.plugin, this.viewer).size();
+        double dc = MysteryRoll.doubleChance(this.plugin);
         List<String> lore = new ArrayList<String>();
-        lore.add(Text.color("&7One random kill effect"));
-        lore.add(Text.color("&7you don't own yet."));
+        lore.add(Text.color("&7Kill Effects"));
         lore.add("");
-        lore.add(Text.color("&f\u25B8 Big show that everyone around sees"));
-        lore.add(Text.color("&f\u25B8 Legendary & Mythic pulls go in chat"));
-        lore.add(Text.color("&f\u25B8 &#FCE300" + CratesMenu.pct(MysteryRoll.doubleChance(this.plugin)) + "% &fchance for a &#FCE300&lDOUBLE"));
+        lore.add(Text.color("&#A303F9&lINFORMATION"));
+        lore.add(Text.color("&#A303F9\u25AA &fGet a &#FCE300random &fkill effect"));
+        lore.add(Text.color("&#A303F9\u25AA &fOnly effects you &#FCE300don't own &fyet"));
+        lore.add(Text.color("&#A303F9\u25AA &fA big show everyone around sees"));
+        lore.add(Text.color("&#A303F9\u25AA &#FCE300Legendary &fand &#FC0000Mythic &fpulls go in chat"));
+        lore.add(Text.color("&#A303F9\u25AA &#FCE300" + CratesMenu.pct(dc) + "% &fchance for a &#FCE300&lDOUBLE"));
         lore.add("");
-        lore.add(Text.color("&7Left to get: &#FCE300" + left));
-        lore.add(Text.color("&7Price: &#00FC00" + this.plugin.money(MysteryRoll.price(this.plugin))));
+        lore.add(Text.color("&fLeft to get: &#FCE300" + left));
+        lore.add(Text.color("&fPrice: &#00FC00" + this.plugin.money(MysteryRoll.price(this.plugin))));
         lore.add("");
-        lore.add(Text.color(left == 0 ? "&#FC0000You own every effect!" : (armedNow ? "&#FCE300&lClick again to confirm!" : "&#00FC00Click to roll")));
-        ItemStack it = Gui.item(Material.NETHER_STAR, Text.color("<gradient:#A303F9:#FC00E3>&lMYSTERY ROLL</gradient>"), lore);
+        lore.add(Text.color(left == 0 ? "&#FC0000You own every kill effect!" : (armedNow ? "&#00FC00\u25B6 &#00FC00&l&nCLICK&r &#00FC00again to pay" : "&#A303F9\u25B6 &#A303F9&l&nCLICK&r &#A303F9to roll")));
+        ItemStack it = Gui.item(Material.NETHER_STAR, Text.color("&#A303F9&lMYSTERY ROLL"), lore);
         ItemMeta m = it.getItemMeta();
         if (m != null) { m.setEnchantmentGlintOverride(Boolean.valueOf(true)); it.setItemMeta(m); }
         return it;
@@ -194,7 +165,7 @@ implements Gui {
             player.closeInventory();
             return;
         }
-        if (n == 22 && MysteryRoll.enabled(this.plugin)) {
+        if (n == 13 && MysteryRoll.enabled(this.plugin)) {
             long now = System.currentTimeMillis();
             if (!MYSTERY.equals(this.armed) || now - this.armedAt >= 5000L) {
                 this.armed = MYSTERY;

@@ -36,47 +36,8 @@ mystery-roll:
   broadcast-from: LEGENDARY
 
 # ------------------------------------------------------------ crates
-# price = money per opening (0 = keys only). Keys (from /ke keys) are used first.
-# chances = weight per rarity (shown as % in the menu)
-crates:
-  basic:
-    name: "&7&lBasic Crate"
-    texture: basic
-    price: 50000
-    lore:
-      - "&8Good for starting out."
-      - ""
-    chances:
-      common: 60
-      uncommon: 28
-      rare: 10
-      epic: 1.8
-      legendary: 0.2
-  epic:
-    name: "&#B565FF&lEpic Crate"
-    texture: epic
-    price: 250000
-    lore:
-      - "&8Better odds, cooler effects."
-      - ""
-    chances:
-      uncommon: 35
-      rare: 38
-      epic: 20
-      legendary: 6
-      mythic: 1
-  mythic:
-    name: "<gradient:#FF4D6D:#FFB020>&lMythic Crate</gradient>"
-    texture: mythic
-    price: 1000000
-    lore:
-      - "&8Only the best."
-      - ""
-    chances:
-      rare: 30
-      epic: 40
-      legendary: 24
-      mythic: 6
+# Crates were removed (2026-11-26). The Mystery Roll above is the way to get new effects.
+crates: {}
 
 # ------------------------------------------------------------ duplicates
 # Win an effect you already own -> get this % of the crate price back (0 = nothing)
@@ -116,131 +77,123 @@ sounds:
 
 # ============================================================ texts
 messages:
-  prefix: "<gradient:#FF4D6D:#FFB020>&lKillFX</gradient> &8» &7"
+  prefix: "&#A303F9&lKILLFX &r&7» &f"
   none: "&7None"
-  selected: "{prefix}Kill effect set to {effect}&7."
-  deselected: "{prefix}Kill effect turned off."
-  preview: "{prefix}Preview of {effect} &8(only you can see it)"
-  won: "{prefix}You won {effect} &8({rarity}&8)&7!"
-  won-duplicate: "{prefix}{effect} &7was a duplicate: &a+{money} &7back"
-  won-duplicate-nothing: "{prefix}{effect} &7was a duplicate."
-  broadcast-win: "<gradient:#FF4D6D:#FFB020>&lKillFX</gradient> &8» &f{player} &7unboxed {rarity} {effect} &7from {crate}&7!"
-  received: "{prefix}&aYou received {what}&a! &8({amount} effect(s))"
-  keys-received: "{prefix}&aYou received &f{amount}x &akey(s) for {crate}&a!"
-  admin-given: "{prefix}Gave &f{amount} &7effect(s) to &f{player}&7."
-  admin-taken: "{prefix}Took &f{amount} &7effect(s) from &f{player}&7."
-  admin-keys: "{prefix}Gave &f{amount} &7key(s) to &f{player}&7."
-  admin-info: "{prefix}&f{player}&7: {owned}/{total} effects, selected &f{selected}&7, {kills} kills, {opened} crates opened, keys: &f{keys}"
-  reloaded: "{prefix}&aReloaded &8({effects} effects, {crates} crates)"
-  usage: "{prefix}Usage: &f{usage}"
+  selected: "{prefix}Kill effect set to {effect}&f."
+  deselected: "{prefix}Kill effect turned &#FC0000off&f."
+  preview: "{prefix}Preview of {effect} &7(only you can see it)"
+  won: "{prefix}You got {effect} &7({rarity}&7)&f!"
+  won-duplicate: "{prefix}{effect} &fwas a duplicate."
+  broadcast-win: "{prefix}&#FCE300{player} &fgot {rarity} {effect}&f!"
+  received: "{prefix}You received &#FCE300{what}&f! &7({amount} effect(s))"
+  keys-received: "{prefix}You received &#FCE300{amount}x &fkey(s)."
+  admin-given: "{prefix}Gave &#FCE300{amount} &feffect(s) to &#FCE300{player}&f."
+  admin-taken: "{prefix}Took &#FCE300{amount} &feffect(s) from &#FCE300{player}&f."
+  admin-keys: "{prefix}Gave &#FCE300{amount} &fkey(s) to &#FCE300{player}&f."
+  admin-info: "{prefix}&#FCE300{player}&f: &#FCE300{owned}&f/&#FCE300{total} &feffects, selected &#FCE300{selected}&f, &#FCE300{kills} &fkills, &#FCE300{opened} &frolls"
+  reloaded: "{prefix}Reloaded &7({effects} effects)"
+  usage: "{prefix}Usage: &#FCE300{usage}"
   help:
-    - "&8&m                                              "
-    - " <gradient:#FF4D6D:#FFB020>&lKill Effects</gradient>"
-    - " &f/{label} &8- &7your collection (select, preview)"
-    - " &f/{label} crates &8- &7open crates"
-    - " &f/{label} select <effect|none> &8- &7choose an effect"
-    - " &f/{label} preview <effect> &8- &7see an effect (only you)"
+    - ""
+    - " &#A303F9&lKILL EFFECTS"
+    - " &#A303F9▪ &f/{label} &7- your collection (select, preview)"
+    - " &#A303F9▪ &f/{label} mystery &7- Mystery Roll (random new effect)"
+    - " &#A303F9▪ &f/{label} select <effect|none> &7- choose an effect"
+    - " &#A303F9▪ &f/{label} preview <effect> &7- see an effect (only you)"
+    - ""
   help-admin:
-    - " &c/{label} give <player|*> <effect|rarity|all>"
-    - " &c/{label} take <player|*> <effect|rarity|all>"
-    - " &c/{label} keys <player|*> <crate|all> <amount>"
-    - " &c/{label} open <player> <crate> &8- &7free crate"
-    - " &c/{label} play <effect> &8- &7play for everyone"
-    - " &c/{label} info <player>  &c/{label} reload"
+    - " &#FC0000▪ &f/{label} give <player|*> <effect|rarity|all>"
+    - " &#FC0000▪ &f/{label} take <player|*> <effect|rarity|all>"
+    - " &#FC0000▪ &f/{label} play <effect> &7- play for everyone"
+    - " &#FC0000▪ &f/{label} info <player>  &f/{label} reload"
   error:
-    no-permission: "{prefix}&cYou don't have permission to do that."
-    players-only: "{prefix}&cOnly players can do that."
-    unknown-command: "{prefix}&cUnknown sub-command &f{input}&c. Use &f/ke help"
-    unknown-effect: "{prefix}&cThere is no kill effect called &f{input}&c."
-    unknown-crate: "{prefix}&cThere is no crate called &f{input}&c."
-    player-not-found: "{prefix}&cPlayer &f{player} &cnot found."
-    locked: "{prefix}&cYou don't own {effect} &cyet. Win it in a crate: &f/ke crates"
-    already-owned: "{prefix}&cYou already own this effect."
-    not-enough-money: "{prefix}&cYou need &f{amount} &cfor that."
-    economy: "{prefix}&cThe payment failed. Please try again."
-    no-key: "{prefix}&cYou need a key for {crate}&c."
-    crate-empty: "{prefix}&cThis crate has no effects."
-    preview-cooldown: "{prefix}&cWait {seconds}s before the next preview."
+    no-permission: "{prefix}&#FC0000You don't have permission to do that."
+    players-only: "{prefix}&#FC0000Only players can do that."
+    unknown-command: "{prefix}&#FC0000Unknown sub-command &#FCE300{input}&#FC0000. Use &f/ke help"
+    unknown-effect: "{prefix}&#FC0000There is no kill effect called &#FCE300{input}&#FC0000."
+    unknown-crate: "{prefix}&#FC0000Crates were removed. Use the &#FCE300Mystery Roll &#FC0000in &f/ke&#FC0000."
+    player-not-found: "{prefix}&#FC0000Player &#FCE300{player} &#FC0000not found."
+    locked: "{prefix}You don't own {effect} &fyet. Get it from the &#A303F9Mystery Roll &fin &#FCE300/ke&f."
+    already-owned: "{prefix}&#FC0000You already own this effect."
+    not-enough-money: "{prefix}&#FC0000You need &#FCE300{amount} &#FC0000for that."
+    economy: "{prefix}&#FC0000The payment failed. Please try again."
+    no-key: "{prefix}&#FC0000Crates were removed."
+    crate-empty: "{prefix}&#FC0000Crates were removed."
+    preview-cooldown: "{prefix}&#FC0000Wait &#FCE300{seconds}s &#FC0000before the next preview."
 
 # ============================================================ menus
 gui:
-  back: "&7« Back"
-  close: "&cClose"
-  previous-page: "&f« Page {page}"
-  next-page: "&fPage {page} »"
+  back: "&#FC0000&l« BACK"
+  close: "&#FC0000&lCLOSE"
+  previous-page: "&#FCE300&l« PAGE {page}"
+  next-page: "&#FCE300&lPAGE {page} »"
   effect-lore:
-    - "{rarity}"
-    - "&8&o{description}"
+    - "&7Kill Effect"
+    - ""
+    - "&fRarity: {rarity}"
+    - "&7{description}"
     - ""
 
   collection:
-    title: "&8Kill Effects"
+    title: "&8ᴋɪʟʟ ᴇꜰꜰᴇᴄᴛѕ"
     name: "{effect}"
-    locked-name: "&8{effect}"
+    locked-name: "&7&l{effect}"
     owned-lore:
-      - "&aOwned"
+      - "&#00FC00✔ Owned"
       - ""
-      - "&eClick: &7select"
-      - "&eRight-click: &7preview"
+      - "&#00FC00▶ &#00FC00&l&nCLICK&r &#00FC00to select"
+      - "&#00A4FC▶ &#00A4FC&l&nRIGHT-CLICK&r &#00A4FCto preview"
     selected-lore:
-      - "&a&l✔ SELECTED"
+      - "&#00FC00&l✔ SELECTED"
       - ""
-      - "&eClick: &7turn off"
-      - "&eRight-click: &7preview"
+      - "&#FC0000▶ &#FC0000&l&nCLICK&r &#FC0000to turn off"
+      - "&#00A4FC▶ &#00A4FC&l&nRIGHT-CLICK&r &#00A4FCto preview"
     locked-lore:
-      - "&c&lLOCKED"
-      - "&7Win it in a crate!"
+      - "&#FC0000✖ Locked"
+      - "&fGet it from the &#A303F9Mystery Roll&f."
       - ""
-      - "&eRight-click: &7preview"
-    current: "&7Selected: {effect}"
+      - "&#00A4FC▶ &#00A4FC&l&nRIGHT-CLICK&r &#00A4FCto preview"
+    current: "&#00FC00&lSELECTED &r&7» {effect}"
     current-lore:
       - ""
-      - "&eClick: &7turn off"
-    none-selected: "&7No kill effect selected"
+      - "&#FC0000▶ &#FC0000&l&nCLICK&r &#FC0000to turn off"
+    none-selected: "&7&lNO EFFECT SELECTED"
     none-selected-lore:
-      - "&7Click an effect you own."
-    crates: "<gradient:#FF4D6D:#FFB020>&lCrates</gradient>"
+      - "&fClick an effect you own."
+    crates: "&#A303F9&lMYSTERY ROLL"
     crates-lore:
-      - "&7Gamble for new kill effects!"
+      - "&7Kill Effects"
       - ""
-      - "&eClick to open"
-    profile: "&f&l{player}"
+      - "&fA random kill effect you"
+      - "&fdon't own yet, with a big show."
+      - ""
+      - "&fLeft to get: &#FCE300{left}"
+      - "&fPrice: &#00FC00{price}"
+      - ""
+      - "&#A303F9▶ &#A303F9&l&nCLICK&r &#A303F9to open"
+    profile: "&#00A4FC&l{player}"
     profile-lore:
-      - "&7Effects: &f{owned}&7/&f{total} &8({percent}%)"
-      - "&7Kills: &f{kills}"
-      - "&7Crates opened: &f{opened}"
-    filter: "&e&lFilter"
+      - "&7Profile"
+      - ""
+      - "&fEffects: &#FCE300{owned}&f/&#FCE300{total} &7({percent}%)"
+      - "&fKills: &#FCE300{kills}"
+      - "&fRolls: &#FCE300{opened}"
+    filter: "&#FCE300&lFILTER"
     filter-all: "&fAll"
     filter-lore:
       - ""
-      - "&eLeft-click: &7next  &8|  &eRight-click: &7back"
+      - "&#FCE300▶ &#FCE300&l&nCLICK&r &#FCE300next  &7|  &#FCE300&l&nRIGHT-CLICK&r &#FCE300back"
 
   crates:
-    title: "&8Kill Effect Crates"
-    chances-header:
-      - "&7Chances:"
-    chance-line: "&8» {rarity} &f{chance}% &8({have}/{total} owned)"
-    price-lore:
-      - ""
-      - "&7Your keys: &f{keys}"
-      - "&7Price: &f{price}"
-    keys-only: "keys only"
-    open-key:
-      - ""
-      - "&a&lClick to open with a key"
-    open-money:
-      - ""
-      - "&eClick to open for &f{price}"
-    confirm:
-      - ""
-      - "&a&lClick again to pay {price}"
-    no-key:
-      - ""
-      - "&cYou need a key"
+    title: "&8ᴍʏѕᴛᴇʀʏ ʀᴏʟʟ"
+    chances-header: []
+    chance-line: ""
+    price-lore: []
+    keys-only: ""
 
   roll:
-    title: "&8Opening {crate}"
+    title: "&8ᴍʏѕᴛᴇʀʏ ʀᴏʟʟ"
     pointer: "&f▼"
     item: "{effect}"
-    duplicate-suffix: " &8(duplicate: &a+{money} &8back)"
-    duplicate-suffix-nothing: " &8(duplicate)"
+    duplicate-suffix: ""
+    duplicate-suffix-nothing: ""

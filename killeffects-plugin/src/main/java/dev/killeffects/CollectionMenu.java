@@ -103,13 +103,13 @@ implements Gui {
             if (bl) {
                 boolean bl2 = killEffect != null && killEffect.id().equals(killEffect2.id());
                 arrayList.addAll(this.plugin.guiList(bl2 ? "collection.selected-lore" : "collection.owned-lore", new Object[0]));
-                itemStack = this.plugin.icon(killEffect2, true, this.plugin.gui("collection.name", "effect", killEffect2.colored()), arrayList);
+                itemStack = this.plugin.icon(killEffect2, true, this.plugin.gui("collection.name", "effect", KillEffects.upper(killEffect2)), arrayList);
                 if (bl2) {
                     CollectionMenu.glint(itemStack);
                 }
             } else {
                 arrayList.addAll(this.plugin.guiList("collection.locked-lore", new Object[0]));
-                itemStack = this.plugin.icon(killEffect2, false, this.plugin.gui("collection.locked-name", "effect", killEffect2.name()), arrayList);
+                itemStack = this.plugin.icon(killEffect2, false, this.plugin.gui("collection.locked-name", "effect", killEffect2.name().toUpperCase(java.util.Locale.ROOT)), arrayList);
             }
             this.inv.setItem(n2, itemStack);
             this.slots.put(n2, killEffect2);
@@ -125,8 +125,11 @@ implements Gui {
         }
         this.inv.setItem(46, this.filterItem());
         this.inv.setItem(47, killEffect == null ? Gui.item(Material.GRAY_DYE, this.plugin.gui("collection.none-selected", new Object[0]), this.plugin.guiList("collection.none-selected-lore", new Object[0])) : this.plugin.icon(killEffect, true, this.plugin.gui("collection.current", "effect", killEffect.colored()), this.plugin.guiList("collection.current-lore", new Object[0])));
-        Crate crate = this.plugin.crates().isEmpty() ? null : this.plugin.crates().values().iterator().next();
-        this.inv.setItem(49, this.plugin.textured("crate/" + (crate == null ? "common" : crate.texture()), Material.ENDER_CHEST, this.plugin.gui("collection.crates", new Object[0]), this.plugin.guiList("collection.crates-lore", new Object[0])));
+        if (MysteryRoll.enabled(this.plugin)) {
+            ItemStack star = Gui.item(Material.NETHER_STAR, this.plugin.gui("collection.crates", new Object[0]), this.plugin.guiList("collection.crates-lore", "price", this.plugin.money(MysteryRoll.price(this.plugin)), "left", MysteryRoll.pool(this.plugin, this.viewer).size()));
+            CollectionMenu.glint(star);
+            this.inv.setItem(49, star);
+        }
         n = this.plugin.ownedCount(this.viewer);
         int n3 = (int) this.plugin.effects().values().stream().filter(e -> !Effects3.EXCLUSIVE.contains(e.id()) || this.plugin.owns(this.viewer, e)).count();
         this.inv.setItem(51, Gui.head(this.viewer.getUniqueId(), this.plugin.gui("collection.profile", "player", this.viewer.getName()), this.plugin.guiList("collection.profile-lore", "owned", n, "total", n3, "percent", n3 == 0 ? 0 : n * 100 / n3, "kills", KillEffects.num(profile.kills), "opened", KillEffects.num(profile.opened))));
@@ -134,9 +137,9 @@ implements Gui {
 
     private ItemStack filterItem() {
         ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add(Text.color((this.filter == null ? "&f\u00bb " : "&8  ") + this.plugin.raw("gui.collection.filter-all")));
+        arrayList.add(Text.color((this.filter == null ? "&#FCE300\u25B8 &f" : "&7  ") + this.plugin.raw("gui.collection.filter-all")));
         for (Rarity rarity : Rarity.values()) {
-            arrayList.add(Text.color((this.filter == rarity ? "&f\u00bb " : "&8  ") + rarity.color + rarity.display + " &8(" + this.plugin.byRarity().get((Object)rarity).size() + ")"));
+            arrayList.add(Text.color((this.filter == rarity ? "&#FCE300\u25B8 " : "&7  ") + rarity.color + rarity.display + " &7(" + this.plugin.byRarity().get((Object)rarity).size() + ")"));
         }
         arrayList.addAll(this.plugin.guiList("collection.filter-lore", new Object[0]));
         return Gui.item(Material.HOPPER, this.plugin.gui("collection.filter", new Object[0]), arrayList);
@@ -193,6 +196,7 @@ implements Gui {
                 return;
             }
             case 49: {
+                if (!MysteryRoll.enabled(this.plugin)) return;
                 CratesMenu.open(this.plugin, player);
                 return;
             }
